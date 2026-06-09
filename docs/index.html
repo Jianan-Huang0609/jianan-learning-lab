@@ -4,47 +4,64 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jianan 学习实验室 🧪</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700;800;900&family=DM+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
-  .hero { background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1a1a2e 100%); padding: 80px 20px 60px; text-align: center; border-bottom: 1px solid #334155; }
-  .hero h1 { font-size: 2.8em; margin-bottom: 12px; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .hero p { font-size: 1.15em; color: #94a3b8; max-width: 600px; margin: 0 auto 24px; line-height: 1.7; }
-  .hero .badges { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-  .badge { background: #1e293b; border:1px solid #334155; padding:6px 14px; border-radius:20px; font-size:.85em; color:#94a3b8; }
-  .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-  .section { margin-bottom: 48px; }
-  .section h2 { font-size: 1.5em; margin-bottom: 20px; color: #e2e8f0; display:flex; align-items:center; gap:10px; }
-  .cards { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:16px; }
-  .card { background: #1e293b; border:1px solid #334155; border-radius:12px; padding:20px; transition: all .2s; text-decoration:none; color:inherit; display:block; }
-  .card:hover { border-color: #60a5fa; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(96,165,250,.12); }
-  .card .icon { font-size: 1.8em; margin-bottom: 8px; }
-  .card h3 { font-size: 1.05em; margin-bottom: 6px; color: #f1f5f9; }
-  .card .meta { font-size: .8em; color: #64748b; }
-  .card .status { display:inline-block; padding:2px 8px; border-radius:10px; font-size:.75em; margin-top:8px; }
-  .status.ready { background: #065f46; color: #6ee7b7; }
-  .status.wip { background: #78350f; color: #fbbf24; }
-  .status.plan { background: #1e3a5f; color: #93c5fd; }
-  .how-it-works { background: #1e293b; border:1px solid #334155; border-radius:16px; padding:32px; }
-  .how-it-works ol { padding-left:20px; color:#94a3b8; line-height:2; }
-  .how-it-works li { margin-bottom:8px; }
-  .how-it-works strong { color:#e2e8f0; }
-  footer { text-align:center; padding:40px 20px; color:#475569; font-size:.85em; border-top:1px solid #1e293b; }
-  footer a { color:#60a5fa; }
+:root {
+  --bg: #f7faff; --panel: #ffffff; --ink: #0f172a; --muted: #64748b; --line: #dbe7f5;
+  --blue: #2563eb; --green: #16a34a; --purple: #7c3aed; --orange: #f59e0b; --red: #ef4444;
+  --shadow: 0 24px 80px rgba(15,23,42,.12);
+  --mono: "DM Mono",ui-monospace,monospace; --sans: "Inter",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:var(--sans);color:var(--ink);
+  background:radial-gradient(circle at 18% 18%,rgba(37,99,235,.10),transparent 30%),radial-gradient(circle at 88% 18%,rgba(124,58,237,.08),transparent 28%),linear-gradient(135deg,#fbfdff,#eef6ff 48%,#f8f5ff);
+  min-height:100vh;overflow-x:hidden;
+}
+.hero{position:relative;padding:90px 28px 70px;text-align:center;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(37,99,235,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,.028) 1px,transparent 1px);background-size:34px 34px;pointer-events:none}
+.hero-inner{position:relative;z-index:1;max-width:760px;margin:0 auto}
+.kicker{font:700 13px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin-bottom:18px}
+.hero h1{font-size:clamp(44px,6vw,78px);line-height:.98;letter-spacing:-.055em;font-weight:900;margin-bottom:16px;background:linear-gradient(135deg,#1e40af,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero .subtitle{font-size:clamp(17px,2vw,22px);line-height:1.45;color:var(--muted);font-weight:650;max-width:580px;margin:0 auto 28px}
+.pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:rgba(255,255,255,.72);backdrop-filter:blur(6px);border-radius:999px;padding:8px 16px;font:700 12px/1 var(--mono);color:var(--muted);letter-spacing:.06em}
+.container{max-width:1100px;margin:0 auto;padding:0 28px 60px}
+.section{margin-bottom:56px}
+.section h2{font-size:28px;font-weight:900;letter-spacing:-.035em;margin-bottom:22px;color:var(--ink);display:flex;align-items:center;gap:10px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.card{display:block;background:rgba(255,255,255,.82);border:1px solid rgba(148,163,184,.22);border-radius:22px;padding:24px;text-decoration:none;color:inherit;box-shadow:0 12px 40px rgba(15,23,42,.06);backdrop-filter:blur(10px);transition:all .22s ease}
+.card:hover{border-color:rgba(37,99,235,.35);transform:translateY(-3px);box-shadow:0 24px 64px rgba(37,99,235,.10)}
+.card .icon{width:50px;height:50px;border-radius:16px;display:grid;place-items:center;font-size:24px;font-weight:900;margin-bottom:16px}
+.icon.blue{background:var(--blue);color:#fff}.icon.green{background:var(--green);color:#fff}.icon.purple{background:var(--purple);color:#fff}.icon.orange{background:var(--orange);color:#fff}
+.card h3{font-size:18px;font-weight:800;margin-bottom:6px;letter-spacing:-.02em;color:var(--ink)}
+.card .meta{font-size:13px;color:var(--muted);font-weight:650;line-height:1.45;margin-bottom:10px}
+.status{display:inline-block;padding:3px 10px;border-radius:999px;font:700 10.5px/1 var(--mono);letter-spacing:.06em}
+.status.ready{background:rgba(22,163,74,.12);color:#15803d}
+.status.wip{background:rgba(245,158,11,.12);color:#b45309}
+.status.plan{background:rgba(37,99,235,.10);color:#1d4ed8}
+.how{background:rgba(255,255,255,.78);border:1px solid rgba(148,163,184,.18);border-radius:26px;padding:36px;box-shadow:var(--shadow);backdrop-filter:blur(10px)}
+.how ol{padding-left:22px;display:grid;gap:14px}
+.how li{font-size:16px;line-height:1.55;color:var(--muted);font-weight:650}
+.how li strong{color:var(--ink);font-weight:800}
+footer{text-align:center;padding:44px 28px;border-top:1px solid rgba(148,163,184,.18);color:var(--muted);font:700 12px/1 var(--mono);letter-spacing:.06em}
+footer a{color:var(--blue);text-decoration:none;font-weight:700}
+@media(max-width:680px){.hero{padding:56px 20px 44px}.hero h1{font-size:38px}.cards{grid-template-columns:1fr}.container{padding:0 20px 40px}.how{padding:24px}}
 </style>
 </head>
 <body>
 
 <div class="hero">
-  <h1>🧪 Jianan 学习实验室</h1>
-  <p>基于 TeachAny PBL 引擎的个人互动课件库<br>一句话描述学习目标 → AI拆解知识网络 → 生成可检测的互动课件 → 自动部署</p>
-  <div class="badges">
-    <span class="badge">🤖 AI架构</span>
-    <span class="badge">⚡ 电路电子</span>
-    <span class="badge">🔧 机器人</span>
-    <span class="badge">💻 编程</span>
-    <span class="badge">🔬 理化生</span>
-    <span class="badge">📜 历史</span>
+  <div class="hero-inner">
+    <div class="kicker">TeachAny × SAM</div>
+    <h1>🧪 Jianan 学习实验室</h1>
+    <p class="subtitle">一句话描述学习目标 → AI 拆解知识网络 → 生成可检测的互动课件 → 自动部署</p>
+    <div class="pills">
+      <span class="pill">🤖 AI 架构</span><span class="pill">⚡ 电路电子</span><span class="pill">🔧 机器人</span>
+      <span class="pill">💻 编程</span><span class="pill">🔬 理化生</span><span class="pill">📜 历史</span>
+    </div>
   </div>
 </div>
 
@@ -54,61 +71,55 @@
   <h2>📚 课件列表</h2>
   <div class="cards">
     <a class="card" href="./minimal-rag/">
-      <div class="icon">🤖</div>
-      <h3>最小RAG流程</h3>
-      <div class="meta">15页互动课件 · 代码可运行 · Canvas流程图</div>
-      <span class="status ready">✅ 课件已上线</span>
+      <div class="icon blue">🤖</div>
+      <h3>最小 RAG 流程</h3>
+      <div class="meta">Python 代码可运行 · Canvas 管线图 · 15 页</div>
+      <span class="status ready">✅ 已上线</span>
     </a>
     <a class="card" href="./embedding-models/">
-      <div class="icon">🧮</div>
+      <div class="icon purple">🧮</div>
       <h3>嵌入模型原理</h3>
-      <div class="meta">15页互动课件 · 向量计算器 · 语义可视化</div>
-      <span class="status ready">✅ 课件已上线</span>
+      <div class="meta">向量计算器 · 语义空间可视化 · 15 页</div>
+      <span class="status ready">✅ 已上线</span>
     </a>
     <div class="card">
-      <div class="icon">⚡</div>
-      <h3>Arduino 嵌入式开发入门</h3>
-      <div class="meta">电路电子 · 待拆解</div>
-      <span class="status wip">待添加</span>
+      <div class="icon green">⚡</div>
+      <h3>Arduino 嵌入式开发</h3>
+      <div class="meta">ESP32 · 传感器 · 温控系统</div>
+      <span class="status wip">待拆解</span>
     </div>
     <div class="card">
-      <div class="icon">🔧</div>
+      <div class="icon orange">🔧</div>
       <h3>避障小车制作</h3>
-      <div class="meta">机器人 · 待拆解</div>
-      <span class="status wip">待添加</span>
+      <div class="meta">超声波 · 电机驱动 · PID</div>
+      <span class="status wip">待拆解</span>
     </div>
     <div class="card">
-      <div class="icon">🔬</div>
+      <div class="icon blue">🔬</div>
       <h3>量子力学入门</h3>
-      <div class="meta">物理 · 待拆解</div>
-      <span class="status wip">待添加</span>
+      <div class="meta">波函数 · 薛定谔方程 · 测量</div>
+      <span class="status wip">待拆解</span>
     </div>
     <div class="card">
-      <div class="icon">📜</div>
+      <div class="icon purple">📜</div>
       <h3>明朝灭亡多因素分析</h3>
-      <div class="meta">历史 · 待拆解</div>
-      <span class="status wip">待添加</span>
-    </div>
-    <div class="card">
-      <div class="icon">🧬</div>
-      <h3>分子生物学基础</h3>
-      <div class="meta">生物 · 待拆解</div>
-      <span class="status wip">待添加</span>
+      <div class="meta">经济 · 气候 · 制度 · 史料辨析</div>
+      <span class="status wip">待拆解</span>
     </div>
   </div>
 </div>
 
 <div class="section">
   <h2>🔄 学习闭环</h2>
-  <div class="how-it-works">
+  <div class="how">
     <ol>
-      <li><strong>前测 (Pre-test)</strong> — 进入课件先做诊断题，定位当前水平</li>
-      <li><strong>问题锚点</strong> — 用真实问题驱动学习动机（"为什么沉浮不同？""RAG怎么解决幻觉？"）</li>
-      <li><strong>互动讲解</strong> — 拖拽、仿真、动画，不是看视频而是动手操作</li>
-      <li><strong>三层脚手架</strong> — 完整示范 → 部分提示 → 独立完成，逐步放手</li>
-      <li><strong>概念测验</strong> — 每道题诊断错误原因，指出"错在哪、为什么、下一步"</li>
-      <li><strong>后测 (Post-test)</strong> — 对比前测，量化学习增益</li>
-      <li><strong>AI 学伴</strong> — 随时提问，不离开课件页面</li>
+      <li><strong>前测 Pre-test</strong> — 进入课件先诊断，定位当前水平</li>
+      <li><strong>问题锚点</strong> — 真实问题驱动动机（"RAG 怎么解决幻觉？""猫和狗的词义怎么比？"）</li>
+      <li><strong>互动讲解</strong> — Canvas 流程图、向量计算器、代码片段，不是看而是动手</li>
+      <li><strong>三层脚手架</strong> — 完整示范 → 部分提示 → 独立完成</li>
+      <li><strong>概念测验</strong> — 每题诊断错误原因，指出"错在哪、为什么、下一步"</li>
+      <li><strong>后测 Post-test</strong> — 量化对比前测，验证学习增益</li>
+      <li><strong>AI 学伴</strong> — 随时提问，不离开课件</li>
     </ol>
   </div>
 </div>
@@ -116,8 +127,9 @@
 </div>
 
 <footer>
-  由 <a href="https://github.com/weponusa/teachany">TeachAny</a> 驱动 · SAM 🧠 自动维护 · 
-  <a href="https://my.feishu.cn/wiki/UBJwwZa1ZiGFlAkDAhhcxOLgnIc">飞书 Wiki 中枢</a>
+  由 <a href="https://github.com/weponusa/teachany">TeachAny</a> 驱动 · SAM 🧠 自动维护 ·
+  <a href="https://my.feishu.cn/wiki/UBJwwZa1ZiGFlAkDAhhcxOLgnIc">飞书 Wiki</a> ·
+  <a href="https://github.com/Jianan-Huang0609/jianan-learning-lab">GitHub</a>
 </footer>
 
 </body>
