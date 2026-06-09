@@ -1,0 +1,49 @@
+{
+  "id": "embedding-models",
+  "course_id": "embedding-models",
+  "node_id": "ext-d4e5f6g2",
+  "name": "嵌入模型原理",
+  "name_en": "Embedding Models",
+  "subject": "information-technology",
+  "grade": "99",
+  "stage": "high",
+  "domain": "AI-Engineering",
+  "lesson_type": "new-concept",
+  "status": "community",
+  "author": "TeachAny",
+  "version": "1.0.0",
+  "teachany_version": "7.18.0",
+  "template_version": "2.0",
+  "curriculum": "adult-learning",
+  "description": "深入理解文本嵌入模型的数学原理与工程实践。涵盖One-Hot到稠密向量的演进、余弦相似度、主流模型对比和降维可视化。",
+  "tags": ["Embedding", "词向量", "余弦相似度", "NLP", "语义搜索"],
+  "prerequisites": ["minimal-rag"],
+  "leads_to": [],
+  "learning_objectives": [
+    "理解从One-Hot到稠密向量的演进，掌握嵌入的核心思想",
+    "理解高维向量空间中语义距离的概念，能计算余弦相似度",
+    "了解主流嵌入模型的特点，能根据场景选择合适的模型",
+    "理解PCA/t-SNE降维可视化的原理与应用",
+    "知道嵌入在RAG、语义搜索、文本分类中的工程应用"
+  ],
+  "assets": {
+    "hero": "assets/embedding-models-hero.svg",
+    "tts_manifest": "tts/manifest.json",
+    "videos": [],
+    "images": ["assets/embedding-models-hero.svg"]
+  },
+  "has_tts": true,
+  "has_video": false,
+  "has_images": true,
+  "has_hero": true,
+  "has_canvas": true,
+  "has_knowledge_graph": true,
+  "free_mode": false,
+  "feedback": {
+    "require_password": false,
+    "password_sha256": "",
+    "password_hint": ""
+  },
+  "created_at": "2026-06-09",
+  "updated_at": "2026-06-09"
+}

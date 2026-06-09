@@ -1,0 +1,49 @@
+{
+  "id": "minimal-rag",
+  "course_id": "minimal-rag",
+  "node_id": "ext-a1b2c3d1",
+  "name": "最小RAG流程",
+  "name_en": "Minimal RAG Workflow",
+  "subject": "information-technology",
+  "grade": "99",
+  "stage": "high",
+  "domain": "AI-Engineering",
+  "lesson_type": "new-concept",
+  "status": "community",
+  "author": "TeachAny",
+  "version": "1.0.0",
+  "teachany_version": "7.18.0",
+  "template_version": "2.0",
+  "curriculum": "adult-learning",
+  "description": "用Python和LangChain搭建最小RAG流程，让LLM基于真实文档回答问题。涵盖文档加载、文本分块、向量嵌入、ChromaDB存储、相似度检索和RAG提示构建。",
+  "tags": ["RAG", "LangChain", "Python", "向量数据库", "LLM"],
+  "prerequisites": [],
+  "leads_to": ["embedding-models"],
+  "learning_objectives": [
+    "理解LLM产生幻觉的根本原因及RAG的解决方案",
+    "掌握RAG五步管线：加载→分块→嵌入→存储→检索→生成",
+    "能用Python+LangChain+ChromaDB搭建最小RAG系统",
+    "理解分块策略和检索参数对回答质量的影响",
+    "能够调试和评估RAG pipeline输出质量"
+  ],
+  "assets": {
+    "hero": "assets/minimal-rag-hero.svg",
+    "tts_manifest": "tts/manifest.json",
+    "videos": [],
+    "images": ["assets/minimal-rag-hero.svg"]
+  },
+  "has_tts": true,
+  "has_video": false,
+  "has_images": true,
+  "has_hero": true,
+  "has_canvas": true,
+  "has_knowledge_graph": true,
+  "free_mode": false,
+  "feedback": {
+    "require_password": false,
+    "password_sha256": "",
+    "password_hint": ""
+  },
+  "created_at": "2026-06-09",
+  "updated_at": "2026-06-09"
+}

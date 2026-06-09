@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>嵌入模型原理 — 文本嵌入的数学与工程实践</title>
+<meta name="description" content="从One-Hot到稠密向量，理解嵌入模型的数学原理，掌握余弦相似度、主流模型对比和降维可视化。">
+<meta name="course-id" content="embedding-models">
+<meta name="course-title" content="嵌入模型原理">
+<meta name="course-subject" content="information-technology">
+<meta name="course-grade" content="adult">
+<meta name="course-prereqs" content="minimal-rag">
+<meta name="course-next" content="">
+<meta name="course-version" content="1.0.0">
+<meta name="teachany-version" content="7.18.0">
+<meta name="teachany-node" content="ext-d4e5f6g2">
+<meta name="teachany-subject" content="information-technology">
+<meta name="teachany-grade" content="99">
+<meta name="teachany-stage" content="high">
+<meta name="teachany-domain" content="AI-Engineering">
+<meta name="teachany-prerequisites" content="线性代数基础,Python基础">
+<meta name="teachany-lesson-type" content="new-concept">
+<meta name="teachany-free-mode" content="false">
+<meta name="teachany-template-version" content="2.0">
+<link rel="stylesheet" href="https://weponusa.github.io/teachany-courseware/assets/scripts/ai-tutor.css">
+<link rel="stylesheet" href="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-tutor-card.css">
+<link rel="stylesheet" href="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-tts-narrator.css">
+<link rel="stylesheet" href="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-section-hints.css">
+<link rel="stylesheet" href="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-knowledge-graph.css">
+<link rel="stylesheet" href="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-audio-player.css">
+<link rel="stylesheet" href="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-floating-dock.css">
+<style>
+:root{--bg:#0f172a;--bg-subtle:#131c33;--panel:#1a2744;--card:#1e3050;--card-elevated:#253b5e;--line:#334b6e;--line-subtle:rgba(148,163,184,0.12);--text:#eef6ff;--text-secondary:#c8d8ea;--muted:#9fb4cc;--brand:#60a5fa;--brand-soft:rgba(96,165,250,0.12);--brand-2:#a78bfa;--brand-2-soft:rgba(167,139,250,0.12);--accent:#34d399;--accent-soft:rgba(52,211,153,0.1);--ok:#22c55e;--warn:#f59e0b;--danger:#ef4444;--safe-top:env(safe-area-inset-top);--safe-bottom:env(safe-area-inset-bottom);--page-padding:24px;--card-radius:14px;--card-radius-sm:12px;--slide-height:100vh;--slide-height-fallback:100dvh;--toolbar-height:56px}
+*{box-sizing:border-box}
+html,body{margin:0;max-width:100%;overflow-x:hidden}
+body{padding-top:var(--safe-top);background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Source Han Sans SC",system-ui,sans-serif;line-height:1.75;font-size:16px}
+a{color:var(--brand);text-decoration:none}
+a:hover{text-decoration:underline}
+button,a,input,select,textarea{min-height:44px}
+img,video,canvas,svg{max-width:100%;height:auto}
+h1,h2,h3,h4{margin:0}
+.slide-container{scroll-snap-type:y mandatory;overflow-y:auto;height:var(--slide-height-fallback,var(--slide-height));scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+body:not(.play-mode) .slide-container{scroll-snap-type:y proximity}
+body.play-mode .slide-container{scroll-snap-type:y mandatory;overflow:hidden}
+.slide-page{min-height:var(--slide-height-fallback,var(--slide-height));scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:var(--page-padding);padding-bottom:calc(var(--page-padding) + var(--toolbar-height));position:relative;overflow:hidden}
+.slide-page .slide-inner{max-width:880px;width:100%;position:relative;z-index:2;margin:0 auto}
+.slide-page .slide-inner>*{width:100%;box-sizing:border-box}
+.card .card{padding:18px;box-shadow:none;border:1px solid var(--line-subtle)}
+.slide-page[data-page-type="cover"]{background:radial-gradient(ellipse at 20% 20%,rgba(96,165,250,0.15),transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(167,139,250,0.12),transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(52,211,153,0.06),transparent 60%);text-align:center}
+.slide-page[data-page-type="cover"] h1{font-size:clamp(32px,7vw,56px);line-height:1.15;background:linear-gradient(135deg,var(--text) 0%,var(--brand) 50%,var(--brand-2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px}
+.slide-page[data-page-type="cover"] .subtitle{color:var(--text-secondary);font-size:clamp(16px,3vw,22px);max-width:680px;margin:0 auto}
+.slide-page[data-page-type="objectives"]{background:radial-gradient(circle at 0% 100%,rgba(52,211,153,0.1),transparent 40%),radial-gradient(circle at 100% 0%,rgba(96,165,250,0.08),transparent 40%)}
+.slide-page[data-page-type="concept"]{background:radial-gradient(circle at 30% 20%,rgba(96,165,250,0.08),transparent 35%),radial-gradient(circle at 70% 80%,rgba(167,139,250,0.06),transparent 35%)}
+.slide-page[data-page-type="interactive"]{background:radial-gradient(circle at 50% 0%,rgba(52,211,153,0.1),transparent 40%),radial-gradient(circle at 80% 100%,rgba(96,165,250,0.06),transparent 35%)}
+.slide-page[data-page-type="quiz"]{background:radial-gradient(circle at 20% 80%,rgba(245,158,11,0.08),transparent 35%),radial-gradient(circle at 80% 20%,rgba(167,139,250,0.06),transparent 35%)}
+.slide-page[data-page-type="summary"]{background:radial-gradient(circle at 50% 50%,rgba(96,165,250,0.1),transparent 45%),radial-gradient(circle at 20% 20%,rgba(52,211,153,0.06),transparent 30%)}
+.teachany-brand-bar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 20px;background:rgba(15,23,42,0.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line-subtle);transition:transform 0.3s ease}
+body.play-mode .teachany-brand-bar{transform:translateY(-100%)}
+.brand-logo{display:flex;align-items:center;gap:8px;color:#f8fafc;text-decoration:none;font-weight:800}
+.brand-mark{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#0f172a;font-weight:900;font-size:14px}
+.brand-right{display:flex;align-items:center;gap:12px;font-size:13px}
+.brand-link{color:var(--muted);transition:color 0.2s}
+.brand-link:hover{color:var(--text);text-decoration:none}
+.brand-version{color:#cbd5e1;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(255,255,255,.06);padding:4px 10px;border-radius:999px;font-size:12px}
+.card{background:linear-gradient(160deg,rgba(30,48,80,0.95),rgba(19,28,51,0.98));border:1px solid var(--line-subtle);border-radius:var(--card-radius);padding:24px;box-shadow:0 4px 24px rgba(0,0,0,0.2),0 1px 0 rgba(255,255,255,0.03) inset;transition:transform 0.2s ease,box-shadow 0.2s ease}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,0.3),0 1px 0 rgba(255,255,255,0.04) inset}
+.card-accent{border-top:3px solid;border-image:linear-gradient(90deg,var(--brand),var(--brand-2)) 1}
+.card-glow{box-shadow:0 4px 24px rgba(0,0,0,0.2),0 0 40px rgba(96,165,250,0.05)}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.section-header h2{font-size:clamp(20px,4vw,26px);font-weight:700;line-height:1.3}
+.phase-tag{display:inline-flex;align-items:center;gap:6px;color:var(--brand);background:var(--brand-soft);border:1px solid rgba(96,165,250,0.2);border-radius:999px;padding:5px 12px;font-size:12px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase}
+.phase-tag[data-variant="success"]{color:var(--accent);background:var(--accent-soft);border-color:rgba(52,211,153,0.2)}
+.phase-tag[data-variant="purple"]{color:var(--brand-2);background:var(--brand-2-soft);border-color:rgba(167,139,250,0.2)}
+.phase-tag[data-variant="warn"]{color:var(--warn);background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2)}
+.grid{display:grid;grid-template-columns:1fr;gap:12px;width:100%}
+.grid.grid-2{grid-template-columns:repeat(2,1fr)}
+.grid.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid>*{min-width:0}
+.grid-2col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.flex-row{display:flex;gap:12px;margin-top:14px;align-items:center;flex-wrap:wrap}
+.inner-card{margin:12px 0;padding:16px;border-radius:var(--card-radius-sm);border:1px solid var(--line-subtle)}
+.inner-card p{margin:0 0 6px}
+.inner-card p:last-child{margin-bottom:0}
+.summary-item{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-radius:var(--card-radius-sm);border:1px solid var(--line-subtle)}
+.summary-item .num{font-weight:700;flex-shrink:0}
+.step-grid{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px}
+.objectives{list-style:none;padding:0;display:grid;grid-template-columns:1fr;gap:10px}
+.objectives li{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-radius:var(--card-radius-sm);background:rgba(96,165,250,0.04);border:1px solid var(--line-subtle);transition:background 0.2s}
+.objectives li:hover{background:rgba(96,165,250,0.08)}
+.objectives li::before{content:"✦";color:var(--brand);font-size:14px;margin-top:2px;flex-shrink:0}
+.choice{width:100%;text-align:left;border:1px solid rgba(96,165,250,0.18);border-radius:var(--card-radius-sm);background:rgba(96,165,250,0.04);color:var(--text);padding:16px 20px;cursor:pointer;font-size:15px;line-height:1.5;transition:all 0.2s ease}
+.choice:hover{background:rgba(96,165,250,0.1);border-color:rgba(96,165,250,0.35);transform:translateX(4px)}
+.choice.selected{border-color:var(--brand);background:rgba(96,165,250,0.15);box-shadow:0 0 0 3px rgba(96,165,250,0.12)}
+.choice.correct{border-color:var(--ok);background:rgba(34,197,94,0.12)}
+.choice.wrong{border-color:var(--danger);background:rgba(239,68,68,0.08)}
+input,textarea{width:100%;border-radius:12px;border:1px solid var(--line);background:var(--bg-subtle);color:var(--text);padding:14px 16px;font-size:15px;transition:border-color 0.2s,box-shadow 0.2s}
+input:focus,textarea:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(96,165,250,0.12)}
+.result{padding:16px 20px;border-radius:var(--card-radius-sm);background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);font-size:15px;line-height:1.6}
+.result.warn{background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.2)}
+.result.error{background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.2)}
+.canvas-wrap{overflow:auto;background:var(--bg-subtle);border:1px solid var(--line-subtle);border-radius:16px;padding:16px}
+.ta-standard-figure{margin:20px auto;max-width:980px}
+.ta-standard-figure img{display:block;width:100%;border-radius:16px;border:1px solid var(--line-subtle)}
+.ta-standard-figure figcaption{margin-top:10px;color:var(--muted);font-size:14px;text-align:center}
+.slide-progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--brand),var(--brand-2));z-index:200;transition:width 0.3s ease;border-radius:0 2px 2px 0}
+.slide-toolbar{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 20px;padding-bottom:calc(10px + var(--safe-bottom));background:rgba(15,23,42,0.92);backdrop-filter:blur(12px);border-top:1px solid var(--line-subtle);transform:translateY(100%);transition:transform 0.3s ease}
+body.play-mode .slide-toolbar,body.toolbar-visible .slide-toolbar{transform:translateY(0)}
+.toolbar-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:none;border-radius:10px;background:rgba(255,255,255,0.06);color:var(--text);cursor:pointer;transition:all 0.2s;font-size:18px}
+.toolbar-btn:hover{background:rgba(255,255,255,0.12)}
+.toolbar-btn.active{background:var(--brand-soft);color:var(--brand)}
+.toolbar-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.toolbar-page-info{color:var(--muted);font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;min-width:60px;text-align:center}
+.toolbar-progress{flex:1;max-width:200px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;cursor:pointer}
+.toolbar-progress-fill{height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-2));border-radius:2px;transition:width 0.3s ease}
+.slide-sidenav{position:fixed;right:12px;top:50%;transform:translateY(-50%);z-index:90;display:flex;flex-direction:column;align-items:flex-end;gap:3px;opacity:0;transition:opacity 0.3s ease;max-height:70vh;overflow-y:auto;scrollbar-width:none;padding:8px 4px;border-radius:12px;background:rgba(15,23,42,0.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.06)}
+.slide-sidenav::-webkit-scrollbar{display:none}
+body.play-mode .slide-sidenav,body.toolbar-visible .slide-sidenav{opacity:1}
+.sidenav-dot{width:28px;height:4px;border-radius:2px;background:rgba(255,255,255,0.12);border:none;cursor:pointer;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);position:relative;padding:0;flex-shrink:0}
+.sidenav-dot:hover{background:rgba(96,165,250,0.4);width:36px}
+.sidenav-dot.active{background:var(--brand);width:36px;height:5px;box-shadow:0 0 10px rgba(96,165,250,0.5)}
+.sidenav-dot[data-tooltip]::before{content:attr(data-tooltip);position:absolute;right:calc(100% + 10px);top:50%;transform:translateY(-50%);padding:5px 10px;background:rgba(15,23,42,0.95);border:1px solid var(--line);border-radius:6px;color:var(--text);font-size:11px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s}
+.sidenav-dot:hover[data-tooltip]::before{opacity:1}
+.sidenav-counter{font-size:10px;color:rgba(255,255,255,0.5);text-align:center;padding:4px 0 2px;font-variant-numeric:tabular-nums;letter-spacing:0.5px;width:100%}
+.play-mode-fab{position:fixed;bottom:24px;right:24px;z-index:90;width:48px;height:48px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(96,165,250,0.3);transition:all 0.3s ease}
+.play-mode-fab:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(96,165,250,0.4)}
+body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--safe-bottom))}
+.play-mode-fab svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.text-gradient{background:linear-gradient(135deg,var(--brand),var(--brand-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.glass{background:rgba(30,48,80,0.6);backdrop-filter:blur(10px);border:1px solid var(--line-subtle)}
+.animate-in{animation:fadeUp 0.5s ease-out both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.stagger-1{animation-delay:0.1s}
+.stagger-2{animation-delay:0.2s}
+.stagger-3{animation-delay:0.3s}
+.stagger-4{animation-delay:0.4s}
+.code-block{background:#0d1525;border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;line-height:1.6;color:var(--text-secondary);white-space:pre}
+.model-compare-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+.model-compare-table th,.model-compare-table td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line-subtle)}
+.model-compare-table th{color:var(--brand);font-weight:600;font-size:13px;background:rgba(96,165,250,0.05)}
+.model-compare-table td{color:var(--text-secondary)}
+.model-compare-table tr:hover td{background:rgba(96,165,250,0.03)}
+.tag-sm{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.tag-gr{background:rgba(52,211,153,0.15);color:var(--accent)}
+.tag-bl{background:rgba(96,165,250,0.15);color:var(--brand)}
+.tag-pr{background:rgba(167,139,250,0.15);color:var(--brand-2)}
+@media(max-width:768px){:root{--page-padding:16px;--card-radius:14px}.slide-page{padding:16px 14px;padding-bottom:calc(16px + var(--toolbar-height))}.grid,.grid-2,.grid-3,.objectives,.grid-2col{grid-template-columns:1fr!important}.flex-row{flex-direction:column}.card{padding:18px}.slide-sidenav{right:6px;gap:2px;padding:6px 3px}.sidenav-dot{width:22px;height:3px}.sidenav-dot.active{width:28px}.sidenav-counter{font-size:9px}.teachany-brand-bar{padding:8px 12px}.brand-name{display:none}.brand-right{gap:8px;font-size:12px}}
+@media(max-width:480px){.slide-page[data-page-type="cover"] h1{font-size:28px}.toolbar-progress{max-width:120px}}
+</style>
+</head>
+<body>
+
+<div class="slide-progress-bar" id="slide-progress-bar" style="width:0%"></div>
+
+<div class="teachany-brand-bar">
+  <a class="brand-logo" href="https://weponusa.github.io/teachany/" aria-label="TeachAny Gallery">
+    <img src="https://weponusa.github.io/teachany-courseware/assets/teachany-logo.png" alt="TeachAny" style="width:28px;height:28px;border-radius:7px;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-grid'"><span class="brand-mark" style="display:none">T</span><span class="brand-name">TeachAny</span>
+  </a>
+  <div class="brand-right">
+    <a class="brand-link" href="https://weponusa.github.io/teachany/">Gallery</a>
+    <span class="brand-version">v<span id="course-version-display">1.0.0</span> · skill v<span id="skill-version-display">7.18.0</span></span>
+  </div>
+</div>
+
+<div class="slide-container" id="slide-container">
+
+<section class="slide-page" data-page-type="cover" data-page-index="0" data-tts="hero" data-tsh="开场 - 计算机怎么理解语义相近">
+  <div class="slide-inner">
+    <h1>嵌入模型原理</h1>
+    <p class="subtitle">计算机怎么理解"猫"和"狗"这两个词的意思相近？</p>
+    <figure class="ta-standard-figure" style="margin-top:32px">
+      <img class="hero-cover-img" src="./assets/embedding-models-hero.svg" alt="嵌入模型原理知识结构图">
+      <figcaption>图：从One-Hot到稠密向量，语义空间中的嵌入演化</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="interactive" data-page-index="1" data-tts="problem-anchor" data-tsh="问题锚点 - 确定你今天想解决的核心困惑">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag">Problem Anchor</span><h2>今天想解决什么问题？</h2></div>
+      <p style="color:var(--muted);margin:0 0 16px">选一个你关心的问题，后面的内容会围绕它展开。</p>
+      <div class="grid" id="problem-anchor-choices">
+        <button class="choice animate-in stagger-1" data-anchor-choice="计算机怎么把文字变成数字？从One-Hot到稠密向量是怎样的过程？">计算机怎么把文字变成数字？从One-Hot到稠密向量是怎样的过程？</button>
+        <button class="choice animate-in stagger-2" data-anchor-choice="怎样量化两个词之间的语义相似度？余弦相似度怎么算？">怎样量化两个词之间的语义相似度？余弦相似度怎么算？</button>
+        <button class="choice animate-in stagger-3" data-anchor-choice="市面上这么多嵌入模型，text-embedding-3、BGE、Jina，我该选哪个？">市面上这么多嵌入模型，我该选哪个？</button>
+      </div>
+      <label style="display:block;margin-top:20px;color:var(--muted);font-size:14px">或者，写下你自己的问题
+        <input id="learner-question-input" placeholder="把你卡住的嵌入相关的问题写在这里" style="margin-top:8px">
+      </label>
+      <p id="anchor-feedback" class="result warn" style="margin-top:16px">选择或输入后，本课会围绕你的问题展开。</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="objectives" data-page-index="2" data-tts="objectives" data-tsh="学习目标 - 明确这节课结束时能做到什么">
+  <div class="slide-inner">
+    <div class="card">
+      <div class="section-header"><span class="phase-tag" data-variant="success">Objectives</span><h2>学习目标</h2></div>
+      <ul class="objectives">
+        <li>理解从One-Hot到稠密向量的演进，掌握嵌入的核心思想</li>
+        <li>理解高维向量空间中语义距离的概念，能计算余弦相似度</li>
+        <li>了解主流嵌入模型的特点，能根据场景选择合适的模型</li>
+        <li>理解PCA/t-SNE降维可视化的原理与应用</li>
+        <li>知道嵌入在RAG、语义搜索、文本分类中的工程应用</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="quiz" data-page-index="3" data-tts="pretest" data-tsh="前测 - 先暴露对嵌入的直觉理解">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag" data-variant="warn">Pretest</span><h2>前测：你对词向量了解多少？</h2></div>
+      <p style="color:var(--muted);margin:0 0 20px">在开始之前，先测测你的直觉。以下哪个说法是正确的？</p>
+      <div class="grid">
+        <button class="choice animate-in stagger-1" data-answer="wrong" data-diagnosis="❌ 这恰好是One-Hot编码的缺陷！One-Hot中'猫'=[1,0,0]和'狗'=[0,1,0]的内积为0，无法表达语义相似性。稠密向量通过让'猫'和'狗'的向量方向接近来捕捉这种关系。">A. One-Hot编码就能表达"猫"和"狗"语义相近</button>
+        <button class="choice animate-in stagger-2" data-answer="correct" data-diagnosis="✅ 完全正确！稠密向量（如768维）将词映射到连续空间中的点，语义越相近的词，向量方向越接近，余弦相似度越高。'猫'和'狗'的余弦相似度通常在0.7-0.9之间。">B. 稠密向量空间中，"猫"和"狗"的余弦相似度高于"猫"和"汽车"</button>
+        <button class="choice animate-in stagger-3" data-answer="wrong" data-diagnosis="❌ 恰恰相反。One-Hot向量的维度等于词汇表大小（可能是几万甚至几十万维），而稠密向量的维度要小得多（通常256-3072维），这也是"稠密"（dense）名称的由来——信息被压缩到较少的维度中。">C. One-Hot向量的维度比text-embedding-3-small的稠密向量要小得多</button>
+      </div>
+      <div class="result warn" data-feedback-for="pretest" style="margin-top:16px">先独立判断，再看诊断反馈。</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="concept" data-page-index="4" data-tts="concept-onehot" data-tsh="核心概念 - 从One-Hot到稠密向量">
+  <div class="slide-inner">
+    <div class="card">
+      <div class="section-header"><span class="phase-tag">Core</span><h2>从One-Hot到稠密向量</h2></div>
+      <div class="card glass" style="margin:16px 0;padding:20px;border-radius:var(--card-radius-sm)">
+        <p style="margin:0 0 8px"><strong style="color:var(--accent)">已经知道：</strong>计算机只能处理数字，所以文本必须转换成数值表示。</p>
+        <p style="margin:0 0 8px"><strong style="color:var(--warn)">但是问题是：</strong>最简单的One-Hot编码把每个词表示为一个N维向量（N=词汇量），除了一个位置是1其余全0。"猫"和"狗"的One-Hot向量之间没有任何数学联系。</p>
+        <p style="margin:0"><strong style="color:var(--brand)">所以这一段要解决：</strong>稠密向量（Dense Embedding）用较少维度（如768维）的连续值，让语义相近的词在向量空间中靠得更近。</p>
+      </div>
+      <div class="grid grid-2" style="margin-top:20px">
+        <div class="card animate-in stagger-1" style="padding:18px;border-left:4px solid var(--danger)">
+          <h3 style="color:var(--danger);margin-bottom:8px;font-size:16px">One-Hot编码</h3>
+          <p style="color:var(--text-secondary);margin:0;font-size:13px">猫 → [1,0,0,0,...]（5万维）<br>狗 → [0,1,0,0,...]（5万维）<br>cos(猫,狗) = 0 —— 完全不相似<br>无法捕捉语义关系</p>
+        </div>
+        <div class="card animate-in stagger-2" style="padding:18px;border-left:4px solid var(--ok)">
+          <h3 style="color:var(--ok);margin-bottom:8px;font-size:16px">稠密向量 (Embedding)</h3>
+          <p style="color:var(--text-secondary);margin:0;font-size:13px">猫 → [0.12, -0.34, 0.87, ...] (768维)<br>狗 → [0.15, -0.28, 0.82, ...] (768维)<br>cos(猫,狗) ≈ 0.85 —— 高度相似！<br>语义相近 → 向量方向相近</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="concept" data-page-index="5" data-tts="concept-cosine" data-tsh="核心概念 - 余弦相似度">
+  <div class="slide-inner">
+    <div class="card">
+      <div class="section-header"><span class="phase-tag">Core</span><h2>余弦相似度：量化语义距离</h2></div>
+      <p style="color:var(--muted);margin:0 0 16px">在嵌入空间中，我们用余弦相似度来衡量两个向量"方向"的接近程度：</p>
+      <div class="card glass" style="padding:20px;margin:16px 0;text-align:center">
+        <p style="font-size:18px;color:var(--text);margin:0;font-family:ui-monospace,monospace">cos(A, B) = (A · B) / (||A|| × ||B||)</p>
+        <p style="color:var(--muted);font-size:13px;margin:8px 0 0">取值范围 [-1, 1]，越接近1表示语义越相似</p>
+      </div>
+      <div class="grid grid-2" style="margin-top:20px">
+        <div class="card animate-in stagger-1" style="padding:18px">
+          <h3 style="color:var(--accent);margin-bottom:6px;font-size:15px">✅ 余弦相似度高</h3>
+          <p style="color:var(--text-secondary);margin:0;font-size:13px">猫 vs 狗 → 0.85<br>Python vs JavaScript → 0.78<br>深度学习 vs 神经网络 → 0.92</p>
+        </div>
+        <div class="card animate-in stagger-2" style="padding:18px">
+          <h3 style="color:var(--danger);margin-bottom:6px;font-size:15px">❌ 余弦相似度低</h3>
+          <p style="color:var(--text-secondary);margin:0;font-size:13px">猫 vs 汽车 → 0.12<br>Python vs 篮球 → 0.05<br>深度学习 vs 烹饪 → 0.08</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="interactive" data-page-index="6" data-tts="interactive-similarity" data-tsh="互动 - 向量相似度计算器">
+  <div class="slide-inner">
+    <div class="card card-glow">
+      <div class="section-header"><span class="phase-tag" data-variant="success">Interactive</span><h2>向量相似度计算器</h2></div>
+      <p style="color:var(--muted);margin:0 0 16px">输入两个词，使用模拟的嵌入向量计算余弦相似度。在实际系统中，你会调用真实的嵌入模型API。</p>
+      <div class="grid grid-2" style="margin-bottom:12px">
+        <div>
+          <label style="color:var(--muted);font-size:13px">词 A</label>
+          <input id="sim-word-a" type="text" value="猫" placeholder="输入第一个词" style="margin-top:4px">
+        </div>
+        <div>
+          <label style="color:var(--muted);font-size:13px">词 B</label>
+          <input id="sim-word-b" type="text" value="狗" placeholder="输入第二个词" style="margin-top:4px">
+        </div>
+      </div>
+      <button class="choice" id="sim-calc-btn" style="text-align:center;max-width:200px;margin:0 auto 16px;display:block">计算余弦相似度</button>
+      <div class="result" id="sim-result" style="text-align:center;font-size:18px">cos(猫, 狗) ≈ 0.85 — 高度相似 🟢</div>
+      <div class="canvas-wrap" style="margin-top:12px">
+        <canvas id="semantic-space-canvas" width="720" height="320" aria-label="语义空间可视化"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="concept" data-page-index="7" data-tts="concept-models" data-tsh="核心概念 - 主流嵌入模型对比">
+  <div class="slide-inner">
+    <div class="card">
+      <div class="section-header"><span class="phase-tag">Deep Dive</span><h2>主流嵌入模型对比</h2></div>
+      <p style="color:var(--muted);margin:0 0 16px">工程实践中的关键决策：根据任务选对嵌入模型。</p>
+      <div style="overflow-x:auto">
+      <table class="model-compare-table">
+        <tr><th>模型</th><th>维度</th><th>最大Token</th><th>中文支持</th><th>性价比</th><th>适用场景</th></tr>
+        <tr><td style="color:var(--text)">text-embedding-3-small</td><td>512</td><td>8191</td><td><span class="tag-sm tag-bl">良好</span></td><td><span class="tag-sm tag-gr">极高</span></td><td>通用RAG、搜索</td></tr>
+        <tr><td style="color:var(--text)">text-embedding-3-large</td><td>3072</td><td>8191</td><td><span class="tag-sm tag-bl">优秀</span></td><td><span class="tag-sm tag-bl">中等</span></td><td>高精度检索、聚类</td></tr>
+        <tr><td style="color:var(--text)">bge-large-zh-v1.5</td><td>1024</td><td>512</td><td><span class="tag-sm tag-gr">最佳</span></td><td><span class="tag-sm tag-gr">免费</span></td><td>中文为主场景</td></tr>
+        <tr><td style="color:var(--text)">jina-embeddings-v3</td><td>1024</td><td>8192</td><td><span class="tag-sm tag-bl">优秀</span></td><td><span class="tag-sm tag-gr">免费</span></td><td>多语言、长文本</td></tr>
+        <tr><td style="color:var(--text)">Cohere embed-v3</td><td>1024</td><td>512</td><td><span class="tag-sm tag-pr">中等</span></td><td><span class="tag-sm tag-pr">付费</span></td><td>企业级多语言</td></tr>
+      </table>
+      </div>
+      <div class="inner-card" style="margin-top:16px;background:rgba(96,165,250,0.04)">
+        <p><strong style="color:var(--brand)">💡 选择建议：</strong></p>
+        <p style="color:var(--text-secondary);margin:0;font-size:14px">• 新手首选 text-embedding-3-small：低成本、易接入、效果足够<br>• 中文为主选 bge-large-zh：开源免费，MTEB中文榜单领先<br>• 长文档/多语言选 jina-embeddings-v3：8192 token窗口，支持89种语言<br>• 极致精度选 text-embedding-3-large：3072维，但成本高5倍</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="concept" data-page-index="8" data-tts="concept-visualization" data-tsh="核心概念 - PCA/t-SNE降维可视化">
+  <div class="slide-inner">
+    <div class="card">
+      <div class="section-header"><span class="phase-tag">Core</span><h2>降维可视化：看到高维空间</h2></div>
+      <p style="color:var(--muted);margin:0 0 16px">嵌入向量通常是256-3072维的，人类无法直接"看到"。降维算法将它们映射到2D/3D：</p>
+      <div class="grid grid-2" style="margin-top:16px">
+        <div class="card animate-in stagger-1" style="padding:18px;border-left:4px solid var(--brand)">
+          <h3 style="color:var(--brand);margin-bottom:6px;font-size:15px">PCA（主成分分析）</h3>
+          <p style="color:var(--text-secondary);margin:0;font-size:13px">线性方法，保留全局结构<br>速度：快<br>适用：快速探索、保留距离比例<br>局限：非线性关系可能丢失</p>
+        </div>
+        <div class="card animate-in stagger-2" style="padding:18px;border-left:4px solid var(--brand-2)">
+          <h3 style="color:var(--brand-2);margin-bottom:6px;font-size:15px">t-SNE（t分布随机邻域嵌入）</h3>
+          <p style="color:var(--text-secondary);margin:0;font-size:13px">非线性方法，保留局部结构<br>速度：慢<br>适用：发现聚类、可视化语义群<br>局限：全局距离可能失真</p>
+        </div>
+      </div>
+      <div class="canvas-wrap" style="margin-top:16px">
+        <canvas id="tsne-viz-canvas" width="720" height="300" aria-label="PCA/t-SNE语义空间示意"></canvas>
+      </div>
+      <p style="color:var(--muted);font-size:12px;text-align:center;margin-top:8px">示意：2D降维后的词向量空间。同色点表示语义相近的词聚类在一起。</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="concept" data-page-index="9" data-tts="concept-applications" data-tsh="习题讲解 - 嵌入的实际应用场景">
+  <div class="slide-inner">
+    <div class="card">
+      <div class="section-header"><span class="phase-tag" data-variant="success">Worked Example</span><h2>嵌入在实战中的应用</h2></div>
+      <p style="color:var(--muted);margin:0 0 16px">嵌入模型是现代NLP的基础设施。以下是三个核心应用场景：</p>
+      <div class="step-grid">
+        <div class="card animate-in stagger-1" style="padding:16px;border-left:4px solid var(--accent)">
+          <h3 style="color:var(--accent);margin-bottom:4px;font-size:16px">1. RAG检索</h3>
+          <p style="color:var(--text-secondary);margin:0;font-size:14px">用户查询 → 嵌入模型 → 查询向量 → 在ChromaDB中搜索最相近的文档块向量 → 返回top-k结果。嵌入质量直接决定检索召回率。</p>
+        </div>
+        <div class="card animate-in stagger-2" style="padding:16px;border-left:4px solid var(--brand)">
+          <h3 style="color:var(--brand);margin-bottom:4px;font-size:16px">2. 语义搜索</h3>
+          <p style="color:var(--text-secondary);margin:0;font-size:14px">传统关键词搜索："猫粮"找不到"宠物食品"。语义搜索通过嵌入，将查询和文档映射到同一空间，cos("猫粮", "宠物食品") ≈ 0.8 → 成功匹配。</p>
+        </div>
+        <div class="card animate-in stagger-3" style="padding:16px;border-left:4px solid var(--brand-2)">
+          <h3 style="color:var(--brand-2);margin-bottom:4px;font-size:16px">3. 文本分类 & 聚类</h3>
+          <p style="color:var(--text-secondary);margin:0;font-size:14px">将文本嵌入后，相似主题的文档在向量空间中自然聚集。可以用K-Means或DBSCAN进行无监督聚类，或用嵌入向量作为分类器的输入特征。</p>
+        </div>
+      </div>
+      <div class="code-block" style="margin-top:16px"># Python示例：计算两个句子的余弦相似度
+from openai import OpenAI
+import numpy as np
+
+client = OpenAI()
+def get_embedding(text):
+    resp = client.embeddings.create(
+        model="text-embedding-3-small", input=text
+    )
+    return resp.data[0].embedding
+
+a = get_embedding("猫吃鱼")
+b = get_embedding("狗啃骨头")
+c = get_embedding("今天天气不错")
+
+cos_ab = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+cos_ac = np.dot(a, c) / (np.linalg.norm(a) * np.linalg.norm(c))
+print(f"猫吃鱼 vs 狗啃骨头: {cos_ab:.3f}")   # → ~0.75
+print(f"猫吃鱼 vs 今天天气: {cos_ac:.3f}")    # → ~0.15</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="quiz" data-page-index="10" data-tts="conceptest" data-tsh="概念测试 - 用干扰项定位误解">
+  <div class="slide-inner">
+    <div class="card card-accent" data-conceptest="true" data-bloom-level="understand">
+      <div class="section-header"><span class="phase-tag" data-variant="purple">ConcepTest</span><h2>概念测试</h2></div>
+      <p style="color:var(--text-secondary);margin:0 0 20px;font-size:16px;line-height:1.8">一个API返回 embedding 向量 v = [0.6, 0.8]，另一个返回 w = [0.8, 0.6]。这两个向量的余弦相似度是多少？（提示：cos = 点积/(||v||×||w||)）</p>
+      <div class="grid">
+        <button class="choice animate-in stagger-1" data-choice="A" data-correct="false" data-diagnosis="❌ 点积 = 0.6×0.8 + 0.8×0.6 = 0.48+0.48 = 0.96。模长 ||v|| = √(0.36+0.64) = 1.0，||w|| = 1.0。余弦相似度 = 0.96/1.0 = 0.96。">A. 0.48</button>
+        <button class="choice animate-in stagger-2" data-choice="B" data-correct="false" data-diagnosis="❌ 再算一遍：点积 = 0.96，两个向量模长都是1.0，所以余弦 = 0.96，不是1.0。只有当两个向量方向完全相同时余弦相似度才等于1。">B. 1.0</button>
+        <button class="choice animate-in stagger-3" data-choice="C" data-correct="true" data-diagnosis="✅ 正确！点积 = 0.6×0.8 + 0.8×0.6 = 0.96，||v|| = ||w|| = 1.0（单位向量），所以余弦相似度 = 0.96。这说明两个向量方向非常接近（夹角约16°）。">C. 0.96</button>
+        <button class="choice animate-in stagger-4" data-choice="D" data-correct="false" data-diagnosis="❌ 余弦相似度的取值范围是[-1, 1]，不可能超过1。你可能在算欧氏距离或其他距离度量。">D. 1.44</button>
+      </div>
+      <div class="result warn" data-feedback-for="conceptest" style="margin-top:16px">动笔算一下：点积、模长、再做除法。</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="quiz" data-page-index="11" data-tts="posttest" data-tsh="后测 - 用实际工程决策检验学习效果">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag" data-variant="warn">Posttest</span><h2>后测：工程决策</h2></div>
+      <p style="color:var(--text-secondary);margin:0 0 20px;font-size:16px">你在搭建一个中文法律文档的RAG系统，文档平均每篇5000字。以下嵌入模型选择和参数配置中，<strong>最佳方案</strong>是？</p>
+      <div class="grid">
+        <button class="choice animate-in stagger-1" data-posttest-choice="A" data-correct="false" data-diagnosis="❌ text-embedding-3-small虽然性价比高，但其中文效果不如bge-large-zh。法律文档术语精确性要求高，需要更好的中文语义理解能力。">A. text-embedding-3-small，默认参数</button>
+        <button class="choice animate-in stagger-2" data-posttest-choice="B" data-correct="true" data-diagnosis="✅ 最佳方案！bge-large-zh在中文MTEB榜单上表现优异，免费开源可本地部署（数据隐私），最大512 token适合法律条款块。chunk_size=500保证每个chunk包含完整条款，overlap=50避免条款被切割。">B. bge-large-zh-v1.5（本地部署），chunk_size=500，chunk_overlap=50</button>
+        <button class="choice animate-in stagger-3" data-posttest-choice="C" data-correct="false" data-diagnosis="❌ text-embedding-3-large虽然精度最高，但成本是small的5倍，且中文效果不比bge-large-zh强很多。法律文档RAG对成本敏感，且3072维会显著增加向量存储和检索开销。">C. text-embedding-3-large，chunk_size=2000，k=10</button>
+      </div>
+      <div class="result warn" data-feedback-for="posttest" style="margin-top:16px">综合考虑中文效果、成本、数据隐私和任务特点。</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="summary" data-page-index="12" data-tts="summary" data-tsh="小结 - 回到核心问题并形成可迁移理解">
+  <div class="slide-inner">
+    <div class="card card-glow">
+      <div class="section-header"><span class="phase-tag" data-variant="success">Summary</span><h2>小结：语义空间的奥秘</h2></div>
+      <p style="color:var(--text-secondary);margin:0 0 16px;font-size:16px;line-height:1.8">我们回答了一开始的问题：<strong>计算机通过嵌入模型把词语映射到高维向量空间，语义相近的词在这个空间中靠得更近。余弦相似度量化了这种语义距离——"猫"和"狗"的相似度远高于"猫"和"汽车"。</strong></p>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="animate-in stagger-1 summary-item">
+          <span class="num" style="color:var(--brand)">01</span>
+          <span style="color:var(--text-secondary)"><strong>从稀疏到稠密</strong>：One-Hot维度=词汇量，稀疏且无语义；Embedding维度=256-3072，稠密且语义丰富。这是NLP史上最重要的表征革命。</span>
+        </div>
+        <div class="animate-in stagger-2 summary-item">
+          <span class="num" style="color:var(--brand-2)">02</span>
+          <span style="color:var(--text-secondary)"><strong>余弦相似度</strong> = A·B / (||A||×||B||)，取值范围[-1,1]。越接近1语义越近，0表示正交（不相关），-1表示语义相反。</span>
+        </div>
+        <div class="animate-in stagger-3 summary-item">
+          <span class="num" style="color:var(--accent)">03</span>
+          <span style="color:var(--text-secondary)"><strong>模型选型指南</strong>：通用选text-embedding-3-small，中文选bge-large-zh，长文本多语言选jina，极致精度选text-embedding-3-large。</span>
+        </div>
+        <div class="animate-in stagger-4 summary-item">
+          <span class="num" style="color:var(--warn)">04</span>
+          <span style="color:var(--text-secondary)"><strong>嵌入无处不在</strong>：RAG检索、语义搜索、文本聚类、推荐系统——嵌入是现代AI应用的基础设施。</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="summary" data-page-index="13" data-tts="knowledge-graph" data-tsh="知识图谱 - 查看前置、后续与同域知识">
+  <div class="slide-inner">
+    <div class="card card-glow">
+      <div class="section-header"><span class="phase-tag" data-variant="purple">Knowledge Graph</span><h2>知识图谱</h2></div>
+      <p style="color:var(--muted);margin:0 0 16px">本节点的前置、后续和同域知识。</p>
+      <div data-teachany-kg="ext-d4e5f6g2">
+        <canvas class="tkg-fallback-canvas" width="720" height="120" aria-label="知识图谱互动画布" style="display:block;width:100%;max-height:140px;border-radius:12px;"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="interactive" data-page-index="14" data-tts="ai-tutor" data-tsh="AI 学伴 - 先诊断卡点，再给最小提示">
+  <div class="slide-inner">
+    <div data-teachany-tutor-card></div>
+  </div>
+</section>
+
+</div>
+
+<div id="audio-config" data-teachany-audio hidden>
+  <script type="application/json" data-teachany-audio-playlist>
+[{"id":"hero","section":"cover","src":"./tts/s01.mp3","label":"开场"},{"id":"problem-anchor","section":"problem","src":"./tts/s01.mp3","label":"问题锚点"},{"id":"objectives","section":"objectives","src":"./tts/s01.mp3","label":"学习目标"},{"id":"pretest","section":"pretest","src":"./tts/s01.mp3","label":"前测"},{"id":"concept-onehot","section":"concept","src":"./tts/s02.mp3","label":"One-Hot到稠密向量"},{"id":"concept-cosine","section":"concept","src":"./tts/s02.mp3","label":"余弦相似度"},{"id":"interactive-similarity","section":"interactive","src":"./tts/s02.mp3","label":"相似度计算器"},{"id":"concept-models","section":"concept","src":"./tts/s03.mp3","label":"模型对比"},{"id":"concept-visualization","section":"concept","src":"./tts/s03.mp3","label":"降维可视化"},{"id":"concept-applications","section":"worked","src":"./tts/s03.mp3","label":"嵌入应用"},{"id":"conceptest","section":"quiz","src":"./tts/s03.mp3","label":"概念测试"},{"id":"posttest","section":"quiz","src":"./tts/s03.mp3","label":"后测"},{"id":"summary","section":"summary","src":"./tts/s03.mp3","label":"小结"},{"id":"knowledge-graph","section":"kg","src":"./tts/s03.mp3","label":"知识图谱"},{"id":"ai-tutor","section":"tutor","src":"./tts/s03.mp3","label":"AI学伴"}]
+  </script>
+</div>
+
+<nav class="slide-sidenav" id="slide-sidenav" aria-label="页面导航"></nav>
+
+<button class="play-mode-fab" id="play-mode-fab" aria-label="切换播放模式" title="切换播放模式">
+  <svg id="fab-icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+  <svg id="fab-icon-browse" viewBox="0 0 24 24" style="display:none"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+</button>
+
+<div class="slide-toolbar" id="slide-toolbar">
+  <button class="toolbar-btn" id="tb-prev" aria-label="上一页"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+  <div class="toolbar-progress" id="tb-progress"><div class="toolbar-progress-fill" id="tb-progress-fill"></div></div>
+  <span class="toolbar-page-info" id="tb-page-info">1 / 15</span>
+  <button class="toolbar-btn" id="tb-next" aria-label="下一页"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+  <button class="toolbar-btn" id="tb-autoplay" aria-label="自动播放"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg></button>
+  <button class="toolbar-btn" id="tb-fullscreen" aria-label="全屏"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg></button>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  const container = document.getElementById('slide-container');
+  const pages = Array.from(document.querySelectorAll('.slide-page'));
+  const totalPages = pages.length;
+  let currentPage = 0, isPlayMode = false, isAutoPlay = false, autoPlayTimer = null;
+  const progressBar = document.getElementById('slide-progress-bar');
+  const sidenav = document.getElementById('slide-sidenav');
+  const fab = document.getElementById('play-mode-fab');
+  const fabIconPlay = document.getElementById('fab-icon-play');
+  const fabIconBrowse = document.getElementById('fab-icon-browse');
+  const tbPrev = document.getElementById('tb-prev');
+  const tbNext = document.getElementById('tb-next');
+  const tbPageInfo = document.getElementById('tb-page-info');
+  const tbProgressFill = document.getElementById('tb-progress-fill');
+  const tbProgress = document.getElementById('tb-progress');
+  const tbAutoplay = document.getElementById('tb-autoplay');
+  const tbFullscreen = document.getElementById('tb-fullscreen');
+
+  function buildSidenav() {
+    sidenav.innerHTML = '';
+    const counter = document.createElement('div');
+    counter.className = 'sidenav-counter';
+    counter.id = 'sidenav-counter';
+    counter.textContent = `1/${totalPages}`;
+    sidenav.appendChild(counter);
+    pages.forEach((page, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'sidenav-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('data-tooltip', (page.dataset.tsh || '').split(' - ')[0] || `第${i+1}页`);
+      dot.setAttribute('aria-label', `跳转到第${i+1}页`);
+      dot.addEventListener('click', () => goToPage(i));
+      sidenav.appendChild(dot);
+    });
+  }
+
+  function updateUI() {
+    const progress = totalPages > 1 ? (currentPage / (totalPages - 1)) * 100 : 100;
+    progressBar.style.width = progress + '%';
+    tbProgressFill.style.width = progress + '%';
+    tbPageInfo.textContent = `${currentPage + 1} / ${totalPages}`;
+    sidenav.querySelectorAll('.sidenav-dot').forEach((dot, i) => dot.classList.toggle('active', i === currentPage));
+    const counterEl = document.getElementById('sidenav-counter');
+    if (counterEl) counterEl.textContent = `${currentPage + 1}/${totalPages}`;
+    tbPrev.style.opacity = currentPage === 0 ? '0.3' : '1';
+    tbNext.style.opacity = currentPage === totalPages - 1 ? '0.3' : '1';
+  }
+
+  function goToPage(index) {
+    if (index < 0 || index >= totalPages) return;
+    currentPage = index;
+    if (isPlayMode) pages[currentPage].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    else container.scrollTo({ top: pages[currentPage].offsetTop, behavior: 'smooth' });
+    updateUI();
+  }
+
+  function nextPage() { if (currentPage < totalPages - 1) goToPage(currentPage + 1); }
+  function prevPage() { if (currentPage > 0) goToPage(currentPage - 1); }
+
+  let scrollTimeout;
+  container.addEventListener('scroll', () => {
+    if (isPlayMode) return;
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      let closest = 0, minDist = Infinity;
+      pages.forEach((page, i) => {
+        const dist = Math.abs(page.offsetTop - container.scrollTop);
+        if (dist < minDist) { minDist = dist; closest = i; }
+      });
+      if (closest !== currentPage) { currentPage = closest; updateUI(); }
+    }, 100);
+  }, { passive: true });
+
+  fab.addEventListener('click', () => {
+    isPlayMode = !isPlayMode;
+    document.body.classList.toggle('play-mode', isPlayMode);
+    document.body.classList.toggle('toolbar-visible', isPlayMode);
+    fabIconPlay.style.display = isPlayMode ? 'none' : 'block';
+    fabIconBrowse.style.display = isPlayMode ? 'block' : 'none';
+    if (isPlayMode) goToPage(currentPage);
+  });
+
+  tbPrev.addEventListener('click', prevPage);
+  tbNext.addEventListener('click', nextPage);
+  tbProgress.addEventListener('click', (e) => {
+    const rect = tbProgress.getBoundingClientRect();
+    goToPage(Math.round(((e.clientX - rect.left) / rect.width) * (totalPages - 1)));
+  });
+
+  tbAutoplay.addEventListener('click', () => {
+    isAutoPlay = !isAutoPlay;
+    tbAutoplay.classList.toggle('active', isAutoPlay);
+    if (isAutoPlay) { autoPlayTimer = setInterval(() => { if (currentPage < totalPages - 1) nextPage(); else { isAutoPlay = false; tbAutoplay.classList.remove('active'); clearInterval(autoPlayTimer); } }, 8000); }
+    else { clearInterval(autoPlayTimer); autoPlayTimer = null; }
+  });
+
+  tbFullscreen.addEventListener('click', () => {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextPage(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevPage(); }
+    else if ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.metaKey) { isPlayMode = !isPlayMode; document.body.classList.toggle('play-mode', isPlayMode); document.body.classList.toggle('toolbar-visible', isPlayMode); }
+    else if (e.key === 'Escape' && isPlayMode) { isPlayMode = false; document.body.classList.remove('play-mode', 'toolbar-visible'); }
+  });
+
+  window.__TEACHANY_LEARNER_QUESTION__ = '';
+  window.__TEACHANY_TUTOR_CONFIG__ = {
+    courseId: 'embedding-models', courseTitle: '嵌入模型原理',
+    subject: 'information-technology', grade: '99',
+    nodeId: 'ext-d4e5f6g2', lessonType: 'new-concept',
+    getLearnerQuestion: () => window.__TEACHANY_LEARNER_QUESTION__ || '',
+    getContext: () => { const p = pages[currentPage]; return (p || document.body).innerText.slice(0, 3000); }
+  };
+
+  function setLearnerQuestion(q) {
+    window.__TEACHANY_LEARNER_QUESTION__ = q || '';
+    const fb = document.getElementById('anchor-feedback');
+    if (fb) fb.textContent = q ? `你的问题：${q}` : '选择或输入后，本课会围绕你的问题展开。';
+  }
+
+  document.querySelectorAll('[data-anchor-choice]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-anchor-choice]').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      setLearnerQuestion(btn.getAttribute('data-anchor-choice') || btn.textContent.trim());
+    });
+  });
+
+  document.getElementById('learner-question-input')?.addEventListener('input', (e) => setLearnerQuestion(e.target.value.trim()));
+
+  document.querySelectorAll('[data-conceptest] .choice, [data-answer], [data-posttest-choice]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const parent = btn.closest('[data-conceptest], .card');
+      if (!parent) return;
+      parent.querySelectorAll('.choice').forEach(b => { b.classList.remove('correct', 'wrong', 'selected'); });
+      const isCorrect = btn.getAttribute('data-correct') === 'true';
+      btn.classList.add(isCorrect ? 'correct' : 'wrong');
+      const feedbackEl = parent.querySelector('[data-feedback-for]') || parent.querySelector('.result');
+      if (feedbackEl) {
+        feedbackEl.textContent = btn.getAttribute('data-diagnosis') || (isCorrect ? '✅ 正确！' : '❌ 再想想。');
+        feedbackEl.classList.remove('warn');
+        feedbackEl.classList.add(isCorrect ? '' : 'error');
+      }
+    });
+  });
+
+  // ─── Similarity Calculator ───
+  (function() {
+    function simpleHash(str) {
+      let h = 0;
+      for (let i = 0; i < str.length; i++) { h = ((h << 5) - h) + str.charCodeAt(i); h |= 0; }
+      return h;
+    }
+
+    function seededRandom(seed) {
+      const x = Math.sin(seed) * 10000;
+      return x - Math.floor(x);
+    }
+
+    function mockEmbedding(word, dims) {
+      const seed = simpleHash(word.toLowerCase());
+      const vec = [];
+      for (let i = 0; i < dims; i++) {
+        vec.push(seededRandom(seed + i * 127) * 2 - 1);
+      }
+      return vec;
+    }
+
+    function cosineSimilarity(a, b) {
+      let dot = 0, normA = 0, normB = 0;
+      for (let i = 0; i < a.length; i++) {
+        dot += a[i] * b[i];
+        normA += a[i] * a[i];
+        normB += b[i] * b[i];
+      }
+      return dot / (Math.sqrt(normA) * Math.sqrt(normB));
+    }
+
+    function updateSimilarity() {
+      const wordA = document.getElementById('sim-word-a').value.trim() || '猫';
+      const wordB = document.getElementById('sim-word-b').value.trim() || '狗';
+      const embA = mockEmbedding(wordA, 128);
+      const embB = mockEmbedding(wordB, 128);
+      const sim = cosineSimilarity(embA, embB);
+
+      let emoji, label;
+      if (sim > 0.7) { emoji = '🟢'; label = '高度相似'; }
+      else if (sim > 0.4) { emoji = '🟡'; label = '中度相关'; }
+      else if (sim > 0.1) { emoji = '🟠'; label = '弱相关'; }
+      else { emoji = '🔴'; label = '几乎无关'; }
+
+      document.getElementById('sim-result').innerHTML = `cos(${wordA}, ${wordB}) ≈ ${sim.toFixed(3)} — ${label} ${emoji}`;
+      drawSemanticSpace(wordA, wordB, embA, embB, sim);
+    }
+
+    document.getElementById('sim-calc-btn').addEventListener('click', updateSimilarity);
+    updateSimilarity();
+
+    function drawSemanticSpace(wordA, wordB, embA, embB, sim) {
+      const canvas = document.getElementById('semantic-space-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#0d1525';
+      ctx.fillRect(0, 0, W, H);
+
+      // Draw axes
+      ctx.strokeStyle = 'rgba(148,163,184,0.2)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(W/2, 20); ctx.lineTo(W/2, H-40);
+      ctx.moveTo(40, H/2); ctx.lineTo(W-40, H/2);
+      ctx.stroke();
+
+      // Draw some reference words as points in mock 2D space
+      const refWords = [
+        { word: wordA, x: 0.6, y: 0.3, color: '#60a5fa', size: 8 },
+        { word: wordB, x: sim > 0.5 ? 0.65 : -0.5, y: sim > 0.5 ? 0.35 : -0.3, color: '#a78bfa', size: 8 },
+        { word: '汽车', x: -0.7, y: -0.5, color: '#f59e0b', size: 5 },
+        { word: '计算机', x: 0.3, y: -0.4, color: '#34d399', size: 5 },
+        { word: '食物', x: -0.2, y: 0.6, color: '#f472b6', size: 5 },
+        { word: '篮球', x: -0.6, y: 0.1, color: '#ef4444', size: 5 }
+      ];
+
+      refWords.forEach(rw => {
+        const px = W/2 + rw.x * (W/2 - 60);
+        const py = H/2 - rw.y * (H/2 - 60);
+        ctx.beginPath();
+        ctx.arc(px, py, rw.size, 0, Math.PI * 2);
+        ctx.fillStyle = rw.color;
+        ctx.globalAlpha = rw.size === 8 ? 1 : 0.5;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = '#eef6ff';
+        ctx.font = `${rw.size === 8 ? 13 : 11}px -apple-system, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText(rw.word, px, py - rw.size - 6);
+      });
+
+      // Draw arrow between wordA and wordB
+      const ax = W/2 + 0.6 * (W/2 - 60), ay = H/2 - 0.3 * (H/2 - 60);
+      const bx = W/2 + (sim > 0.5 ? 0.65 : -0.5) * (W/2 - 60);
+      const by = H/2 - (sim > 0.5 ? 0.35 : -0.3) * (H/2 - 60);
+      ctx.beginPath();
+      ctx.moveTo(ax, ay);
+      ctx.lineTo(bx, by);
+      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = 'rgba(148,163,184,0.4)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#9fb4cc';
+      ctx.font = '12px -apple-system, sans-serif';
+      ctx.textAlign = 'center';
+      const midX = (ax + bx) / 2, midY = (ay + by) / 2;
+      ctx.fillText(`cos ≈ ${sim.toFixed(3)}`, midX, midY - 10);
+      ctx.fillText('语义空间示意（2D投影）', W/2, H-10);
+    }
+  })();
+
+  // ─── t-SNE Visualization Canvas ───
+  (function drawTSNE() {
+    const canvas = document.getElementById('tsne-viz-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#0d1525';
+      ctx.fillRect(0, 0, W, H);
+
+      const clusters = [
+        { label: '动物', color: '#60a5fa', points: [
+          {x:0.15,y:0.25,l:'猫'},{x:0.18,y:0.22,l:'狗'},{x:0.12,y:0.28,l:'鸟'},
+          {x:0.2,y:0.3,l:'鱼'},{x:0.16,y:0.2,l:'兔子'}
+        ]},
+        { label: '技术', color: '#34d399', points: [
+          {x:0.65,y:0.7,l:'Python'},{x:0.7,y:0.68,l:'Java'},{x:0.68,y:0.75,l:'API'},
+          {x:0.72,y:0.72,l:'数据库'},{x:0.63,y:0.65,l:'算法'}
+        ]},
+        { label: '食物', color: '#f59e0b', points: [
+          {x:0.8,y:0.2,l:'披萨'},{x:0.78,y:0.25,l:'汉堡'},{x:0.82,y:0.18,l:'寿司'},
+          {x:0.75,y:0.22,l:'面条'}
+        ]},
+        { label: '体育', color: '#ef4444', points: [
+          {x:0.35,y:0.8,l:'足球'},{x:0.4,y:0.78,l:'篮球'},{x:0.38,y:0.82,l:'游泳'},
+          {x:0.42,y:0.85,l:'跑步'}
+        ]}
+      ];
+
+      clusters.forEach(cl => {
+        // Draw cluster hull
+        ctx.beginPath();
+        cl.points.forEach((p, i) => {
+          const px = 60 + p.x * (W - 120);
+          const py = 30 + p.y * (H - 60);
+          if (i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        });
+        ctx.closePath();
+        ctx.fillStyle = cl.color + '18';
+        ctx.fill();
+        ctx.strokeStyle = cl.color + '30';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Draw points
+        cl.points.forEach(p => {
+          const px = 60 + p.x * (W - 120);
+          const py = 30 + p.y * (H - 60);
+          ctx.beginPath();
+          ctx.arc(px, py, 5, 0, Math.PI * 2);
+          ctx.fillStyle = cl.color;
+          ctx.fill();
+          ctx.fillStyle = '#eef6ff';
+          ctx.font = '10px -apple-system, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(p.l, px, py - 10);
+        });
+
+        // Cluster label
+        const cx = 60 + cl.points.reduce((s, p) => s + p.x, 0) / cl.points.length * (W - 120);
+        const cy = 30 + cl.points.reduce((s, p) => s + p.y, 0) / cl.points.length * (H - 60);
+        ctx.fillStyle = cl.color;
+        ctx.font = 'bold 13px -apple-system, sans-serif';
+        ctx.fillText(cl.label, cx, cy - 35);
+      });
+
+      ctx.fillStyle = '#9fb4cc';
+      ctx.font = '11px -apple-system, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('降维后的语义空间（示意）— 同色词聚类，距离代表语义远近', W/2, H-8);
+    }
+
+    draw();
+  })();
+
+  buildSidenav();
+  updateUI();
+  document.body.classList.add('toolbar-visible');
+  setTimeout(() => { if (!isPlayMode) document.body.classList.remove('toolbar-visible'); }, 3000);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const cv = document.querySelector('meta[name="course-version"]')?.content;
+    const sv = document.querySelector('meta[name="teachany-version"]')?.content;
+    if (cv) document.getElementById('course-version-display').textContent = cv;
+    if (sv) document.getElementById('skill-version-display').textContent = sv.replace(/^v/, '');
+  });
+})();
+</script>
+
+<script src="https://weponusa.github.io/teachany-courseware/assets/scripts/ai-tutor.js"></script>
+<script src="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-tutor-card.js" defer></script>
+<script src="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-tts-narrator.js" defer></script>
+<script src="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-section-hints.js" defer></script>
+<script src="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-knowledge-graph.js" defer></script>
+<script src="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-audio-player.js?v=paged-20260521" defer></script>
+</body>
+</html>
