@@ -1,0 +1,58 @@
+{
+  "id": "phy-dc-circuits",
+  "course_id": "phy-dc-circuits",
+  "node_id": "ext-phy-dc01",
+  "name": "直流电路：从欧姆定律到基尔霍夫",
+  "name_en": "DC Circuits",
+  "subject": "physics",
+  "grade": 12,
+  "stage": "high",
+  "domain": "电磁学",
+  "lesson_type": "new-concept",
+  "status": "community",
+  "author": "TeachAny",
+  "version": "1.0.0",
+  "teachany_version": "7.18.0",
+  "template_version": "2.0",
+  "curriculum": "成人自学·物理",
+  "description": "掌握直流电路的基本定律：欧姆定律、电阻串并联、基尔霍夫定律，通过电路模拟器实时计算理解电路行为。",
+  "tags": [
+    "直流电路",
+    "欧姆定律",
+    "基尔霍夫",
+    "电路分析",
+    "STEM"
+  ],
+  "prerequisites": [],
+  "leads_to": [
+    "ext-phy-ca02"
+  ],
+  "learning_objectives": [
+    "理解欧姆定律 V=IR 的物理意义和适用条件",
+    "掌握串联和并联电路中电压、电流、电阻的计算方法",
+    "应用基尔霍夫电压定律(KVL)和电流定律(KCL)分析复杂电路",
+    "能通过电路模拟器验证理论计算结果"
+  ],
+  "assets": {
+    "hero": "assets/phy-dc-circuits-hero.svg",
+    "tts_manifest": "tts/manifest.json",
+    "videos": [],
+    "images": [
+      "assets/phy-dc-circuits-hero.svg"
+    ]
+  },
+  "has_tts": true,
+  "has_video": false,
+  "has_images": true,
+  "has_hero": true,
+  "has_canvas": true,
+  "has_knowledge_graph": true,
+  "free_mode": false,
+  "feedback": {
+    "require_password": false,
+    "password_sha256": "",
+    "password_hint": ""
+  },
+  "created_at": "2026-06-09",
+  "updated_at": "2026-06-09"
+}

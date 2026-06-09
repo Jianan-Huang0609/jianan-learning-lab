@@ -1,0 +1,10 @@
+{
+  "files": [
+    {"section": "hero", "src": "tts/history-sanguo-tang-hero.mp3", "label": "封面讲解"},
+    {"section": "pretest", "src": "tts/history-sanguo-tang-pretest.mp3", "label": "前测"},
+    {"section": "conceptest", "src": "tts/history-sanguo-tang-conceptest.mp3", "label": "概念测试"}
+  ],
+  "engine": "edge-neural-placeholder",
+  "language": "zh-CN",
+  "note": "Generated with Edge Neural TTS - placeholder. Replace with real TTS audio."
+}

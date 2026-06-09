@@ -1,0 +1,58 @@
+{
+  "id": "phy-coulomb-law",
+  "course_id": "phy-coulomb-law",
+  "node_id": "ext-phy-cl06",
+  "name": "库仑定律：电荷、电力与叠加原理",
+  "name_en": "Coulomb's Law",
+  "subject": "physics",
+  "grade": 12,
+  "stage": "high",
+  "domain": "电磁学",
+  "lesson_type": "new-concept",
+  "status": "community",
+  "author": "TeachAny",
+  "version": "1.0.0",
+  "teachany_version": "7.18.0",
+  "template_version": "2.0",
+  "curriculum": "成人自学·物理",
+  "description": "掌握库仑定律、电荷量子化、电力叠加原理，通过拖拽模拟器直观理解电荷间相互作用。",
+  "tags": [
+    "库仑定律",
+    "电荷",
+    "电场叠加",
+    "静电力",
+    "电磁学"
+  ],
+  "prerequisites": [
+    "ext-phy-cp05"
+  ],
+  "leads_to": [],
+  "learning_objectives": [
+    "理解电荷量子化和电荷守恒定律",
+    "掌握库仑定律 F=kq₁q₂/r² 及其向量形式",
+    "理解电场叠加原理——多电荷系统中力的矢量合成",
+    "能通过拖拽模拟器直观感受电荷间力的变化"
+  ],
+  "assets": {
+    "hero": "assets/phy-coulomb-law-hero.svg",
+    "tts_manifest": "tts/manifest.json",
+    "videos": [],
+    "images": [
+      "assets/phy-coulomb-law-hero.svg"
+    ]
+  },
+  "has_tts": true,
+  "has_video": false,
+  "has_images": true,
+  "has_hero": true,
+  "has_canvas": true,
+  "has_knowledge_graph": true,
+  "free_mode": false,
+  "feedback": {
+    "require_password": false,
+    "password_sha256": "",
+    "password_hint": ""
+  },
+  "created_at": "2026-06-09",
+  "updated_at": "2026-06-09"
+}

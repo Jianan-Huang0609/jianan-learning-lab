@@ -1,0 +1,60 @@
+{
+  "id": "phy-electromagnetic",
+  "course_id": "phy-electromagnetic",
+  "node_id": "ext-phy-em04",
+  "name": "电磁感应：法拉第定律到变压器",
+  "name_en": "Electromagnetic Induction",
+  "subject": "physics",
+  "grade": 12,
+  "stage": "high",
+  "domain": "电磁学",
+  "lesson_type": "new-concept",
+  "status": "community",
+  "author": "TeachAny",
+  "version": "1.0.0",
+  "teachany_version": "7.18.0",
+  "template_version": "2.0",
+  "curriculum": "成人自学·物理",
+  "description": "掌握电磁感应核心定律：法拉第定律、楞次定律、涡流、变压器原理。",
+  "tags": [
+    "电磁感应",
+    "法拉第定律",
+    "楞次定律",
+    "变压器",
+    "涡流"
+  ],
+  "prerequisites": [
+    "ext-phy-ef03"
+  ],
+  "leads_to": [
+    "ext-phy-cp05"
+  ],
+  "learning_objectives": [
+    "理解法拉第电磁感应定律 ε=-dΦ/dt",
+    "掌握楞次定律判断感应电流方向",
+    "理解涡流的产生机制和应用",
+    "理解变压器原理和变比公式"
+  ],
+  "assets": {
+    "hero": "assets/phy-electromagnetic-hero.svg",
+    "tts_manifest": "tts/manifest.json",
+    "videos": [],
+    "images": [
+      "assets/phy-electromagnetic-hero.svg"
+    ]
+  },
+  "has_tts": true,
+  "has_video": false,
+  "has_images": true,
+  "has_hero": true,
+  "has_canvas": true,
+  "has_knowledge_graph": true,
+  "free_mode": false,
+  "feedback": {
+    "require_password": false,
+    "password_sha256": "",
+    "password_hint": ""
+  },
+  "created_at": "2026-06-09",
+  "updated_at": "2026-06-09"
+}

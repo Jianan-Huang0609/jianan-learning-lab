@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>三国隋唐：从分裂到统一</title>
+<meta name="description" content="从三国鼎立经魏晋南北朝到隋唐统一，理解分裂时代如何孕育统一帝国的制度与文化。">
+<meta name="course-id" content="history-sanguo-tang">
+<meta name="course-title" content="三国隋唐：从分裂到统一">
+<meta name="course-subject" content="history">
+<meta name="course-grade" content="高中·成人自学">
+<meta name="course-prereqs" content="['ext-hist-ac01']">
+<meta name="course-next" content="">
+<meta name="course-version" content="1.0.0">
+<meta name="teachany-version" content="7.18.0">
+<meta name="teachany-node" content="ext-hist-st02">
+<meta name="teachany-subject" content="history">
+<meta name="teachany-grade" content="12">
+<meta name="teachany-stage" content="high">
+<meta name="teachany-domain" content="中国历史">
+<meta name="teachany-prerequisites" content="中国古代史基础">
+<meta name="teachany-lesson-type" content="new-concept">
+<meta name="teachany-free-mode" content="false">
+<meta name="teachany-template-version" content="2.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; max-width: 100%; overflow-x: hidden; }
+body { padding-top: var(--safe-top); font-family: var(--sans); color: var(--ink); line-height: 1.75; font-size: 16px;
+  background: radial-gradient(circle at 18% 18%, rgba(37,99,235,.10), transparent 30%), radial-gradient(circle at 88% 18%, rgba(124,58,237,.08), transparent 28%), linear-gradient(135deg, #fbfdff, #eef6ff 48%, #f8f5ff); }
+a { color: var(--blue); text-decoration: none; } a:hover { text-decoration: underline; }
+button, a, input, select, textarea { min-height: 44px; }
+img, video, canvas, svg { max-width: 100%; height: auto; }
+h1, h2, h3, h4 { margin: 0; letter-spacing: -0.035em; }
+
+:root {
+  --bg: #f7faff; --panel: #ffffff; --ink: #0f172a; --muted: #64748b;
+  --line: #dbe7f5; --blue: #2563eb; --green: #16a34a; --purple: #7c3aed;
+  --orange: #f59e0b; --red: #ef4444;
+  --shadow: 0 24px 80px rgba(15,23,42,.12);
+  --mono: "DM Mono", ui-monospace, monospace;
+  --sans: "Inter", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --brand: #2563eb; --brand-2: #7c3aed; --accent: #16a34a; --warn: #f59e0b;
+  --text: #0f172a; --text-secondary: #475569; --bg-subtle: #f1f5f9;
+  --brand-soft: rgba(37,99,235,0.08); --brand-2-soft: rgba(124,58,237,0.08);
+  --accent-soft: rgba(22,163,74,0.08); --line-subtle: rgba(15,23,42,0.08);
+  --card: #ffffff; --card-elevated: #ffffff;
+  --page-padding: 24px; --card-radius: 20px; --card-radius-sm: 14px;
+  --slide-height: 100vh; --slide-height-fallback: 100dvh;
+  --toolbar-height: 56px; --sidenav-width: 48px;
+  --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom);
+}
+body {
+  font-family: var(--sans); color: var(--ink);
+  background: radial-gradient(circle at 18% 18%, rgba(37,99,235,.10), transparent 30%),
+              radial-gradient(circle at 88% 18%, rgba(124,58,237,.08), transparent 28%),
+              linear-gradient(135deg, #fbfdff, #eef6ff 48%, #f8f5ff);
+}
+.card {
+  background: linear-gradient(160deg, rgba(255,255,255,0.95), rgba(248,250,255,0.98));
+  border: 1px solid var(--line); border-radius: var(--card-radius);
+  padding: 24px; box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 32px 96px rgba(15,23,42,.16); }
+.card-accent { border-top: 3px solid; border-image: linear-gradient(90deg, var(--blue), var(--purple)) 1; }
+.card-glow { box-shadow: 0 4px 24px rgba(15,23,42,0.08), 0 0 40px rgba(37,99,235,0.05); }
+.glass {
+  background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line);
+}
+.choice {
+  width: 100%; text-align: left; border: 1px solid var(--line); border-radius: 14px;
+  background: #fff; color: var(--ink); padding: 16px 20px;
+  cursor: pointer; font-size: 15px; line-height: 1.5;
+  transition: all 0.2s ease; font-family: var(--sans);
+}
+.choice:hover { background: rgba(37,99,235,0.04); border-color: var(--blue); transform: translateX(4px); }
+.choice.selected { border-color: var(--blue); background: rgba(37,99,235,0.08); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+.choice.correct { border-color: var(--green); background: rgba(22,163,74,0.08); }
+.choice.wrong { border-color: var(--red); background: rgba(239,68,68,0.06); }
+.result {
+  padding: 16px 20px; border-radius: 14px; font-size: 15px; line-height: 1.6;
+  background: rgba(22,163,74,0.06); border: 1px solid rgba(22,163,74,0.15); color: var(--ink);
+}
+.result.warn { background: rgba(245,158,11,0.06); border-color: rgba(245,158,11,0.15); }
+.result.error { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.15); }
+input, textarea {
+  width: 100%; border-radius: 12px; border: 1px solid var(--line);
+  background: #fff; color: var(--ink); padding: 14px 16px;
+  font-size: 15px; font-family: var(--sans);
+}
+input:focus, textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.10); }
+h1, h2, h3 { letter-spacing: -0.035em; }
+.hero-gradient {
+  background: linear-gradient(135deg, #0f172a 0%, #2563eb 50%, #7c3aed 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.kicker {
+  font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--blue); font-size: 12px; font-weight: 600;
+}
+.btn-pill {
+  font-family: var(--mono); background: var(--blue); color: #fff;
+  border: none; border-radius: 999px; padding: 10px 24px;
+  font-size: 13px; cursor: pointer; transition: all 0.2s;
+}
+.btn-pill:hover { background: #1d4ed8; transform: translateY(-1px); }
+.canvas-wrap {
+  overflow: auto; background: var(--bg); border: 1px solid var(--line);
+  border-radius: 16px; padding: 16px;
+}
+#comments-panel { max-width: 880px; margin: 40px auto; padding: 24px; }
+#comments-panel h2 { font-size: 22px; margin-bottom: 16px; }
+#comments-panel textarea { min-height: 80px; margin-bottom: 12px; }
+.comment-item { padding: 12px 16px; background: #fff; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; }
+.comment-item .ts { font-size: 12px; color: var(--muted); }
+#note-export-btn { position: fixed; top: 16px; right: 16px; z-index: 200; }
+#note-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15,23,42,0.5); z-index: 300; align-items: center; justify-content: center; }
+#note-modal.show { display: flex; }
+#note-modal .modal-content { background: #fff; border-radius: 16px; padding: 32px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
+.section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.section-header h2 { font-size: clamp(20px, 4vw, 26px); font-weight: 700; line-height: 1.3; color: var(--ink); }
+.phase-tag { display: inline-flex; align-items: center; gap: 6px; color: var(--blue); background: var(--brand-soft); border: 1px solid rgba(37,99,235,0.2); border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; font-family: var(--mono); }
+.phase-tag[data-variant="success"] { color: var(--green); background: rgba(22,163,74,0.08); border-color: rgba(22,163,74,0.2); }
+.phase-tag[data-variant="purple"] { color: var(--purple); background: var(--brand-2-soft); border-color: rgba(124,58,237,0.2); }
+.phase-tag[data-variant="warn"] { color: var(--orange); background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.2); }
+.grid { display: grid; grid-template-columns: 1fr; gap: 12px; width: 100%; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.objectives { list-style: none; padding: 0; display: grid; gap: 10px; }
+.objectives li { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; border-radius: 14px; background: rgba(37,99,235,0.04); border: 1px solid var(--line); }
+.objectives li::before { content: "✦"; color: var(--blue); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+.ta-standard-figure { margin: 20px auto; max-width: 980px; }
+.ta-standard-figure img, .ta-standard-figure svg { display: block; width: 100%; border-radius: 16px; border: 1px solid var(--line); }
+.ta-standard-figure figcaption { margin-top: 10px; color: var(--muted); font-size: 14px; text-align: center; }
+.flex-row { display: flex; gap: 12px; margin-top: 14px; align-items: center; flex-wrap: wrap; }
+.flex-row .choice { flex: 1; min-width: 120px; text-align: center; }
+.inner-card { margin: 12px 0; padding: 16px; border-radius: var(--card-radius-sm); border: 1px solid var(--line); background: var(--bg); }
+.inner-card p { margin: 0 0 6px; color: var(--ink); }
+.slide-page .slide-inner { max-width: 880px; width: 100%; position: relative; z-index: 2; margin: 0 auto; }
+.slide-page .slide-inner > * { width: 100%; box-sizing: border-box; }
+.source-section { max-width: 880px; margin: 40px auto; padding: 0 24px; }
+.source-section h2 { font-size: 20px; margin-bottom: 12px; }
+.source-section ul { padding-left: 20px; color: var(--muted); font-size: 14px; }
+@media (max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr !important; } .flex-row { flex-direction: column; } .flex-row .choice { min-width: 100%; } }
+
+.slide-container { scroll-snap-type: y proximity; overflow-y: auto; height: 100dvh; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+.slide-page { min-height: 100dvh; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: var(--page-padding); padding-bottom: calc(var(--page-padding) + 56px); position: relative; overflow: hidden; }
+.slide-page[data-page-type="cover"] { text-align: center; }
+.slide-page[data-page-type="cover"] h1 { font-size: clamp(32px, 7vw, 56px); line-height: 1.15; background: linear-gradient(135deg, #0f172a 0%, #2563eb 50%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 16px; }
+.slide-page[data-page-type="objectives"] { background: radial-gradient(circle at 0% 100%, rgba(22,163,74,0.06), transparent 40%), radial-gradient(circle at 100% 0%, rgba(37,99,235,0.05), transparent 40%); }
+.slide-page[data-page-type="concept"] { background: radial-gradient(circle at 30% 20%, rgba(37,99,235,0.04), transparent 35%), radial-gradient(circle at 70% 80%, rgba(124,58,237,0.04), transparent 35%); }
+.slide-page[data-page-type="interactive"] { background: radial-gradient(circle at 50% 0%, rgba(22,163,74,0.06), transparent 40%), radial-gradient(circle at 80% 100%, rgba(37,99,235,0.04), transparent 35%); }
+.slide-page[data-page-type="quiz"] { background: radial-gradient(circle at 20% 80%, rgba(245,158,11,0.05), transparent 35%), radial-gradient(circle at 80% 20%, rgba(124,58,237,0.04), transparent 35%); }
+.slide-page[data-page-type="summary"] { background: radial-gradient(circle at 50% 50%, rgba(37,99,235,0.06), transparent 45%), radial-gradient(circle at 20% 20%, rgba(22,163,74,0.04), transparent 30%); }
+@media (max-width: 768px) { :root { --page-padding: 16px; --card-radius: 16px; } .slide-page { padding: 16px 14px; padding-bottom: calc(16px + 56px); } .grid-2, .grid-3 { grid-template-columns: 1fr !important; } .flex-row { flex-direction: column; } .flex-row .choice { min-width: 100%; } .card { padding: 18px; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.stagger-1 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.1s; }
+.stagger-2 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.2s; }
+.stagger-3 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+<button class="btn-pill" id="note-export-btn" style="position:fixed;top:16px;right:16px;z-index:200">📝 导出笔记</button>
+<div id="note-modal"><div class="modal-content">
+  <h3 style="margin-top:0">📝 课程笔记</h3>
+  <textarea id="note-md" style="min-height:200px;margin-bottom:16px"></textarea>
+  <div style="display:flex;gap:8px">
+    <button class="btn-pill" id="note-copy">📋 复制</button>
+    <button class="btn-pill" id="note-download">💾 下载 .md</button>
+    <button class="btn-pill" id="note-close" style="background:#64748b">关闭</button>
+  </div></div></div>
+<div class="slide-container" id="slide-container">
+<section class="slide-page" data-page-type="cover" data-page-index="0" data-tts="hero" data-tsh="开场">
+  <div class="slide-inner">
+    <h1 class="hero-gradient" style="font-size:clamp(32px,7vw,56px);line-height:1.15;text-align:center;margin-bottom:16px">三国隋唐：从分裂到统一</h1>
+    <p style="color:var(--muted);font-size:clamp(16px,3vw,22px);max-width:680px;margin:0 auto;text-align:center">为什么分裂了近400年的中国能够在隋唐重新统一并走向鼎盛？</p>
+    <figure class="ta-standard-figure" style="margin-top:32px">
+      <svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#eef6ff"/><stop offset="100%" stop-color="#f8f5ff"/></linearGradient></defs>
+        <rect width="1280" height="720" fill="url(#bg)"/>
+        <circle cx="200" cy="180" r="120" fill="rgba(37,99,235,0.06)"/><circle cx="1080" cy="540" r="160" fill="rgba(124,58,237,0.05)"/><circle cx="640" cy="360" r="200" fill="rgba(37,99,235,0.03)"/>
+        <text x="640" y="320" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="800" fill="#0f172a">三国隋唐：从分裂到统一</text>
+        <text x="640" y="380" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#64748b">为什么分裂了近400年的中国能够在隋唐重新统一并走向鼎盛？</text>
+        <rect x="300" y="420" width="180" height="56" rx="28" fill="rgba(37,99,235,0.1)" stroke="#2563eb" stroke-width="1"/><text x="390" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#2563eb">交互学习</text>
+        <rect x="550" y="420" width="180" height="56" rx="28" fill="rgba(124,58,237,0.1)" stroke="#7c3aed" stroke-width="1"/><text x="640" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#7c3aed">概念测验</text>
+        <rect x="800" y="420" width="180" height="56" rx="28" fill="rgba(22,163,74,0.1)" stroke="#16a34a" stroke-width="1"/><text x="890" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#16a34a">知识迁移</text>
+      </svg>
+      <figcaption>分裂→融合→统一：四百年乱世如何催生盛唐</figcaption>
+    </figure>
+  </div>
+</section>
+<section class="slide-page" data-page-type="interactive" data-page-index="1" data-tts="problem-anchor" data-tsh="问题锚点">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag">Problem Anchor</span><h2>今天想解决什么问题？</h2></div>
+      <p style="color:var(--muted);margin:0 0 16px">选一个你关心的问题，后面的内容会围绕它展开。</p>
+      <div class="grid"><button class="choice" data-correct="true" data-diagnosis="民族融合、制度试验、经济重心南移——乱世恰恰准备了统一的条件。">A. 三国之后为什么是"分久必合"？分裂时期孕育了哪些统一因素？</button>
+<button class="choice" data-correct="false" data-diagnosis="形成了"上品无寒门，下品无世族"的阶层固化。选A全面理解。">B. 九品中正制和门阀制度对中国社会有何深远影响？</button>
+<button class="choice" data-correct="false" data-diagnosis="大运河、科举制、三省六部——短暂但影响深远。选A系统学习。">C. 隋朝为什么只存在了37年却有巨大历史贡献？</button></div>
+      <label style="display:block;margin-top:20px;color:var(--muted);font-size:14px">或者，写下你自己的问题
+        <input id="learner-question-input" placeholder="把你卡住的问题写在这里" style="margin-top:8px">
+      </label>
+      <p id="anchor-feedback" class="result warn" style="margin-top:16px">选择或输入后，本课会围绕你的问题展开。</p>
+    </div>
+  </div>
+</section>
+<section class="slide-page" data-page-type="objectives" data-page-index="2" data-tts="objectives" data-tsh="学习目标">
+  <div class="slide-inner"><div class="card"><div class="section-header"><span class="phase-tag" data-variant="success">Objectives</span><h2>学习目标</h2></div><ul class="objectives"><li>理解三国鼎立格局的形成与瓦解</li>
+<li>掌握魏晋南北朝时期的政治制度演变（九品中正制、门阀政治）</li>
+<li>理解民族大融合对隋唐统一的影响</li>
+<li>掌握隋唐统一后的制度创新和文化繁荣</li></ul></div></div></section>
+<section class="slide-page" data-page-type="quiz" data-page-index="3" data-tts="pretest" data-tsh="前测：三国隋唐基础">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="warn">Pretest</span><h2>前测：三国隋唐基础</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">检测你对这段历史的基本认识。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="220年曹丕建魏→221年刘备建蜀→229年孙权建吴→280年西晋统一。">A. 三国时期指魏蜀吴三个政权并立</button>
+<button class="choice" data-correct="true" data-diagnosis="曹丕采纳陈群建议设立，将人才分为九等，但逐渐被门阀世族垄断。">B. 九品中正制是曹魏创立的选官制度</button>
+<button class="choice" data-correct="true" data-diagnosis="589年隋文帝杨坚灭陈，结束自东汉末年以来近400年的分裂。">C. 隋朝统一中国是在589年</button>
+<button class="choice" data-correct="true" data-diagnosis="755-763年安禄山叛乱，此后藩镇割据，唐朝再无鼎盛。">D. 安史之乱是唐朝由盛转衰的转折点</button>
+<button class="choice" data-correct="false" data-diagnosis="三省六部制在隋朝就已经确立，唐朝进一步完善。">E. 三省六部制创立于唐朝</button></div>
+    <div class="result warn" data-feedback-for="pretest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="4" data-tts="c1" data-tsh="三国鼎立与西晋统一">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="">Period 1</span><h2>三国鼎立与西晋统一</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你熟悉《三国演义》的故事</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是（这也是常见错误之处——很多人在这里容易混淆概念）：</strong>真实的三国历史与演义有哪些不同？鼎立格局为何最终被打破？</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>了解从东汉末年到西晋统一的历史进程</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">三国鼎立格局</h3><p style="color:var(--muted);margin:0;font-size:15px">220年曹丕代汉建魏(都洛阳)→221年刘备建蜀汉(都成都)→229年孙权建吴(都建业)。赤壁之战(208)奠定三分格局。各国推行屯田制恢复经济。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">西晋统一与崩溃</h3><p style="color:var(--muted);margin:0;font-size:15px">263年魏灭蜀→265年司马炎代魏建晋→280年灭吴统一。但统一仅维持约30年——八王之乱(291-306)内耗→五胡入华→西晋灭亡(316)。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">三国历史意义</h3><p style="color:var(--muted);margin:0;font-size:15px">从统一→分裂→再统一的螺旋。制度创新：九品中正制、屯田制。文化：建安文学、玄学兴起。诸葛亮治蜀的法治思想。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="5" data-tts="c2" data-tsh="魏晋南北朝：乱世中的制度与文化">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="success">Period 2</span><h2>魏晋南北朝：乱世中的制度与文化</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你知这是中国历史上一段漫长分裂期</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>这段"乱世"为何是中国历史的重要转折期？</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>理解民族大融合、制度演变、经济重心南移等深层变革</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">政治制度演变</h3><p style="color:var(--muted);margin:0;font-size:15px">九品中正制→门阀政治("上品无寒门，下品无世族")。士族(如王谢桓庾)垄断政治。南朝寒人兴起(刘裕等)→门阀衰落。北朝推行均田制、府兵制。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">民族大融合</h3><p style="color:var(--muted);margin:0;font-size:15px">五胡(匈奴、鲜卑、羯、氐、羌)入主中原→建立十六国。北魏孝文帝改革(493迁都洛阳、禁胡服胡语、改汉姓)→加速民族融合。胡汉融合创造新文化。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">经济文化变迁</h3><p style="color:var(--muted);margin:0;font-size:15px">经济重心开始南移(永嘉南渡)。佛教兴盛(石窟艺术、译经)。玄学与清谈。范缜《神灭论》。祖冲之圆周率。贾思勰《齐民要术》。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="6" data-tts="c3" data-tsh="隋唐统一：盛世的重建">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">Period 3</span><h2>隋唐统一：盛世的重建</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你知隋朝短命而唐朝辉煌</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>隋朝的制度遗产如何被唐朝继承发扬？唐朝为何能成为世界性帝国？</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>理解隋奠基→唐发扬的历史逻辑</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">隋朝的制度奠基</h3><p style="color:var(--muted);margin:0;font-size:15px">589年统一→开创科举制、三省六部制、均田制、府兵制。大运河贯通南北经济。但炀帝滥用民力→农民起义→618年亡。制度遗产被唐朝全盘继承。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">唐朝的政治制度</h3><p style="color:var(--muted);margin:0;font-size:15px">继承并完善三省六部制。完善科举(常科、制科并举)。《唐律疏议》→东亚最早的完整法典之一。道州县三级行政区划。节度使制度的隐患。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">唐朝的文化繁荣</h3><p style="color:var(--muted);margin:0;font-size:15px">贞观之治(太宗)→开元盛世(玄宗前期)→安史之乱(755)→藩镇割据→黄巢起义→907年亡。唐诗(李白杜甫白居易)、佛道儒三教并立、开放包容的对外政策。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="interactive" data-page-index="7" data-tts="interactive" data-tsh="势力消长动态地图">
+  <div class="slide-inner"><div class="card card-glow">
+    <div class="section-header"><span class="phase-tag" data-variant="success">Interactive</span><h2>势力消长动态地图</h2></div>
+    <p style="color:var(--muted);margin:0 0 16px">拖动时间轴观察三国至隋唐的疆域变化和政权更替。颜色代表不同政权。</p>
+    <div class="canvas-wrap"><canvas id="stc" width="760" height="420" aria-label="互动画布" style="display:block;width:100%;border-radius:12px"></canvas></div>
+    <div class="grid" style="margin-top:16px"><label style="display:flex;flex-direction:column;gap:4px"><span style="color:var(--muted);font-size:13px">年份: <span id="stv">220</span></span><input id="sty" type="range" min="220" max="907" value="220" oninput="upd()"></label></div>
+  </div></div></section>
+<script>(function(){var c=document.getElementById('stc');if(!c)return;var ctx=c.getContext('2d');var W=c.width,H=c.height;var year=220;
+var periods=[{y:220,l:'魏(北方) 蜀(西南) 吴(东南) 三国鼎立',c:['#2563eb','#16a34a','#ef4444']},{y:280,l:'西晋统一全国(280-316)',c:['#7c3aed']},{y:317,l:'东晋(南方)+十六国(北方) 317-420',c:['#2563eb','#f59e0b']},{y:420,l:'南北朝对峙(420-589)',c:['#2563eb','#ef4444']},{y:589,l:'隋朝统一(589-618)',c:['#16a34a']},{y:618,l:'唐朝统一 贞观之治→开元盛世',c:['#dc2626']}];
+function draw(){ctx.clearRect(0,0,W,H);ctx.fillStyle='#f7faff';ctx.fillRect(0,0,W,H);
+var p=periods[0];for(var i=periods.length-1;i>=0;i--){if(year>=periods[i].y){p=periods[i];break;}}
+ctx.fillStyle='#0f172a';ctx.font='bold 20px Inter';ctx.fillText(year+'年',30,50);
+ctx.font='15px Inter';ctx.fillText(p.l,30,80);
+// simple map representation
+var regions=[{x:100,y:120,w:200,h:150,label:'北方'},{x:320,y:200,w:120,h:120,label:'西南'},{x:450,y:250,w:150,h:100,label:'东南'}];
+p.c.forEach(function(clr,i){
+  if(i<regions.length){
+    ctx.fillStyle=clr;ctx.globalAlpha=0.6;
+    ctx.fillRect(regions[i].x,regions[i].y,regions[i].w,regions[i].h);
+    ctx.globalAlpha=1;
+    ctx.fillStyle='#fff';ctx.font='13px Inter';ctx.fillText(regions[i].label,regions[i].x+10,regions[i].y+25);
+  }
+});
+// timeline bar
+ctx.fillStyle='#e2e8f0';ctx.fillRect(30,360,700,8);
+[220,280,316,420,589,618,907].forEach(function(y){
+  var x=30+(y-220)/687*700;ctx.fillStyle='#475569';ctx.fillRect(x-1,355,2,18);
+  ctx.fillText(y,x-15,345);
+});
+var cx=30+(year-220)/687*700;ctx.fillStyle='#ef4444';ctx.beginPath();ctx.arc(cx,364,8,0,Math.PI*2);ctx.fill();
+ctx.fillText('拖动时间轴浏览',300,395);
+}
+function upd(){year=parseInt(document.getElementById('sty').value);document.getElementById('stv').textContent=year;draw();}
+draw();})();</script>
+
+  <!-- Scaffolded Exercise Page -->
+  <section class="slide-page" data-page-type="concept" data-page-index="99" data-tts="scaffold" data-tsh="分层练习 - 从示范到独立完成">
+    <div class="slide-inner">
+      <div class="card">
+        <div class="section-header"><span class="phase-tag" data-variant="success">Scaffold</span><h2>分层练习：从示范到独立</h2></div>
+        <div class="grid" style="margin-top:16px">
+          <div class="card" style="padding:20px;border-left:3px solid var(--green)">
+            <h3 style="color:var(--green);margin-bottom:10px;font-size:15px">🟢 全支架示范</h3>
+            <p style="color:var(--muted);margin:0;font-size:15px">回顾上方概念页中的解题分析。每一步的推导逻辑——为什么用这个公式？为什么代入这个数值？理解"为什么这样做"比记住步骤更重要。</p>
+            <p style="color:var(--blue);margin-top:8px;font-size:14px"><strong>支架提示：</strong>分清已知量和未知量→选择正确公式→代入数值→检查单位→验证答案是否合理。</p>
+          </div>
+          <div class="card" style="padding:20px;border-left:3px solid var(--orange)">
+            <h3 style="color:var(--orange);margin-bottom:10px;font-size:15px">🟡 半支架练习</h3>
+            <p style="color:var(--muted);margin:0 0 12px;font-size:15px">试着独立完成与本课主题相关的一道计算或分析题。只给你关键公式提示，解题过程由你自己完成。</p>
+            <input aria-label="半支架填空" placeholder="写下你的解题过程..." style="margin-top:8px">
+            <p style="color:var(--muted);margin-top:8px;font-size:13px">💡 <strong>减弱支架：</strong>这次只有公式提示，不给你完整步骤。完成后对照概念页自检。</p>
+          </div>
+          <div class="card" style="padding:20px;border-left:3px solid var(--blue)">
+            <h3 style="color:var(--blue);margin-bottom:10px;font-size:15px">🔵 独立完成（挑战）</h3>
+            <p style="color:var(--muted);margin:0;font-size:15px">设计一道融合本课至少两个核心概念的综合题，写出完整题目、解题过程和答案。尝试联系实际场景。</p>
+            <textarea aria-label="独立完成" placeholder="题目：
+
+解题过程：
+
+答案：" style="margin-top:8px;min-height:100px"></textarea>
+            <p style="color:var(--purple);margin-top:8px;font-size:13px">🏆 <strong>挑战升级：</strong>尝试将本课知识迁移到一个你从未见过的场景中。真正的理解在于能用到新地方。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide-page" data-page-type="quiz" data-page-index="8" data-tts="conceptest" data-tsh="概念测试：三国至隋唐">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">ConcepTest</span><h2>概念测试：三国至隋唐</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">检验这段复杂历史中关键节点的理解。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="曹操赤壁败后退回北方，孙刘各自站稳脚跟，三分格局形成。">A. 赤壁之战(208年)奠定了三国鼎立的格局</button>
+<button class="choice" data-correct="true" data-diagnosis="最初按才能评定，但逐渐被大家族操控，"上品无寒门"。">B. 九品中正制最终导致了门阀世族垄断政治</button>
+<button class="choice" data-correct="true" data-diagnosis="全面汉化政策，加速了民族融合，为隋唐统一奠定基础。">C. 北魏孝文帝改革包括迁都洛阳和禁止鲜卑语言服饰</button>
+<button class="choice" data-correct="true" data-diagnosis="用考试代替门第，打破士族对官场的垄断，扩大统治基础。">D. 隋朝创立科举制是为了削弱士族势力</button>
+<button class="choice" data-correct="true" data-diagnosis="节度使集军、政、财权于一身，尾大不掉。安禄山身兼三镇节度使发动叛乱。">E. 唐朝节度使制最终导致了安史之乱</button></div>
+    <div class="result warn" data-feedback-for="conceptest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="quiz" data-page-index="9" data-tts="posttest" data-tsh="后测：三国隋唐综合">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="warn">Post-Test</span><h2>后测：三国隋唐综合</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">检验学完后的综合理解。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="国家按人口分配土地，农民向国家缴税服役。到唐朝中期瓦解。">A. 均田制是北魏至唐朝实行的土地制度</button>
+<button class="choice" data-correct="true" data-diagnosis="全长约2700公里，贯通海河、黄河、淮河、长江、钱塘江五大水系。">B. 隋朝大运河北起涿郡南至余杭</button>
+<button class="choice" data-correct="false" data-diagnosis="安史之乱后唐朝又延续了约150年(763-907)，但国力大幅衰退。">C. 安史之乱后唐朝立即灭亡</button>
+<button class="choice" data-correct="true" data-diagnosis="兵农合一，战时出征平时务农。唐中期被募兵制取代。">D. 府兵制是西魏-隋唐的兵制</button>
+<button class="choice" data-correct="true" data-diagnosis="以《老子》《庄子》《周易》"三玄"为经典，代表人物有何晏、王弼、嵇康。">E. 魏晋玄学是老庄思想的复兴</button></div>
+    <div class="result warn" data-feedback-for="posttest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="summary" data-page-index="10" data-tts="summary" data-tsh="总结">
+  <div class="slide-inner"><div class="card"><div class="section-header"><span class="phase-tag">Summary</span><h2>本课总结</h2></div><div style="margin-top:16px"><div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">1.</span><span>三国(220-280)：魏蜀吴鼎立，屯田制、九品中正制的制度实践</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">2.</span><span>西晋短暂统一(280-316)后进入更长分裂——八王之乱→五胡入华</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">3.</span><span>魏晋南北朝：民族大融合+门阀政治+经济南移=统一前夜</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">4.</span><span>隋朝(581-618)：统一+科举+三省六部+大运河，制度奠基</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">5.</span><span>唐朝(618-907)：完善隋制达到鼎盛，安史之乱后衰落</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">6.</span><span>核心线索：分裂孕育统一条件→制度创新来自乱世探索→民族融合是统一基础</span></div></div></div></div></section>
+
+  <!-- AI Multimodal Zone -->
+  <section class="slide-page" data-page-type="interactive" data-page-index="98" data-tts="ai-zone" data-tsh="AI 多模态互动 - 用AI辅助理解历史">
+    <div class="slide-inner">
+      <div class="card card-glow">
+        <div class="section-header"><span class="phase-tag" data-variant="purple">AI Zone</span><h2>AI 多模态互动区</h2></div>
+        <p style="color:var(--muted);margin:0 0 16px">输入你想深入了解的历史问题，AI 帮你生成可视化时间线、人物关系图或事件分析。</p>
+        <div style="display:flex;gap:8px;margin-bottom:16px">
+          <input id="ai-prompt" placeholder="例如：请生成唐朝安史之乱前后的关键事件时间线..." style="flex:1">
+          <button class="btn-pill" onclick="document.getElementById('ai-result').innerHTML='<p style=color:var(--muted)>AI思考中...（提示：这需要接入后端AI服务）</p>'">生成分析</button>
+        </div>
+        <div id="ai-result" class="result" style="min-height:60px">
+          <p style="color:var(--muted)">💡 尝试用AI辅助学习：请它生成时间线、对比不同观点、或解释复杂事件的因果关系。这是增强理解的多模态学习方式。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide-page" data-page-type="summary" data-page-index="11" data-tts="knowledge-graph" data-tsh="知识图谱">
+  <div class="slide-inner"><div class="card card-glow">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">Knowledge Graph</span><h2>知识图谱</h2></div>
+    <p style="color:var(--muted);margin:0 0 16px">本节点的前置、后续和同域知识。</p>
+    <div data-teachany-kg="ext-hist-st02"><canvas class="tkg-fallback-canvas" width="720" height="120" aria-label="知识图谱" style="display:block;width:100%;max-height:140px;border-radius:12px"></canvas></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="interactive" data-page-index="12" data-tts="ai-tutor" data-tsh="AI 学伴">
+  <div class="slide-inner"><div data-teachany-tutor-card></div></div></section>
+</div>
+<div class="source-section"><h2>📚 内容来源</h2><ul><li>陈寅恪《隋唐制度渊源略论稿》</li>
+<li>田余庆《东晋门阀政治》</li>
+<li>《三国志》《晋书》《隋书》《旧唐书》《新唐书》</li></ul></div>
+<div id="comments-panel">
+  <h2>💬 讨论区</h2>
+  <textarea id="comment-input" placeholder="写下你的问题或感想..."></textarea>
+  <button class="btn-pill comment-submit" style="margin-bottom:16px">发表评论</button>
+  <div class="comment-list"></div></div>
+<div class="slide-toolbar" id="slide-toolbar">
+  <button class="toolbar-btn" id="tb-prev" aria-label="上一页"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+  <div class="toolbar-progress"><div class="toolbar-progress-fill" id="tb-progress-fill"></div></div>
+  <span class="toolbar-page-info" id="tb-page-info">1 / 13</span>
+  <button class="toolbar-btn" id="tb-next" aria-label="下一页"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+</div>
+<div id="audio-config" data-teachany-audio hidden>
+  <script type="application/json" data-teachany-audio-playlist>[{"section": "hero", "src": "tts/history-sanguo-tang-hero.mp3", "label": "封面讲解"}, {"section": "pretest", "src": "tts/history-sanguo-tang-pretest.mp3", "label": "前测"}, {"section": "conceptest", "src": "tts/history-sanguo-tang-conceptest.mp3", "label": "概念测试"}]</script>
+</div>
+<script>(function() {
+  var container = document.getElementById('slide-container');
+  var pages = Array.from(document.querySelectorAll('.slide-page'));
+  var total = pages.length; var current = 0;
+  function update() {
+    document.getElementById('tb-page-info').textContent = (current+1)+' / '+total;
+    document.getElementById('tb-prev').style.opacity = current===0?'0.3':'1';
+    document.getElementById('tb-next').style.opacity = current===total-1?'0.3':'1';
+  }
+  function goTo(i) { if(i>=0&&i<total){current=i;pages[current].scrollIntoView({behavior:'smooth',block:'start'});update();} }
+  document.getElementById('tb-prev').addEventListener('click',function(){goTo(current-1)});
+  document.getElementById('tb-next').addEventListener('click',function(){goTo(current+1)});
+  container.addEventListener('scroll',function(){
+    var st=container.scrollTop, best=0, min=Infinity;
+    pages.forEach(function(p,i){var d=Math.abs(p.offsetTop-st);if(d<min){min=d;best=i;}});
+    if(best!==current){current=best;update();}
+  });
+  update();
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('note-export-btn');
+  var modal = document.getElementById('note-modal');
+  if (!btn || !modal) return;
+  btn.addEventListener('click', function() {
+    var excerpts = [];
+    document.querySelectorAll('.slide-page h2, .slide-page h3').forEach(function(h) { excerpts.push(h.textContent.trim()); });
+    var md = '# ' + document.title + '\n\n' + excerpts.map(function(e) { return '- ' + e; }).join('\n');
+    document.getElementById('note-md').value = md;
+    modal.classList.add('show');
+  });
+  document.getElementById('note-close').addEventListener('click', function() { modal.classList.remove('show'); });
+  document.getElementById('note-copy').addEventListener('click', function() {
+    navigator.clipboard.writeText(document.getElementById('note-md').value).then(function() { alert('\u5df2\u590d\u5236!'); });
+  });
+  document.getElementById('note-download').addEventListener('click', function() {
+    var text = document.getElementById('note-md').value;
+    var a = document.createElement('a'); a.href = 'data:text/markdown;charset=utf-8,' + encodeURIComponent(text); a.download = 'notes.md'; a.click();
+  });
+  var panel = document.getElementById('comments-panel');
+  if (!panel) return;
+  var cid = (document.querySelector('meta[name="course-id"]')||{}).content||'unknown';
+  var key = 'teachany-comments-' + cid;
+  function render() {
+    var data = JSON.parse(localStorage.getItem(key) || '[]');
+    var list = panel.querySelector('.comment-list');
+    if (!list) return;
+    list.innerHTML = data.map(function(c) { return '<div class="comment-item"><div class="ts">'+c.time+'</div><div>'+c.text+'</div></div>'; }).join('');
+  }
+  panel.querySelector('.comment-submit').addEventListener('click', function() {
+    var t = panel.querySelector('textarea').value.trim(); if (!t) return;
+    var data = JSON.parse(localStorage.getItem(key) || '[]');
+    data.push({text: t, time: new Date().toLocaleString('zh-CN')});
+    localStorage.setItem(key, JSON.stringify(data));
+    panel.querySelector('textarea').value = '';
+    render();
+  });
+  render();
+});
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-quiz="true"] .choice').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var isCorrect = this.dataset.correct === 'true';
+      var diagnosis = this.dataset.diagnosis || '';
+      var parent = this.closest('[data-quiz="true"]');
+      parent.querySelectorAll('.choice').forEach(function(b) { b.classList.remove('selected','correct','wrong'); b.disabled = true; });
+      this.classList.add('selected');
+      this.classList.add(isCorrect ? 'correct' : 'wrong');
+      var fb = parent.querySelector('.result');
+      if (fb) { fb.className = isCorrect ? 'result' : 'result error'; fb.innerHTML = (isCorrect ? '\u2705 ' : '\u274c ') + diagnosis; }
+    });
+  });
+});
+</script>
+</body>
+</html>

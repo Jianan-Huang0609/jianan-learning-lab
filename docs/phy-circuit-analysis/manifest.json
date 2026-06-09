@@ -1,0 +1,60 @@
+{
+  "id": "phy-circuit-analysis",
+  "course_id": "phy-circuit-analysis",
+  "node_id": "ext-phy-ca02",
+  "name": "电路分析进阶：节点法、网孔法与戴维南定理",
+  "name_en": "Circuit Analysis",
+  "subject": "physics",
+  "grade": 12,
+  "stage": "high",
+  "domain": "电磁学",
+  "lesson_type": "new-concept",
+  "status": "community",
+  "author": "TeachAny",
+  "version": "1.0.0",
+  "teachany_version": "7.18.0",
+  "template_version": "2.0",
+  "curriculum": "成人自学·物理",
+  "description": "掌握三种高级电路分析方法，能对任意线性电路进行系统求解。",
+  "tags": [
+    "电路分析",
+    "节点电压法",
+    "戴维南定理",
+    "等效电路",
+    "STEM"
+  ],
+  "prerequisites": [
+    "ext-phy-dc01"
+  ],
+  "leads_to": [
+    "ext-phy-ef03"
+  ],
+  "learning_objectives": [
+    "掌握节点电压法的原理和列方程步骤",
+    "理解网孔电流法，能用KVL列出网孔方程",
+    "理解戴维南定理：任意线性二端网络可等效为电压源串电阻",
+    "能用分步动画验证电路分析的求解过程"
+  ],
+  "assets": {
+    "hero": "assets/phy-circuit-analysis-hero.svg",
+    "tts_manifest": "tts/manifest.json",
+    "videos": [],
+    "images": [
+      "assets/phy-circuit-analysis-hero.svg"
+    ]
+  },
+  "has_tts": true,
+  "has_video": false,
+  "has_images": true,
+  "has_hero": true,
+  "has_canvas": true,
+  "has_knowledge_graph": true,
+  "free_mode": false,
+  "feedback": {
+    "require_password": false,
+    "password_sha256": "",
+    "password_hint": ""
+  },
+  "created_at": "2026-06-09",
+  "updated_at": "2026-06-09"
+}

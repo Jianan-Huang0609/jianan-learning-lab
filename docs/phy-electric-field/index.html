@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>电场：从库仑力到电势</title>
+<meta name="description" content="掌握电场的基本概念：库仑力、电场强度、电场线、电势，理解电场是电荷间相互作用的媒介。">
+<meta name="course-id" content="phy-electric-field">
+<meta name="course-title" content="电场：从库仑力到电势">
+<meta name="course-subject" content="physics">
+<meta name="course-grade" content="高中·成人自学">
+<meta name="course-prereqs" content="['ext-phy-ca02']">
+<meta name="course-next" content="">
+<meta name="course-version" content="1.0.0">
+<meta name="teachany-version" content="7.18.0">
+<meta name="teachany-node" content="ext-phy-ef03">
+<meta name="teachany-subject" content="physics">
+<meta name="teachany-grade" content="12">
+<meta name="teachany-stage" content="high">
+<meta name="teachany-domain" content="电磁学">
+<meta name="teachany-prerequisites" content="力学基础,向量运算">
+<meta name="teachany-lesson-type" content="new-concept">
+<meta name="teachany-free-mode" content="false">
+<meta name="teachany-template-version" content="2.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; max-width: 100%; overflow-x: hidden; }
+body { padding-top: var(--safe-top); font-family: var(--sans); color: var(--ink); line-height: 1.75; font-size: 16px;
+  background: radial-gradient(circle at 18% 18%, rgba(37,99,235,.10), transparent 30%), radial-gradient(circle at 88% 18%, rgba(124,58,237,.08), transparent 28%), linear-gradient(135deg, #fbfdff, #eef6ff 48%, #f8f5ff); }
+a { color: var(--blue); text-decoration: none; } a:hover { text-decoration: underline; }
+button, a, input, select, textarea { min-height: 44px; }
+img, video, canvas, svg { max-width: 100%; height: auto; }
+h1, h2, h3, h4 { margin: 0; letter-spacing: -0.035em; }
+
+:root {
+  --bg: #f7faff; --panel: #ffffff; --ink: #0f172a; --muted: #64748b;
+  --line: #dbe7f5; --blue: #2563eb; --green: #16a34a; --purple: #7c3aed;
+  --orange: #f59e0b; --red: #ef4444;
+  --shadow: 0 24px 80px rgba(15,23,42,.12);
+  --mono: "DM Mono", ui-monospace, monospace;
+  --sans: "Inter", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --brand: #2563eb; --brand-2: #7c3aed; --accent: #16a34a; --warn: #f59e0b;
+  --text: #0f172a; --text-secondary: #475569; --bg-subtle: #f1f5f9;
+  --brand-soft: rgba(37,99,235,0.08); --brand-2-soft: rgba(124,58,237,0.08);
+  --accent-soft: rgba(22,163,74,0.08); --line-subtle: rgba(15,23,42,0.08);
+  --card: #ffffff; --card-elevated: #ffffff;
+  --page-padding: 24px; --card-radius: 20px; --card-radius-sm: 14px;
+  --slide-height: 100vh; --slide-height-fallback: 100dvh;
+  --toolbar-height: 56px; --sidenav-width: 48px;
+  --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom);
+}
+body {
+  font-family: var(--sans); color: var(--ink);
+  background: radial-gradient(circle at 18% 18%, rgba(37,99,235,.10), transparent 30%),
+              radial-gradient(circle at 88% 18%, rgba(124,58,237,.08), transparent 28%),
+              linear-gradient(135deg, #fbfdff, #eef6ff 48%, #f8f5ff);
+}
+.card {
+  background: linear-gradient(160deg, rgba(255,255,255,0.95), rgba(248,250,255,0.98));
+  border: 1px solid var(--line); border-radius: var(--card-radius);
+  padding: 24px; box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 32px 96px rgba(15,23,42,.16); }
+.card-accent { border-top: 3px solid; border-image: linear-gradient(90deg, var(--blue), var(--purple)) 1; }
+.card-glow { box-shadow: 0 4px 24px rgba(15,23,42,0.08), 0 0 40px rgba(37,99,235,0.05); }
+.glass {
+  background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line);
+}
+.choice {
+  width: 100%; text-align: left; border: 1px solid var(--line); border-radius: 14px;
+  background: #fff; color: var(--ink); padding: 16px 20px;
+  cursor: pointer; font-size: 15px; line-height: 1.5;
+  transition: all 0.2s ease; font-family: var(--sans);
+}
+.choice:hover { background: rgba(37,99,235,0.04); border-color: var(--blue); transform: translateX(4px); }
+.choice.selected { border-color: var(--blue); background: rgba(37,99,235,0.08); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+.choice.correct { border-color: var(--green); background: rgba(22,163,74,0.08); }
+.choice.wrong { border-color: var(--red); background: rgba(239,68,68,0.06); }
+.result {
+  padding: 16px 20px; border-radius: 14px; font-size: 15px; line-height: 1.6;
+  background: rgba(22,163,74,0.06); border: 1px solid rgba(22,163,74,0.15); color: var(--ink);
+}
+.result.warn { background: rgba(245,158,11,0.06); border-color: rgba(245,158,11,0.15); }
+.result.error { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.15); }
+input, textarea {
+  width: 100%; border-radius: 12px; border: 1px solid var(--line);
+  background: #fff; color: var(--ink); padding: 14px 16px;
+  font-size: 15px; font-family: var(--sans);
+}
+input:focus, textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.10); }
+h1, h2, h3 { letter-spacing: -0.035em; }
+.hero-gradient {
+  background: linear-gradient(135deg, #0f172a 0%, #2563eb 50%, #7c3aed 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.kicker {
+  font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--blue); font-size: 12px; font-weight: 600;
+}
+.btn-pill {
+  font-family: var(--mono); background: var(--blue); color: #fff;
+  border: none; border-radius: 999px; padding: 10px 24px;
+  font-size: 13px; cursor: pointer; transition: all 0.2s;
+}
+.btn-pill:hover { background: #1d4ed8; transform: translateY(-1px); }
+.canvas-wrap {
+  overflow: auto; background: var(--bg); border: 1px solid var(--line);
+  border-radius: 16px; padding: 16px;
+}
+#comments-panel { max-width: 880px; margin: 40px auto; padding: 24px; }
+#comments-panel h2 { font-size: 22px; margin-bottom: 16px; }
+#comments-panel textarea { min-height: 80px; margin-bottom: 12px; }
+.comment-item { padding: 12px 16px; background: #fff; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; }
+.comment-item .ts { font-size: 12px; color: var(--muted); }
+#note-export-btn { position: fixed; top: 16px; right: 16px; z-index: 200; }
+#note-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15,23,42,0.5); z-index: 300; align-items: center; justify-content: center; }
+#note-modal.show { display: flex; }
+#note-modal .modal-content { background: #fff; border-radius: 16px; padding: 32px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
+.section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.section-header h2 { font-size: clamp(20px, 4vw, 26px); font-weight: 700; line-height: 1.3; color: var(--ink); }
+.phase-tag { display: inline-flex; align-items: center; gap: 6px; color: var(--blue); background: var(--brand-soft); border: 1px solid rgba(37,99,235,0.2); border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; font-family: var(--mono); }
+.phase-tag[data-variant="success"] { color: var(--green); background: rgba(22,163,74,0.08); border-color: rgba(22,163,74,0.2); }
+.phase-tag[data-variant="purple"] { color: var(--purple); background: var(--brand-2-soft); border-color: rgba(124,58,237,0.2); }
+.phase-tag[data-variant="warn"] { color: var(--orange); background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.2); }
+.grid { display: grid; grid-template-columns: 1fr; gap: 12px; width: 100%; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.objectives { list-style: none; padding: 0; display: grid; gap: 10px; }
+.objectives li { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; border-radius: 14px; background: rgba(37,99,235,0.04); border: 1px solid var(--line); }
+.objectives li::before { content: "✦"; color: var(--blue); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+.ta-standard-figure { margin: 20px auto; max-width: 980px; }
+.ta-standard-figure img, .ta-standard-figure svg { display: block; width: 100%; border-radius: 16px; border: 1px solid var(--line); }
+.ta-standard-figure figcaption { margin-top: 10px; color: var(--muted); font-size: 14px; text-align: center; }
+.flex-row { display: flex; gap: 12px; margin-top: 14px; align-items: center; flex-wrap: wrap; }
+.flex-row .choice { flex: 1; min-width: 120px; text-align: center; }
+.inner-card { margin: 12px 0; padding: 16px; border-radius: var(--card-radius-sm); border: 1px solid var(--line); background: var(--bg); }
+.inner-card p { margin: 0 0 6px; color: var(--ink); }
+.slide-page .slide-inner { max-width: 880px; width: 100%; position: relative; z-index: 2; margin: 0 auto; }
+.slide-page .slide-inner > * { width: 100%; box-sizing: border-box; }
+.source-section { max-width: 880px; margin: 40px auto; padding: 0 24px; }
+.source-section h2 { font-size: 20px; margin-bottom: 12px; }
+.source-section ul { padding-left: 20px; color: var(--muted); font-size: 14px; }
+@media (max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr !important; } .flex-row { flex-direction: column; } .flex-row .choice { min-width: 100%; } }
+
+.slide-container { scroll-snap-type: y proximity; overflow-y: auto; height: 100dvh; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+.slide-page { min-height: 100dvh; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: var(--page-padding); padding-bottom: calc(var(--page-padding) + 56px); position: relative; overflow: hidden; }
+.slide-page[data-page-type="cover"] { text-align: center; }
+.slide-page[data-page-type="cover"] h1 { font-size: clamp(32px, 7vw, 56px); line-height: 1.15; background: linear-gradient(135deg, #0f172a 0%, #2563eb 50%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 16px; }
+.slide-page[data-page-type="objectives"] { background: radial-gradient(circle at 0% 100%, rgba(22,163,74,0.06), transparent 40%), radial-gradient(circle at 100% 0%, rgba(37,99,235,0.05), transparent 40%); }
+.slide-page[data-page-type="concept"] { background: radial-gradient(circle at 30% 20%, rgba(37,99,235,0.04), transparent 35%), radial-gradient(circle at 70% 80%, rgba(124,58,237,0.04), transparent 35%); }
+.slide-page[data-page-type="interactive"] { background: radial-gradient(circle at 50% 0%, rgba(22,163,74,0.06), transparent 40%), radial-gradient(circle at 80% 100%, rgba(37,99,235,0.04), transparent 35%); }
+.slide-page[data-page-type="quiz"] { background: radial-gradient(circle at 20% 80%, rgba(245,158,11,0.05), transparent 35%), radial-gradient(circle at 80% 20%, rgba(124,58,237,0.04), transparent 35%); }
+.slide-page[data-page-type="summary"] { background: radial-gradient(circle at 50% 50%, rgba(37,99,235,0.06), transparent 45%), radial-gradient(circle at 20% 20%, rgba(22,163,74,0.04), transparent 30%); }
+@media (max-width: 768px) { :root { --page-padding: 16px; --card-radius: 16px; } .slide-page { padding: 16px 14px; padding-bottom: calc(16px + 56px); } .grid-2, .grid-3 { grid-template-columns: 1fr !important; } .flex-row { flex-direction: column; } .flex-row .choice { min-width: 100%; } .card { padding: 18px; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.stagger-1 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.1s; }
+.stagger-2 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.2s; }
+.stagger-3 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+<button class="btn-pill" id="note-export-btn" style="position:fixed;top:16px;right:16px;z-index:200">📝 导出笔记</button>
+<div id="note-modal"><div class="modal-content">
+  <h3 style="margin-top:0">📝 课程笔记</h3>
+  <textarea id="note-md" style="min-height:200px;margin-bottom:16px"></textarea>
+  <div style="display:flex;gap:8px">
+    <button class="btn-pill" id="note-copy">📋 复制</button>
+    <button class="btn-pill" id="note-download">💾 下载 .md</button>
+    <button class="btn-pill" id="note-close" style="background:#64748b">关闭</button>
+  </div></div></div>
+<div class="slide-container" id="slide-container">
+<section class="slide-page" data-page-type="cover" data-page-index="0" data-tts="hero" data-tsh="开场">
+  <div class="slide-inner">
+    <h1 class="hero-gradient" style="font-size:clamp(32px,7vw,56px);line-height:1.15;text-align:center;margin-bottom:16px">电场：从库仑力到电势</h1>
+    <p style="color:var(--muted);font-size:clamp(16px,3vw,22px);max-width:680px;margin:0 auto;text-align:center">两个电荷隔着真空为什么会产生力？电场到底是什么？</p>
+    <figure class="ta-standard-figure" style="margin-top:32px">
+      <svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#eef6ff"/><stop offset="100%" stop-color="#f8f5ff"/></linearGradient></defs>
+        <rect width="1280" height="720" fill="url(#bg)"/>
+        <circle cx="200" cy="180" r="120" fill="rgba(37,99,235,0.06)"/><circle cx="1080" cy="540" r="160" fill="rgba(124,58,237,0.05)"/><circle cx="640" cy="360" r="200" fill="rgba(37,99,235,0.03)"/>
+        <text x="640" y="320" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="800" fill="#0f172a">电场：从库仑力到电势</text>
+        <text x="640" y="380" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#64748b">两个电荷隔着真空为什么会产生力？电场到底是什么？</text>
+        <rect x="300" y="420" width="180" height="56" rx="28" fill="rgba(37,99,235,0.1)" stroke="#2563eb" stroke-width="1"/><text x="390" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#2563eb">交互学习</text>
+        <rect x="550" y="420" width="180" height="56" rx="28" fill="rgba(124,58,237,0.1)" stroke="#7c3aed" stroke-width="1"/><text x="640" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#7c3aed">概念测验</text>
+        <rect x="800" y="420" width="180" height="56" rx="28" fill="rgba(22,163,74,0.1)" stroke="#16a34a" stroke-width="1"/><text x="890" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#16a34a">知识迁移</text>
+      </svg>
+      <figcaption>电荷→电场→力的媒介传递框架</figcaption>
+    </figure>
+  </div>
+</section>
+<section class="slide-page" data-page-type="interactive" data-page-index="1" data-tts="problem-anchor" data-tsh="问题锚点">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag">Problem Anchor</span><h2>今天想解决什么问题？</h2></div>
+      <p style="color:var(--muted);margin:0 0 16px">选一个你关心的问题，后面的内容会围绕它展开。</p>
+      <div class="grid"><button class="choice" data-correct="true" data-diagnosis="电场是真实物理场，携带能量和动量。">A. 电场是真实存在的物理实体还是数学工具？</button>
+<button class="choice" data-correct="false" data-diagnosis="互补视角——选A系统理解。">B. 电场强度和电势有什么区别？为什么需要两个？</button>
+<button class="choice" data-correct="false" data-diagnosis="有精确含义——选A系统学习。">C. 电场线只是示意图还是有精确物理意义？</button></div>
+      <label style="display:block;margin-top:20px;color:var(--muted);font-size:14px">或者，写下你自己的问题
+        <input id="learner-question-input" placeholder="把你卡住的问题写在这里" style="margin-top:8px">
+      </label>
+      <p id="anchor-feedback" class="result warn" style="margin-top:16px">选择或输入后，本课会围绕你的问题展开。</p>
+    </div>
+  </div>
+</section>
+<section class="slide-page" data-page-type="objectives" data-page-index="2" data-tts="objectives" data-tsh="学习目标">
+  <div class="slide-inner"><div class="card"><div class="section-header"><span class="phase-tag" data-variant="success">Objectives</span><h2>学习目标</h2></div><ul class="objectives"><li>理解库仑定律及其向量形式</li>
+<li>掌握电场强度的定义和计算方法</li>
+<li>理解电场线的物理意义，能绘制常见电荷分布的电场线</li>
+<li>理解电势和电势能，掌握 E=-∇V 的梯度关系</li></ul></div></div></section>
+<section class="slide-page" data-page-type="quiz" data-page-index="3" data-tts="pretest" data-tsh="前测：电场基础概念">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="warn">Pretest</span><h2>前测：电场基础概念</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">检测你对电场基本概念的直觉理解。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="电磁力通过真空传递，不需要介质。">A. 电荷之间不需要介质就能产生力</button>
+<button class="choice" data-correct="true" data-diagnosis="库仑定律定性表述。">B. 同种电荷相斥，异种电荷相吸</button>
+<button class="choice" data-correct="false" data-diagnosis="不必然联系。E=-dV/dx，均匀电场中电势变化但E恒定。">C. 电势越高的地方电场强度越大</button>
+<button class="choice" data-correct="true" data-diagnosis="有源场基本性质。">D. 电场线从正电荷出发终止于负电荷</button>
+<button class="choice" data-correct="true" data-diagnosis="本质区别：叠加规则不同。">E. 电势是标量而电场强度是矢量</button></div>
+    <div class="result warn" data-feedback-for="pretest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="4" data-tts="c1" data-tsh="库仑定律与电场强度">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="">Concept 1</span><h2>库仑定律与电场强度</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你已知电荷间有引力和斥力</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>力如何精确定量？一个电荷如何"感知"另一个？</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>从库仑定律到电场强度——场是力传递的媒介</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">库仑定律</h3><p style="color:var(--muted);margin:0;font-size:15px">F₁₂=k·q₁q₂/r²·r̂，k=1/(4πε₀)≈9×10⁹ N·m²/C²。同号斥力、异号引力。满足牛顿第三定律。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">电场强度</h3><p style="color:var(--muted);margin:0;font-size:15px">E=F/q₀(q₀→0)。点电荷电场：E=k·Q/r²·r̂。单位：N/C或V/m。电场是矢量场。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">叠加原理</h3><p style="color:var(--muted);margin:0;font-size:15px">E_total=ΣE_i。各电荷贡献的电场矢量相加。线性叠加是经典电动力学的基础。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="5" data-tts="c2" data-tsh="电场线与高斯定理">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="success">Concept 2</span><h2>电场线与高斯定理</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你会用向量表示电场方向</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>连续电荷分布时逐点计算太繁琐</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>引入电通量和高斯定理简化对称场计算</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">电场线性质</h3><p style="color:var(--muted);margin:0;font-size:15px">切线=电场方向，密度=电场大小，起于+终于-，不相交。是可视化工具而非物理实体。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">高斯定理</h3><p style="color:var(--muted);margin:0;font-size:15px">∮E·dA=Q_enc/ε₀。闭合曲面电通量=内部净电荷/ε₀。麦克斯韦方程组第一式。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">应用方法</h3><p style="color:var(--muted);margin:0;font-size:15px">适用对称分布(球/柱/平面)。①选高斯面②算左端∮E·dA③算右端Q/ε₀④解出E。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="6" data-tts="c3" data-tsh="电势与电势能">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">Concept 3</span><h2>电势与电势能</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你知重力场中高度差→势能差</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>电场中的"高度"如何定义？</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>从电场力做功出发定义电势，建立E=-∇V梯度关系</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">电势能</h3><p style="color:var(--muted);margin:0;font-size:15px">U=qV。电场力做功=-ΔU（保守力）。可正可负（取决于q和V符号）。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">电势(电压)</h3><p style="color:var(--muted);margin:0;font-size:15px">V是单位电荷电势能。ΔV=-∫E·dl。标量，参考点可任选。1V=1J/C。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">等势面与梯度</h3><p style="color:var(--muted);margin:0;font-size:15px">等势面⊥电场线。E=-∇V，均匀场中E=-ΔV/Δx。电势降低最快的方向=电场方向。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="interactive" data-page-index="7" data-tts="interactive" data-tsh="电场线可视化：拖拽电荷">
+  <div class="slide-inner"><div class="card card-glow">
+    <div class="section-header"><span class="phase-tag" data-variant="success">Interactive</span><h2>电场线可视化：拖拽电荷</h2></div>
+    <p style="color:var(--muted);margin:0 0 16px">拖拽正负电荷观察电场线变化。红色=负电荷，蓝色=正电荷。</p>
+    <div class="canvas-wrap"><canvas id="efc" width="760" height="420" aria-label="互动画布" style="display:block;width:100%;border-radius:12px"></canvas></div>
+    <div class="grid" style="margin-top:16px"><p style="color:var(--muted);font-size:14px">💡 拖拽蓝(+)、红(-)两个电荷，观察电场线变化。正电荷场线向外辐射，负电荷场线向内汇聚。</p></div>
+  </div></div></section>
+<script>(function(){var c=document.getElementById('efc');if(!c)return;var ctx=c.getContext('2d');var W=c.width,H=c.height;var charges=[{x:250,y:210,q:1},{x:510,y:210,q:-1}],drag=-1;
+function draw(){ctx.fillStyle='#f7faff';ctx.fillRect(0,0,W,H);
+charges.forEach(function(ch){ctx.beginPath();ctx.fillStyle=ch.q>0?'#2563eb':'#ef4444';ctx.arc(ch.x,ch.y,18,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#fff';ctx.font='16px sans-serif';ctx.fillText(ch.q>0?'+':'-',ch.x-6,ch.y+6);
+ctx.strokeStyle=ch.q>0?'rgba(37,99,235,0.3)':'rgba(239,68,68,0.3)';ctx.lineWidth=1.5;
+for(var a=0;a<12;a++){var ang=a*Math.PI/6,r=30;ctx.beginPath();ctx.moveTo(ch.x+Math.cos(ang)*r,ch.y+Math.sin(ang)*r);ctx.lineTo(ch.x+Math.cos(ang)*(r+50),ch.y+Math.sin(ang)*(r+50));ctx.stroke();}});
+ctx.fillStyle='#0f172a';ctx.font='13px Inter';ctx.fillText('拖拽电荷观察电场线 | 蓝色=+  红色=-',20,390);}
+c.addEventListener('pointerdown',function(e){var r=c.getBoundingClientRect();var mx=e.clientX-r.left,my=e.clientY-r.top;
+for(var i=0;i<charges.length;i++){var dx=mx-charges[i].x,dy=my-charges[i].y;if(dx*dx+dy*dy<900){drag=i;break;}}});
+c.addEventListener('pointermove',function(e){if(drag<0)return;var r=c.getBoundingClientRect();charges[drag].x=e.clientX-r.left;charges[drag].y=e.clientY-r.top;draw();});
+c.addEventListener('pointerup',function(){drag=-1;});draw();})();</script>
+
+  <!-- Scaffolded Exercise Page -->
+  <section class="slide-page" data-page-type="concept" data-page-index="99" data-tts="scaffold" data-tsh="分层练习 - 从示范到独立完成">
+    <div class="slide-inner">
+      <div class="card">
+        <div class="section-header"><span class="phase-tag" data-variant="success">Scaffold</span><h2>分层练习：从示范到独立</h2></div>
+        <div class="grid" style="margin-top:16px">
+          <div class="card" style="padding:20px;border-left:3px solid var(--green)">
+            <h3 style="color:var(--green);margin-bottom:10px;font-size:15px">🟢 全支架示范</h3>
+            <p style="color:var(--muted);margin:0;font-size:15px">回顾上方概念页中的解题分析。每一步的推导逻辑——为什么用这个公式？为什么代入这个数值？理解"为什么这样做"比记住步骤更重要。</p>
+            <p style="color:var(--blue);margin-top:8px;font-size:14px"><strong>支架提示：</strong>分清已知量和未知量→选择正确公式→代入数值→检查单位→验证答案是否合理。</p>
+          </div>
+          <div class="card" style="padding:20px;border-left:3px solid var(--orange)">
+            <h3 style="color:var(--orange);margin-bottom:10px;font-size:15px">🟡 半支架练习</h3>
+            <p style="color:var(--muted);margin:0 0 12px;font-size:15px">试着独立完成与本课主题相关的一道计算或分析题。只给你关键公式提示，解题过程由你自己完成。</p>
+            <input aria-label="半支架填空" placeholder="写下你的解题过程..." style="margin-top:8px">
+            <p style="color:var(--muted);margin-top:8px;font-size:13px">💡 <strong>减弱支架：</strong>这次只有公式提示，不给你完整步骤。完成后对照概念页自检。</p>
+          </div>
+          <div class="card" style="padding:20px;border-left:3px solid var(--blue)">
+            <h3 style="color:var(--blue);margin-bottom:10px;font-size:15px">🔵 独立完成（挑战）</h3>
+            <p style="color:var(--muted);margin:0;font-size:15px">设计一道融合本课至少两个核心概念的综合题，写出完整题目、解题过程和答案。尝试联系实际场景。</p>
+            <textarea aria-label="独立完成" placeholder="题目：
+
+解题过程：
+
+答案：" style="margin-top:8px;min-height:100px"></textarea>
+            <p style="color:var(--purple);margin-top:8px;font-size:13px">🏆 <strong>挑战升级：</strong>尝试将本课知识迁移到一个你从未见过的场景中。真正的理解在于能用到新地方。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide-page" data-page-type="quiz" data-page-index="8" data-tts="conceptest" data-tsh="概念测试：电场与电势">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">ConcepTest</span><h2>概念测试：电场与电势</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">澄清常见的概念混淆。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="E=-∇V。">A. 电场方向=电势降低最快的方向</button>
+<button class="choice" data-correct="false" data-diagnosis="电势零点可任意选。均匀场中V变化但E恒定。">B. 电势为零则电场为零</button>
+<button class="choice" data-correct="true" data-diagnosis="密度∝场强。">C. 电场线密集处场强大</button>
+<button class="choice" data-correct="true" data-diagnosis="沿等势面移动电荷不做功→E⊥等势面。">D. 等势面⊥电场线</button>
+<button class="choice" data-correct="false" data-diagnosis="E定义要求q₀→0，与检验电荷无关。">E. 检验电荷越大测得E越大</button></div>
+    <div class="result warn" data-feedback-for="conceptest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="quiz" data-page-index="9" data-tts="posttest" data-tsh="后测：电场综合检测">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="warn">Post-Test</span><h2>后测：电场综合检测</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">检验你对电场核心概念的全面理解。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="高斯定理：内部无净电荷→E=0。">A. 均匀带电球壳内部E=0</button>
+<button class="choice" data-correct="true" data-diagnosis="正电势+负电势=0。但E≠0。">B. 等量异号电荷中点V=0</button>
+<button class="choice" data-correct="false" data-diagnosis="可延伸到无穷远。孤立正电荷的电场线射向无穷远。">C. 电场线必须终止于负电荷</button>
+<button class="choice" data-correct="true" data-diagnosis="τ=p×E，使偶极子转向电场方向。">D. 电偶极子在均匀电场中受转矩</button>
+<button class="choice" data-correct="true" data-diagnosis="同号为正、异号为负。">E. U=qV，符号取决于q和V</button></div>
+    <div class="result warn" data-feedback-for="posttest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="summary" data-page-index="10" data-tts="summary" data-tsh="总结">
+  <div class="slide-inner"><div class="card"><div class="section-header"><span class="phase-tag">Summary</span><h2>本课总结</h2></div><div style="margin-top:16px"><div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">1.</span><span>库仑定律F=kq₁q₂/r²是静电学基础，E=F/q描述力场</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">2.</span><span>高斯定理∮E·dA=Q/ε₀简化对称场计算</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">3.</span><span>电势V是标量场，E=-∇V提供梯度关系</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">4.</span><span>电场线从+到-，与等势面处处垂直</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">5.</span><span>E和V互补：E描述力，V描述能量</span></div></div></div></div></section>
+<section class="slide-page" data-page-type="summary" data-page-index="11" data-tts="knowledge-graph" data-tsh="知识图谱">
+  <div class="slide-inner"><div class="card card-glow">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">Knowledge Graph</span><h2>知识图谱</h2></div>
+    <p style="color:var(--muted);margin:0 0 16px">本节点的前置、后续和同域知识。</p>
+    <div data-teachany-kg="ext-phy-ef03"><canvas class="tkg-fallback-canvas" width="720" height="120" aria-label="知识图谱" style="display:block;width:100%;max-height:140px;border-radius:12px"></canvas></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="interactive" data-page-index="12" data-tts="ai-tutor" data-tsh="AI 学伴">
+  <div class="slide-inner"><div data-teachany-tutor-card></div></div></section>
+</div>
+<div class="source-section"><h2>📚 内容来源</h2><ul><li>赵凯华《电磁学》(第三版)</li>
+<li>Griffiths "Introduction to Electrodynamics" (4th Ed.)</li></ul></div>
+<div id="comments-panel">
+  <h2>💬 讨论区</h2>
+  <textarea id="comment-input" placeholder="写下你的问题或感想..."></textarea>
+  <button class="btn-pill comment-submit" style="margin-bottom:16px">发表评论</button>
+  <div class="comment-list"></div></div>
+<div class="slide-toolbar" id="slide-toolbar">
+  <button class="toolbar-btn" id="tb-prev" aria-label="上一页"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+  <div class="toolbar-progress"><div class="toolbar-progress-fill" id="tb-progress-fill"></div></div>
+  <span class="toolbar-page-info" id="tb-page-info">1 / 13</span>
+  <button class="toolbar-btn" id="tb-next" aria-label="下一页"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+</div>
+<div id="audio-config" data-teachany-audio hidden>
+  <script type="application/json" data-teachany-audio-playlist>[{"section": "hero", "src": "tts/phy-electric-field-hero.mp3", "label": "封面讲解"}, {"section": "pretest", "src": "tts/phy-electric-field-pretest.mp3", "label": "前测"}, {"section": "conceptest", "src": "tts/phy-electric-field-conceptest.mp3", "label": "概念测试"}]</script>
+</div>
+<script>(function() {
+  var container = document.getElementById('slide-container');
+  var pages = Array.from(document.querySelectorAll('.slide-page'));
+  var total = pages.length; var current = 0;
+  function update() {
+    document.getElementById('tb-page-info').textContent = (current+1)+' / '+total;
+    document.getElementById('tb-prev').style.opacity = current===0?'0.3':'1';
+    document.getElementById('tb-next').style.opacity = current===total-1?'0.3':'1';
+  }
+  function goTo(i) { if(i>=0&&i<total){current=i;pages[current].scrollIntoView({behavior:'smooth',block:'start'});update();} }
+  document.getElementById('tb-prev').addEventListener('click',function(){goTo(current-1)});
+  document.getElementById('tb-next').addEventListener('click',function(){goTo(current+1)});
+  container.addEventListener('scroll',function(){
+    var st=container.scrollTop, best=0, min=Infinity;
+    pages.forEach(function(p,i){var d=Math.abs(p.offsetTop-st);if(d<min){min=d;best=i;}});
+    if(best!==current){current=best;update();}
+  });
+  update();
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('note-export-btn');
+  var modal = document.getElementById('note-modal');
+  if (!btn || !modal) return;
+  btn.addEventListener('click', function() {
+    var excerpts = [];
+    document.querySelectorAll('.slide-page h2, .slide-page h3').forEach(function(h) { excerpts.push(h.textContent.trim()); });
+    var md = '# ' + document.title + '\n\n' + excerpts.map(function(e) { return '- ' + e; }).join('\n');
+    document.getElementById('note-md').value = md;
+    modal.classList.add('show');
+  });
+  document.getElementById('note-close').addEventListener('click', function() { modal.classList.remove('show'); });
+  document.getElementById('note-copy').addEventListener('click', function() {
+    navigator.clipboard.writeText(document.getElementById('note-md').value).then(function() { alert('\u5df2\u590d\u5236!'); });
+  });
+  document.getElementById('note-download').addEventListener('click', function() {
+    var text = document.getElementById('note-md').value;
+    var a = document.createElement('a'); a.href = 'data:text/markdown;charset=utf-8,' + encodeURIComponent(text); a.download = 'notes.md'; a.click();
+  });
+  var panel = document.getElementById('comments-panel');
+  if (!panel) return;
+  var cid = (document.querySelector('meta[name="course-id"]')||{}).content||'unknown';
+  var key = 'teachany-comments-' + cid;
+  function render() {
+    var data = JSON.parse(localStorage.getItem(key) || '[]');
+    var list = panel.querySelector('.comment-list');
+    if (!list) return;
+    list.innerHTML = data.map(function(c) { return '<div class="comment-item"><div class="ts">'+c.time+'</div><div>'+c.text+'</div></div>'; }).join('');
+  }
+  panel.querySelector('.comment-submit').addEventListener('click', function() {
+    var t = panel.querySelector('textarea').value.trim(); if (!t) return;
+    var data = JSON.parse(localStorage.getItem(key) || '[]');
+    data.push({text: t, time: new Date().toLocaleString('zh-CN')});
+    localStorage.setItem(key, JSON.stringify(data));
+    panel.querySelector('textarea').value = '';
+    render();
+  });
+  render();
+});
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-quiz="true"] .choice').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var isCorrect = this.dataset.correct === 'true';
+      var diagnosis = this.dataset.diagnosis || '';
+      var parent = this.closest('[data-quiz="true"]');
+      parent.querySelectorAll('.choice').forEach(function(b) { b.classList.remove('selected','correct','wrong'); b.disabled = true; });
+      this.classList.add('selected');
+      this.classList.add(isCorrect ? 'correct' : 'wrong');
+      var fb = parent.querySelector('.result');
+      if (fb) { fb.className = isCorrect ? 'result' : 'result error'; fb.innerHTML = (isCorrect ? '\u2705 ' : '\u274c ') + diagnosis; }
+    });
+  });
+});
+</script>
+</body>
+</html>

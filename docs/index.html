@@ -54,14 +54,15 @@ footer a{color:var(--blue);text-decoration:none;font-weight:700}
 <body>
 
 <div class="hero">
-  <div class="hero-inner">
-    <div class="kicker">TeachAny × SAM</div>
-    <h1>🧪 Jianan 学习实验室</h1>
-    <p class="subtitle">一句话描述学习目标 → AI 拆解知识网络 → 生成可检测的互动课件 → 自动部署</p>
-    <div class="pills">
-      <span class="pill">🤖 AI 架构</span><span class="pill">⚡ 电路电子</span><span class="pill">🔧 机器人</span>
-      <span class="pill">💻 编程</span><span class="pill">🔬 理化生</span><span class="pill">📜 历史</span>
-    </div>
+  <h1>🧪 Jianan 学习实验室</h1>
+  <p>基于 TeachAny PBL 引擎的个人互动课件库<br>一句话描述学习目标 → AI拆解知识网络 → 生成可检测的互动课件 → 自动部署</p>
+  <div class="badges">
+    <span class="badge">🔌 6门物理电路</span>
+    <span class="badge">📜 3门历史</span>
+    <span class="badge">🤖 AI架构</span>
+    <span class="badge">💡 11门课件已上线</span>
+    <span class="badge">🎨 蓝白SaaS主题</span>
+    <span class="badge">🧪 TeachAny v2</span>
   </div>
 </div>
 
@@ -70,42 +71,78 @@ footer a{color:var(--blue);text-decoration:none;font-weight:700}
 <div class="section">
   <h2>📚 课件列表</h2>
   <div class="cards">
-    <a class="card" href="./minimal-rag/">
-      <div class="icon blue">🤖</div>
-      <h3>最小 RAG 流程</h3>
-      <div class="meta">Python 代码可运行 · Canvas 管线图 · 15 页</div>
-      <span class="status ready">✅ 已上线</span>
+    <a class="card" href="phy-dc-circuits/">
+      <div class="icon">🔌</div>
+      <h3>直流电路：从欧姆定律到基尔霍夫</h3>
+      <div class="meta">物理 · 电路分析 · 互动模拟器</div>
+      <span class="status ready">已上线</span>
     </a>
-    <a class="card" href="./embedding-models/">
-      <div class="icon purple">🧮</div>
-      <h3>嵌入模型原理</h3>
-      <div class="meta">向量计算器 · 语义空间可视化 · 15 页</div>
-      <span class="status ready">✅ 已上线</span>
+    <a class="card" href="phy-circuit-analysis/">
+      <div class="icon">📐</div>
+      <h3>电路分析进阶：节点法、网孔法、戴维南定理</h3>
+      <div class="meta">物理 · 高级电路 · 分步动画</div>
+      <span class="status ready">已上线</span>
     </a>
-    <div class="card">
-      <div class="icon green">⚡</div>
-      <h3>Arduino 嵌入式开发</h3>
-      <div class="meta">ESP32 · 传感器 · 温控系统</div>
-      <span class="status wip">待拆解</span>
-    </div>
-    <div class="card">
-      <div class="icon orange">🔧</div>
-      <h3>避障小车制作</h3>
-      <div class="meta">超声波 · 电机驱动 · PID</div>
-      <span class="status wip">待拆解</span>
-    </div>
-    <div class="card">
-      <div class="icon blue">🔬</div>
-      <h3>量子力学入门</h3>
-      <div class="meta">波函数 · 薛定谔方程 · 测量</div>
-      <span class="status wip">待拆解</span>
-    </div>
-    <div class="card">
-      <div class="icon purple">📜</div>
-      <h3>明朝灭亡多因素分析</h3>
-      <div class="meta">经济 · 气候 · 制度 · 史料辨析</div>
-      <span class="status wip">待拆解</span>
-    </div>
+    <a class="card" href="phy-electric-field/">
+      <div class="icon">⚡</div>
+      <h3>电场：从库仑力到电势</h3>
+      <div class="meta">物理 · 电磁学 · 电场线可视化</div>
+      <span class="status ready">已上线</span>
+    </a>
+    <a class="card" href="phy-electromagnetic/">
+      <div class="icon">🧲</div>
+      <h3>电磁感应：法拉第定律到变压器</h3>
+      <div class="meta">物理 · 磁通变化 · 拖拽实验</div>
+      <span class="status ready">已上线</span>
+    </a>
+    <a class="card" href="phy-capacitor/">
+      <div class="icon">🔋</div>
+      <h3>电容与RC电路：充放电与能量存储</h3>
+      <div class="meta">物理 · RC电路 · 实时曲线</div>
+      <span class="status ready">已上线</span>
+    </a>
+    <a class="card" href="phy-coulomb-law/">
+      <div class="icon">🔬</div>
+      <h3>库仑定律：电荷、电力与叠加原理</h3>
+      <div class="meta">物理 · 静电力 · 电荷拖拽</div>
+      <span class="status ready">已上线</span>
+    </a>
+    <a class="card" href="history-ancient-china/">
+      <div class="icon">🏛️</div>
+      <h3>中国古代史：政治制度的千年演变</h3>
+      <div class="meta">历史 · 夏商周→明清 · 时间轴</div>
+      <span class="status ready">已上线</span>
+    </a>
+    <a class="card" href="history-sanguo-tang/">
+      <div class="icon">⚔️</div>
+      <h3>三国隋唐：从分裂到统一</h3>
+      <div class="meta">历史 · 三国→隋唐 · 势力地图</div>
+      <span class="status ready">已上线</span>
+    </a>
+    <a class="card" href="history-industrial-revolution/">
+      <div class="icon">🏭</div>
+      <h3>四次工业革命：从蒸汽机到AI</h3>
+      <div class="meta">历史 · 技术树 · 时间线对比</div>
+      <span class="status ready">已上线</span>
+    </a>
+    <a class="card" href="minimal-rag/">
+      <div class="icon">🤖</div>
+      <h3>RAG 检索增强生成系统</h3>
+      <div class="meta">AI架构 · 5个学习阶段</div>
+      <span class="status ready">已上线</span>
+    </a>
+    <a class="card" href="embedding-models/">
+      <div class="icon">🧬</div>
+      <h3>Embedding 模型原理</h3>
+      <div class="meta">AI架构 · 向量空间</div>
+      <span class="status ready">已上线</span>
+    </a>
+    <a class="card">
+      <div class="icon">🔧</div>
+      <h3>更多课程开发中...</h3>
+      <div class="meta">持续更新</div>
+      <span class="status wip">待添加</span>
+    </a>
   </div>
 </div>
 

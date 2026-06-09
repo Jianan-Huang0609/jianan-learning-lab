@@ -1,0 +1,60 @@
+{
+  "id": "phy-electric-field",
+  "course_id": "phy-electric-field",
+  "node_id": "ext-phy-ef03",
+  "name": "电场：从库仑力到电势",
+  "name_en": "Electric Field",
+  "subject": "physics",
+  "grade": 12,
+  "stage": "high",
+  "domain": "电磁学",
+  "lesson_type": "new-concept",
+  "status": "community",
+  "author": "TeachAny",
+  "version": "1.0.0",
+  "teachany_version": "7.18.0",
+  "template_version": "2.0",
+  "curriculum": "成人自学·物理",
+  "description": "掌握电场的基本概念：库仑力、电场强度、电场线、电势，理解电场是电荷间相互作用的媒介。",
+  "tags": [
+    "电场",
+    "库仑力",
+    "电势",
+    "电场线",
+    "电磁学"
+  ],
+  "prerequisites": [
+    "ext-phy-ca02"
+  ],
+  "leads_to": [
+    "ext-phy-em04"
+  ],
+  "learning_objectives": [
+    "理解库仑定律及其向量形式",
+    "掌握电场强度的定义和计算方法",
+    "理解电场线的物理意义，能绘制常见电荷分布的电场线",
+    "理解电势和电势能，掌握 E=-∇V 的梯度关系"
+  ],
+  "assets": {
+    "hero": "assets/phy-electric-field-hero.svg",
+    "tts_manifest": "tts/manifest.json",
+    "videos": [],
+    "images": [
+      "assets/phy-electric-field-hero.svg"
+    ]
+  },
+  "has_tts": true,
+  "has_video": false,
+  "has_images": true,
+  "has_hero": true,
+  "has_canvas": true,
+  "has_knowledge_graph": true,
+  "free_mode": false,
+  "feedback": {
+    "require_password": false,
+    "password_sha256": "",
+    "password_hint": ""
+  },
+  "created_at": "2026-06-09",
+  "updated_at": "2026-06-09"
+}

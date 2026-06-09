@@ -1,0 +1,60 @@
+{
+  "id": "phy-capacitor",
+  "course_id": "phy-capacitor",
+  "node_id": "ext-phy-cp05",
+  "name": "电容与RC电路：充放电与能量存储",
+  "name_en": "Capacitors and RC Circuits",
+  "subject": "physics",
+  "grade": 12,
+  "stage": "high",
+  "domain": "电磁学",
+  "lesson_type": "new-concept",
+  "status": "community",
+  "author": "TeachAny",
+  "version": "1.0.0",
+  "teachany_version": "7.18.0",
+  "template_version": "2.0",
+  "curriculum": "成人自学·物理",
+  "description": "掌握电容原理、充放电曲线、RC电路时间常数、介电常数和电场能量存储。",
+  "tags": [
+    "电容",
+    "RC电路",
+    "充放电",
+    "时间常数",
+    "介电常数"
+  ],
+  "prerequisites": [
+    "ext-phy-em04"
+  ],
+  "leads_to": [
+    "ext-phy-cl06"
+  ],
+  "learning_objectives": [
+    "理解电容的定义 C=Q/V 和平行板电容公式 C=εA/d",
+    "掌握RC电路的充放电曲线 V(t)=V₀(1-e^(-t/RC))",
+    "理解时间常数τ=RC的物理意义",
+    "理解电容储能公式 U=½CV² 和介电常数的作用"
+  ],
+  "assets": {
+    "hero": "assets/phy-capacitor-hero.svg",
+    "tts_manifest": "tts/manifest.json",
+    "videos": [],
+    "images": [
+      "assets/phy-capacitor-hero.svg"
+    ]
+  },
+  "has_tts": true,
+  "has_video": false,
+  "has_images": true,
+  "has_hero": true,
+  "has_canvas": true,
+  "has_knowledge_graph": true,
+  "free_mode": false,
+  "feedback": {
+    "require_password": false,
+    "password_sha256": "",
+    "password_hint": ""
+  },
+  "created_at": "2026-06-09",
+  "updated_at": "2026-06-09"
+}

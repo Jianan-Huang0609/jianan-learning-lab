@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>四次工业革命：从蒸汽机到人工智能</title>
+<meta name="description" content="系统理解四次工业革命的驱动技术、社会影响和发展逻辑：蒸汽→电力→信息→AI。">
+<meta name="course-id" content="history-industrial-revolution">
+<meta name="course-title" content="四次工业革命：从蒸汽机到人工智能">
+<meta name="course-subject" content="history">
+<meta name="course-grade" content="高中·成人自学">
+<meta name="course-prereqs" content="['ext-hist-st02']">
+<meta name="course-next" content="">
+<meta name="course-version" content="1.0.0">
+<meta name="teachany-version" content="7.18.0">
+<meta name="teachany-node" content="ext-hist-ir03">
+<meta name="teachany-subject" content="history">
+<meta name="teachany-grade" content="12">
+<meta name="teachany-stage" content="high">
+<meta name="teachany-domain" content="世界历史">
+<meta name="teachany-prerequisites" content="世界近代史基础">
+<meta name="teachany-lesson-type" content="new-concept">
+<meta name="teachany-free-mode" content="false">
+<meta name="teachany-template-version" content="2.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; max-width: 100%; overflow-x: hidden; }
+body { padding-top: var(--safe-top); font-family: var(--sans); color: var(--ink); line-height: 1.75; font-size: 16px;
+  background: radial-gradient(circle at 18% 18%, rgba(37,99,235,.10), transparent 30%), radial-gradient(circle at 88% 18%, rgba(124,58,237,.08), transparent 28%), linear-gradient(135deg, #fbfdff, #eef6ff 48%, #f8f5ff); }
+a { color: var(--blue); text-decoration: none; } a:hover { text-decoration: underline; }
+button, a, input, select, textarea { min-height: 44px; }
+img, video, canvas, svg { max-width: 100%; height: auto; }
+h1, h2, h3, h4 { margin: 0; letter-spacing: -0.035em; }
+
+:root {
+  --bg: #f7faff; --panel: #ffffff; --ink: #0f172a; --muted: #64748b;
+  --line: #dbe7f5; --blue: #2563eb; --green: #16a34a; --purple: #7c3aed;
+  --orange: #f59e0b; --red: #ef4444;
+  --shadow: 0 24px 80px rgba(15,23,42,.12);
+  --mono: "DM Mono", ui-monospace, monospace;
+  --sans: "Inter", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --brand: #2563eb; --brand-2: #7c3aed; --accent: #16a34a; --warn: #f59e0b;
+  --text: #0f172a; --text-secondary: #475569; --bg-subtle: #f1f5f9;
+  --brand-soft: rgba(37,99,235,0.08); --brand-2-soft: rgba(124,58,237,0.08);
+  --accent-soft: rgba(22,163,74,0.08); --line-subtle: rgba(15,23,42,0.08);
+  --card: #ffffff; --card-elevated: #ffffff;
+  --page-padding: 24px; --card-radius: 20px; --card-radius-sm: 14px;
+  --slide-height: 100vh; --slide-height-fallback: 100dvh;
+  --toolbar-height: 56px; --sidenav-width: 48px;
+  --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom);
+}
+body {
+  font-family: var(--sans); color: var(--ink);
+  background: radial-gradient(circle at 18% 18%, rgba(37,99,235,.10), transparent 30%),
+              radial-gradient(circle at 88% 18%, rgba(124,58,237,.08), transparent 28%),
+              linear-gradient(135deg, #fbfdff, #eef6ff 48%, #f8f5ff);
+}
+.card {
+  background: linear-gradient(160deg, rgba(255,255,255,0.95), rgba(248,250,255,0.98));
+  border: 1px solid var(--line); border-radius: var(--card-radius);
+  padding: 24px; box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 32px 96px rgba(15,23,42,.16); }
+.card-accent { border-top: 3px solid; border-image: linear-gradient(90deg, var(--blue), var(--purple)) 1; }
+.card-glow { box-shadow: 0 4px 24px rgba(15,23,42,0.08), 0 0 40px rgba(37,99,235,0.05); }
+.glass {
+  background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line);
+}
+.choice {
+  width: 100%; text-align: left; border: 1px solid var(--line); border-radius: 14px;
+  background: #fff; color: var(--ink); padding: 16px 20px;
+  cursor: pointer; font-size: 15px; line-height: 1.5;
+  transition: all 0.2s ease; font-family: var(--sans);
+}
+.choice:hover { background: rgba(37,99,235,0.04); border-color: var(--blue); transform: translateX(4px); }
+.choice.selected { border-color: var(--blue); background: rgba(37,99,235,0.08); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+.choice.correct { border-color: var(--green); background: rgba(22,163,74,0.08); }
+.choice.wrong { border-color: var(--red); background: rgba(239,68,68,0.06); }
+.result {
+  padding: 16px 20px; border-radius: 14px; font-size: 15px; line-height: 1.6;
+  background: rgba(22,163,74,0.06); border: 1px solid rgba(22,163,74,0.15); color: var(--ink);
+}
+.result.warn { background: rgba(245,158,11,0.06); border-color: rgba(245,158,11,0.15); }
+.result.error { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.15); }
+input, textarea {
+  width: 100%; border-radius: 12px; border: 1px solid var(--line);
+  background: #fff; color: var(--ink); padding: 14px 16px;
+  font-size: 15px; font-family: var(--sans);
+}
+input:focus, textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.10); }
+h1, h2, h3 { letter-spacing: -0.035em; }
+.hero-gradient {
+  background: linear-gradient(135deg, #0f172a 0%, #2563eb 50%, #7c3aed 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.kicker {
+  font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--blue); font-size: 12px; font-weight: 600;
+}
+.btn-pill {
+  font-family: var(--mono); background: var(--blue); color: #fff;
+  border: none; border-radius: 999px; padding: 10px 24px;
+  font-size: 13px; cursor: pointer; transition: all 0.2s;
+}
+.btn-pill:hover { background: #1d4ed8; transform: translateY(-1px); }
+.canvas-wrap {
+  overflow: auto; background: var(--bg); border: 1px solid var(--line);
+  border-radius: 16px; padding: 16px;
+}
+#comments-panel { max-width: 880px; margin: 40px auto; padding: 24px; }
+#comments-panel h2 { font-size: 22px; margin-bottom: 16px; }
+#comments-panel textarea { min-height: 80px; margin-bottom: 12px; }
+.comment-item { padding: 12px 16px; background: #fff; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; }
+.comment-item .ts { font-size: 12px; color: var(--muted); }
+#note-export-btn { position: fixed; top: 16px; right: 16px; z-index: 200; }
+#note-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15,23,42,0.5); z-index: 300; align-items: center; justify-content: center; }
+#note-modal.show { display: flex; }
+#note-modal .modal-content { background: #fff; border-radius: 16px; padding: 32px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
+.section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.section-header h2 { font-size: clamp(20px, 4vw, 26px); font-weight: 700; line-height: 1.3; color: var(--ink); }
+.phase-tag { display: inline-flex; align-items: center; gap: 6px; color: var(--blue); background: var(--brand-soft); border: 1px solid rgba(37,99,235,0.2); border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; font-family: var(--mono); }
+.phase-tag[data-variant="success"] { color: var(--green); background: rgba(22,163,74,0.08); border-color: rgba(22,163,74,0.2); }
+.phase-tag[data-variant="purple"] { color: var(--purple); background: var(--brand-2-soft); border-color: rgba(124,58,237,0.2); }
+.phase-tag[data-variant="warn"] { color: var(--orange); background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.2); }
+.grid { display: grid; grid-template-columns: 1fr; gap: 12px; width: 100%; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.objectives { list-style: none; padding: 0; display: grid; gap: 10px; }
+.objectives li { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; border-radius: 14px; background: rgba(37,99,235,0.04); border: 1px solid var(--line); }
+.objectives li::before { content: "✦"; color: var(--blue); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+.ta-standard-figure { margin: 20px auto; max-width: 980px; }
+.ta-standard-figure img, .ta-standard-figure svg { display: block; width: 100%; border-radius: 16px; border: 1px solid var(--line); }
+.ta-standard-figure figcaption { margin-top: 10px; color: var(--muted); font-size: 14px; text-align: center; }
+.flex-row { display: flex; gap: 12px; margin-top: 14px; align-items: center; flex-wrap: wrap; }
+.flex-row .choice { flex: 1; min-width: 120px; text-align: center; }
+.inner-card { margin: 12px 0; padding: 16px; border-radius: var(--card-radius-sm); border: 1px solid var(--line); background: var(--bg); }
+.inner-card p { margin: 0 0 6px; color: var(--ink); }
+.slide-page .slide-inner { max-width: 880px; width: 100%; position: relative; z-index: 2; margin: 0 auto; }
+.slide-page .slide-inner > * { width: 100%; box-sizing: border-box; }
+.source-section { max-width: 880px; margin: 40px auto; padding: 0 24px; }
+.source-section h2 { font-size: 20px; margin-bottom: 12px; }
+.source-section ul { padding-left: 20px; color: var(--muted); font-size: 14px; }
+@media (max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr !important; } .flex-row { flex-direction: column; } .flex-row .choice { min-width: 100%; } }
+
+.slide-container { scroll-snap-type: y proximity; overflow-y: auto; height: 100dvh; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+.slide-page { min-height: 100dvh; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: var(--page-padding); padding-bottom: calc(var(--page-padding) + 56px); position: relative; overflow: hidden; }
+.slide-page[data-page-type="cover"] { text-align: center; }
+.slide-page[data-page-type="cover"] h1 { font-size: clamp(32px, 7vw, 56px); line-height: 1.15; background: linear-gradient(135deg, #0f172a 0%, #2563eb 50%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 16px; }
+.slide-page[data-page-type="objectives"] { background: radial-gradient(circle at 0% 100%, rgba(22,163,74,0.06), transparent 40%), radial-gradient(circle at 100% 0%, rgba(37,99,235,0.05), transparent 40%); }
+.slide-page[data-page-type="concept"] { background: radial-gradient(circle at 30% 20%, rgba(37,99,235,0.04), transparent 35%), radial-gradient(circle at 70% 80%, rgba(124,58,237,0.04), transparent 35%); }
+.slide-page[data-page-type="interactive"] { background: radial-gradient(circle at 50% 0%, rgba(22,163,74,0.06), transparent 40%), radial-gradient(circle at 80% 100%, rgba(37,99,235,0.04), transparent 35%); }
+.slide-page[data-page-type="quiz"] { background: radial-gradient(circle at 20% 80%, rgba(245,158,11,0.05), transparent 35%), radial-gradient(circle at 80% 20%, rgba(124,58,237,0.04), transparent 35%); }
+.slide-page[data-page-type="summary"] { background: radial-gradient(circle at 50% 50%, rgba(37,99,235,0.06), transparent 45%), radial-gradient(circle at 20% 20%, rgba(22,163,74,0.04), transparent 30%); }
+@media (max-width: 768px) { :root { --page-padding: 16px; --card-radius: 16px; } .slide-page { padding: 16px 14px; padding-bottom: calc(16px + 56px); } .grid-2, .grid-3 { grid-template-columns: 1fr !important; } .flex-row { flex-direction: column; } .flex-row .choice { min-width: 100%; } .card { padding: 18px; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.stagger-1 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.1s; }
+.stagger-2 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.2s; }
+.stagger-3 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+<button class="btn-pill" id="note-export-btn" style="position:fixed;top:16px;right:16px;z-index:200">📝 导出笔记</button>
+<div id="note-modal"><div class="modal-content">
+  <h3 style="margin-top:0">📝 课程笔记</h3>
+  <textarea id="note-md" style="min-height:200px;margin-bottom:16px"></textarea>
+  <div style="display:flex;gap:8px">
+    <button class="btn-pill" id="note-copy">📋 复制</button>
+    <button class="btn-pill" id="note-download">💾 下载 .md</button>
+    <button class="btn-pill" id="note-close" style="background:#64748b">关闭</button>
+  </div></div></div>
+<div class="slide-container" id="slide-container">
+<section class="slide-page" data-page-type="cover" data-page-index="0" data-tts="hero" data-tsh="开场">
+  <div class="slide-inner">
+    <h1 class="hero-gradient" style="font-size:clamp(32px,7vw,56px);line-height:1.15;text-align:center;margin-bottom:16px">四次工业革命：从蒸汽机到人工智能</h1>
+    <p style="color:var(--muted);font-size:clamp(16px,3vw,22px);max-width:680px;margin:0 auto;text-align:center">从蒸汽机到ChatGPT，每次技术革命如何重塑人类社会？</p>
+    <figure class="ta-standard-figure" style="margin-top:32px">
+      <svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#eef6ff"/><stop offset="100%" stop-color="#f8f5ff"/></linearGradient></defs>
+        <rect width="1280" height="720" fill="url(#bg)"/>
+        <circle cx="200" cy="180" r="120" fill="rgba(37,99,235,0.06)"/><circle cx="1080" cy="540" r="160" fill="rgba(124,58,237,0.05)"/><circle cx="640" cy="360" r="200" fill="rgba(37,99,235,0.03)"/>
+        <text x="640" y="320" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="800" fill="#0f172a">四次工业革命：从蒸汽机到人工智能</text>
+        <text x="640" y="380" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#64748b">从蒸汽机到ChatGPT，每次技术革命如何重塑人类社会？</text>
+        <rect x="300" y="420" width="180" height="56" rx="28" fill="rgba(37,99,235,0.1)" stroke="#2563eb" stroke-width="1"/><text x="390" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#2563eb">交互学习</text>
+        <rect x="550" y="420" width="180" height="56" rx="28" fill="rgba(124,58,237,0.1)" stroke="#7c3aed" stroke-width="1"/><text x="640" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#7c3aed">概念测验</text>
+        <rect x="800" y="420" width="180" height="56" rx="28" fill="rgba(22,163,74,0.1)" stroke="#16a34a" stroke-width="1"/><text x="890" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#16a34a">知识迁移</text>
+      </svg>
+      <figcaption>1760→今：每次革命约60-80年周期，技术浪潮一浪高过一浪</figcaption>
+    </figure>
+  </div>
+</section>
+<section class="slide-page" data-page-type="interactive" data-page-index="1" data-tts="problem-anchor" data-tsh="问题锚点">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag">Problem Anchor</span><h2>今天想解决什么问题？</h2></div>
+      <p style="color:var(--muted);margin:0 0 16px">选一个你关心的问题，后面的内容会围绕它展开。</p>
+      <div class="grid"><button class="choice" data-correct="true" data-diagnosis="核心驱动力不同：物理力→电力→信息力→智能力。AI革命首次让机器具备"认知"能力。">A. 四次工业革命的本质区别是什么？为什么说AI革命不同于之前的任何一次？</button>
+<button class="choice" data-correct="false" data-diagnosis="约60-80年一个周期。我们刚进入第四次工业革命的早期阶段。选A全面了解。">B. 每轮工业革命大约持续多久？我们现在处于哪个阶段？</button>
+<button class="choice" data-correct="false" data-diagnosis="低技能重复劳动首先被替代，创造性工作每次革命都会升级。选A系统学习。">C. 工业革命是"创造性毁灭"——被淘汰的东西有规律吗？</button></div>
+      <label style="display:block;margin-top:20px;color:var(--muted);font-size:14px">或者，写下你自己的问题
+        <input id="learner-question-input" placeholder="把你卡住的问题写在这里" style="margin-top:8px">
+      </label>
+      <p id="anchor-feedback" class="result warn" style="margin-top:16px">选择或输入后，本课会围绕你的问题展开。</p>
+    </div>
+  </div>
+</section>
+<section class="slide-page" data-page-type="objectives" data-page-index="2" data-tts="objectives" data-tsh="学习目标">
+  <div class="slide-inner"><div class="card"><div class="section-header"><span class="phase-tag" data-variant="success">Objectives</span><h2>学习目标</h2></div><ul class="objectives"><li>理解第一次工业革命(蒸汽)的驱动技术和影响</li>
+<li>掌握第二次工业革命(电力+内燃机)如何改变生产组织方式</li>
+<li>理解第三次工业革命(计算机+互联网)的信息化本质</li>
+<li>分析第四次工业革命(AI+IoT+量子)的特征和发展趋势</li></ul></div></div></section>
+<section class="slide-page" data-page-type="quiz" data-page-index="3" data-tts="pretest" data-tsh="前测：工业革命基础">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="warn">Pretest</span><h2>前测：工业革命基础</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">检测你对工业革命历史的基本了解。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="1760s开始，以纺织机械化和瓦特改良蒸汽机(1769)为标志。">A. 第一次工业革命始于18世纪中叶的英国</button>
+<button class="choice" data-correct="true" data-diagnosis="19世纪末，发电机+电动机+内燃机取代蒸汽动力。">B. 电力是第二次工业革命的核心技术</button>
+<button class="choice" data-correct="false" data-diagnosis="互联网是重要技术之一，但核心是"信息化"——计算机+互联网+自动化。">C. 第三次工业革命的核心是互联网</button>
+<button class="choice" data-correct="true" data-diagnosis="AI+IoT+5G+量子计算+生物技术共同构成第四次工业革命。">D. AI属于第四次工业革命的核心技术</button>
+<button class="choice" data-correct="false" data-diagnosis="约60-80年：1st 1760-1840，2nd 1870-1914，3rd 1960-2010，4th 2010s-现今。">E. 每次工业革命大约持续100年</button></div>
+    <div class="result warn" data-feedback-for="pretest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="4" data-tts="c1" data-tsh="第一次工业革命：蒸汽与机械化(1760-1840)">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="">Rev 1</span><h2>第一次工业革命：蒸汽与机械化(1760-1840)</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你知道瓦特改良了蒸汽机</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是（这也是常见错误之处——很多人在这里容易混淆概念）：</strong>蒸汽机为什么能引发一场革命？它改变了什么？</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>理解"动力革命"如何从纺织业扩展到交通运输，彻底改变生产方式和社会结构</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">核心技术</h3><p style="color:var(--muted);margin:0;font-size:15px">1769瓦特改良蒸汽机→工厂不再依赖水力→工业城市兴起。纺织机(珍妮机1764、水力纺纱机1769)→生产效率数十倍提升。铁路(史蒂芬森"火箭号"1829)→大规模运输。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">社会影响</h3><p style="color:var(--muted);margin:0;font-size:15px">工厂制取代手工工场→工人集中。城市化加速(曼彻斯特人口从2万→30万)。社会分化：工业资产阶级vs无产阶级。工人运动兴起(卢德运动→宪章运动)。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">全球化效应</h3><p style="color:var(--muted);margin:0;font-size:15px">英国成为"世界工厂"(1820年占全球工业产量约25%)。殖民扩张加速→原料产地+商品市场。"英国病"：先发优势最终变为产业僵化。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="5" data-tts="c2" data-tsh="第二次工业革命：电力与大规模生产(1870-1914)">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="success">Rev 2</span><h2>第二次工业革命：电力与大规模生产(1870-1914)</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你知道爱迪生发明了电灯</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>电力革命与蒸汽革命有什么本质不同？</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>理解电力使"能源可以传输"的重大意义，以及由此引发的生产组织革命</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">核心技术</h3><p style="color:var(--muted);margin:0;font-size:15px">发电机(法拉第1831原理→西门子1866实用发电机)。电动机→工厂布局不再受动力源限制。内燃机(奥托1876、狄塞尔1897)→汽车(奔驰1885)、飞机(莱特1903)。电灯、电报、电话→改变日常生活。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">生产组织革命</h3><p style="color:var(--muted);margin:0;font-size:15px">流水线(福特1913)→大规模标准化生产。科学管理(泰勒制)→分工细化。托拉斯和卡特尔→垄断资本主义。钢铁和化工成为主导产业。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">社会结构变化</h3><p style="color:var(--muted);margin:0;font-size:15px">中产阶级扩大→白领阶层兴起。消费社会萌芽(百货商场、广告)。城市化进一步加速。工人运动→八小时工作制、社会保障体系雏形。帝国主义竞争→一战。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="6" data-tts="c3" data-tsh="第三次工业革命：信息与自动化(1960-2010)">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">Rev 3</span><h2>第三次工业革命：信息与自动化(1960-2010)</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你每天都在使用计算机和互联网</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>信息化如何从"计算工具"演变为"社会基础设施"？</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>理解从晶体管到互联网到智能手机的技术演进逻辑</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">核心技术演进</h3><p style="color:var(--muted);margin:0;font-size:15px">晶体管(1947)→集成电路(1958)→微处理器(1971)→PC(1970s-80s)。ARPANET(1969)→TCP/IP(1983)→WWW(1989)→智能手机(2007 iPhone)。自动化：PLC→工业机器人→CAD/CAM。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">经济转型</h3><p style="color:var(--muted);margin:0;font-size:15px">制造业占比下降→服务业主导。全球化加速(供应链全球配置)。知识经济→无形资产(品牌/专利/数据)价值超过有形资产。硅谷模式→风险投资+创业。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">社会文化变革</h3><p style="color:var(--muted);margin:0;font-size:15px">信息获取民主化(搜索引擎、维基百科)。社交网络(2004 Facebook)→传播方式革命。远程工作成为可能。数字鸿沟：信息富人和信息穷人。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="7" data-tts="c4" data-tsh="第四次工业革命：AI与智能时代(2010s-)">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="">Rev 4</span><h2>第四次工业革命：AI与智能时代(2010s-)</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你使用过ChatGPT和AI工具</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>AI革命与信息革命有何本质不同？为什么被称为"智能革命"？</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>理解AI从"工具"到"代理"的范式转换，以及它对劳动力、创造力和社会的深远影响</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">核心技术</h3><p style="color:var(--muted);margin:0;font-size:15px">深度学习(2012 AlexNet)→大语言模型(2017 Transformer→2022 ChatGPT)。IoT(万物互联)→5G/6G→边缘计算。量子计算→新材料发现。基因编辑(CRISPR)→合成生物学。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">AI的独特之处</h3><p style="color:var(--muted);margin:0;font-size:15px">前三次革命是"力的延伸"和"信息处理"，AI是"认知能力的外化"。首次让机器具备：理解语言、生成内容、自主决策、创造性输出。"通用人工智能"(AGI)的可能性。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">社会面临的挑战</h3><p style="color:var(--muted);margin:0;font-size:15px">就业结构剧变：白领工作首当其冲(与过去蓝领先淘汰不同)。AI伦理：偏见、隐私、可解释性、自主武器。治理难题：技术发展速度>监管速度。"后稀缺社会"的可能性与不平等风险。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="interactive" data-page-index="8" data-tts="interactive" data-tsh="技术树与时间线对比">
+  <div class="slide-inner"><div class="card card-glow">
+    <div class="section-header"><span class="phase-tag" data-variant="success">Interactive</span><h2>技术树与时间线对比</h2></div>
+    <p style="color:var(--muted);margin:0 0 16px">选择工业革命阶段，查看对应的核心技术树和里程碑事件。颜色深浅表示技术影响力。</p>
+    <div class="canvas-wrap"><canvas id="irc" width="760" height="420" aria-label="互动画布" style="display:block;width:100%;border-radius:12px"></canvas></div>
+    <div class="grid" style="margin-top:16px"><div class="flex-row"><button class="btn-pill" id="ir1" style="background:#2563eb">第一次</button><button class="btn-pill" id="ir2" style="background:#16a34a">第二次</button><button class="btn-pill" id="ir3" style="background:#7c3aed">第三次</button><button class="btn-pill" id="ir4" style="background:#ef4444">第四次</button></div></div>
+  </div></div></section>
+<script>(function(){var c=document.getElementById('irc');if(!c)return;var ctx=c.getContext('2d');var W=c.width,H=c.height;var stage=0;
+var techs=[
+  [{n:'蒸汽机',y:1769,x:300,w:120},{n:'纺织机',y:1770,x:150,w:90},{n:'铁路',y:1825,x:480,w:90},
+   {n:'炼铁',y:1784,x:50,w:70},{n:'运河',y:1761,x:560,w:70}],
+  [{n:'发电机',y:1866,x:100,w:100},{n:'电动机',y:1873,x:250,w:90},{n:'内燃机',y:1876,x:380,w:100},
+   {n:'电报',y:1837,x:520,w:70},{n:'汽车',y:1885,x:200,w:70},{n:'飞机',y:1903,x:600,w:70}],
+  [{n:'晶体管',y:1947,x:50,w:90},{n:'IC芯片',y:1958,x:180,w:80},{n:'微处理器',y:1971,x:300,w:100},
+   {n:'互联网',y:1969,x:430,w:90},{n:'PC',y:1975,x:560,w:70},{n:'WWW',y:1989,x:640,w:70}],
+  [{n:'深度学习',y:2012,x:50,w:100},{n:'LLM',y:2017,x:190,w:80},{n:'IoT',y:2010,x:300,w:70},
+   {n:'5G',y:2019,x:400,w:60},{n:'量子',y:2019,x:500,w:70},{n:'CRISPR',y:2012,x:600,w:90}]
+];
+var colors=['#2563eb','#16a34a','#7c3aed','#ef4444'];
+function draw(){ctx.clearRect(0,0,W,H);ctx.fillStyle='#f7faff';ctx.fillRect(0,0,W,H);
+ctx.fillStyle='#0f172a';ctx.font='bold 18px Inter';
+var titles=['第一次：蒸汽与机械化','第二次：电力与内燃机','第三次：信息化','第四次：AI与智能'];
+ctx.fillText(titles[stage],20,40);
+// timeline
+ctx.fillStyle='#e2e8f0';ctx.fillRect(20,80,720,4);
+var allTechs=techs[stage];
+allTechs.forEach(function(t){
+  var bx=20+(t.y-1760)/(2023-1760)*720;
+  ctx.fillStyle=colors[stage];ctx.globalAlpha=0.7;
+  ctx.beginPath();ctx.arc(bx,82,5,0,Math.PI*2);ctx.fill();
+  ctx.globalAlpha=1;
+  ctx.fillStyle='#0f172a';ctx.font='12px Inter';
+  ctx.fillText(t.n,bx-t.w/2+10,75);
+});
+// tech cards
+allTechs.forEach(function(t,i){
+  var cy=140+(i%3)*80,cx=40+(Math.floor(i/3))*250;
+  ctx.fillStyle=colors[stage];ctx.globalAlpha=0.12;
+  ctx.fillRect(cx,cy,t.w,36);
+  ctx.globalAlpha=1;
+  ctx.fillStyle=colors[stage];ctx.font='bold 14px Inter';ctx.fillText(t.n,cx+8,cy+24);
+  ctx.fillStyle='#475569';ctx.font='12px Inter';ctx.fillText(t.y+'年',cx+t.w-45,cy+24);
+});
+ctx.fillStyle='#0f172a';ctx.font='14px Inter';ctx.fillText('点击按钮切换工业革命阶段',20,390);}
+document.getElementById('ir1').addEventListener('click',function(){stage=0;draw();});
+document.getElementById('ir2').addEventListener('click',function(){stage=1;draw();});
+document.getElementById('ir3').addEventListener('click',function(){stage=2;draw();});
+document.getElementById('ir4').addEventListener('click',function(){stage=3;draw();});
+draw();})();</script>
+
+  <!-- Scaffolded Exercise Page -->
+  <section class="slide-page" data-page-type="concept" data-page-index="99" data-tts="scaffold" data-tsh="分层练习 - 从示范到独立完成">
+    <div class="slide-inner">
+      <div class="card">
+        <div class="section-header"><span class="phase-tag" data-variant="success">Scaffold</span><h2>分层练习：从示范到独立</h2></div>
+        <div class="grid" style="margin-top:16px">
+          <div class="card" style="padding:20px;border-left:3px solid var(--green)">
+            <h3 style="color:var(--green);margin-bottom:10px;font-size:15px">🟢 全支架示范</h3>
+            <p style="color:var(--muted);margin:0;font-size:15px">回顾上方概念页中的解题分析。每一步的推导逻辑——为什么用这个公式？为什么代入这个数值？理解"为什么这样做"比记住步骤更重要。</p>
+            <p style="color:var(--blue);margin-top:8px;font-size:14px"><strong>支架提示：</strong>分清已知量和未知量→选择正确公式→代入数值→检查单位→验证答案是否合理。</p>
+          </div>
+          <div class="card" style="padding:20px;border-left:3px solid var(--orange)">
+            <h3 style="color:var(--orange);margin-bottom:10px;font-size:15px">🟡 半支架练习</h3>
+            <p style="color:var(--muted);margin:0 0 12px;font-size:15px">试着独立完成与本课主题相关的一道计算或分析题。只给你关键公式提示，解题过程由你自己完成。</p>
+            <input aria-label="半支架填空" placeholder="写下你的解题过程..." style="margin-top:8px">
+            <p style="color:var(--muted);margin-top:8px;font-size:13px">💡 <strong>减弱支架：</strong>这次只有公式提示，不给你完整步骤。完成后对照概念页自检。</p>
+          </div>
+          <div class="card" style="padding:20px;border-left:3px solid var(--blue)">
+            <h3 style="color:var(--blue);margin-bottom:10px;font-size:15px">🔵 独立完成（挑战）</h3>
+            <p style="color:var(--muted);margin:0;font-size:15px">设计一道融合本课至少两个核心概念的综合题，写出完整题目、解题过程和答案。尝试联系实际场景。</p>
+            <textarea aria-label="独立完成" placeholder="题目：
+
+解题过程：
+
+答案：" style="margin-top:8px;min-height:100px"></textarea>
+            <p style="color:var(--purple);margin-top:8px;font-size:13px">🏆 <strong>挑战升级：</strong>尝试将本课知识迁移到一个你从未见过的场景中。真正的理解在于能用到新地方。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide-page" data-page-type="quiz" data-page-index="9" data-tts="conceptest" data-tsh="概念测试：工业革命">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">ConcepTest</span><h2>概念测试：工业革命</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">检验你对四次工业革命本质区别的理解。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="这是人类首次不依赖人力/畜力/水力/风力的大规模动力来源。">A. 蒸汽机的核心贡献是将热能转化为可控的机械能</button>
+<button class="choice" data-correct="true" data-diagnosis="蒸汽动力受限于传动轴，电力可以通过电线传输到任何地方。">B. 电力革命的最大创新在于能源可以远距离传输</button>
+<button class="choice" data-correct="true" data-diagnosis="计算机首次将信息处理自动化，互联网将信息传播全球化。">C. 信息革命的核心是将"信息"变成可数字化处理的对象</button>
+<button class="choice" data-correct="true" data-diagnosis="前三次革命是力量和信息的延伸，AI是智能本身的延伸。">D. AI革命的独特之处是机器首次具备"认知"和"创造"能力</button>
+<button class="choice" data-correct="false" data-diagnosis="是渐进过程。"创造性毁灭"中新旧产业有重叠期。马车与汽车共存了几十年。">E. 每次工业革命都会立刻消灭所有旧产业</button></div>
+    <div class="result warn" data-feedback-for="conceptest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="quiz" data-page-index="10" data-tts="posttest" data-tsh="后测：工业革命综合">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="warn">Post-Test</span><h2>后测：工业革命综合</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">学完后检验你的综合理解。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="英国煤铁资源丰富，为蒸汽机提供燃料和原材料。">A. 第一次工业革命始于英国的原因之一是煤炭资源丰富</button>
+<button class="choice" data-correct="true" data-diagnosis="大规模标准化生产→T型车价格从$850降到$260。">B. 福特流水线(1913)是第二次工业革命生产组织的代表</button>
+<button class="choice" data-correct="true" data-diagnosis="戈登·摩尔的观察推动了信息技术的指数级发展。">C. 摩尔定律(1965)预言芯片晶体管数每两年翻倍</button>
+<button class="choice" data-correct="false" data-diagnosis="制造业占比下降(自动化替代)，服务业占比上升。">D. 第三次工业革命使制造业就业占比大幅上升</button>
+<button class="choice" data-correct="true" data-diagnosis="Cyber-Physical Systems将三个领域深度整合。">E. 第四次工业革命的特点之一是物理-数字-生物世界的融合</button></div>
+    <div class="result warn" data-feedback-for="posttest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="summary" data-page-index="11" data-tts="summary" data-tsh="总结">
+  <div class="slide-inner"><div class="card"><div class="section-header"><span class="phase-tag">Summary</span><h2>本课总结</h2></div><div style="margin-top:16px"><div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">1.</span><span>1st(1760-1840)：蒸汽→机器取代体力，工厂制+城市化</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">2.</span><span>2nd(1870-1914)：电力→能源可传输，流水线+大规模生产</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">3.</span><span>3rd(1960-2010)：信息→计算机+互联网，服务业>制造业</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">4.</span><span>4th(2010s-)：AI→认知能力外化，首次威胁白领工作</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">5.</span><span>周期约60-80年，每次加速：核心技术的扩散速度越来越快</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">6.</span><span>核心规律：先从"代替肌肉"到"代替计算"再到"代替判断"</span></div></div></div></div></section>
+
+  <!-- AI Multimodal Zone -->
+  <section class="slide-page" data-page-type="interactive" data-page-index="98" data-tts="ai-zone" data-tsh="AI 多模态互动 - 用AI辅助理解历史">
+    <div class="slide-inner">
+      <div class="card card-glow">
+        <div class="section-header"><span class="phase-tag" data-variant="purple">AI Zone</span><h2>AI 多模态互动区</h2></div>
+        <p style="color:var(--muted);margin:0 0 16px">输入你想深入了解的历史问题，AI 帮你生成可视化时间线、人物关系图或事件分析。</p>
+        <div style="display:flex;gap:8px;margin-bottom:16px">
+          <input id="ai-prompt" placeholder="例如：请生成唐朝安史之乱前后的关键事件时间线..." style="flex:1">
+          <button class="btn-pill" onclick="document.getElementById('ai-result').innerHTML='<p style=color:var(--muted)>AI思考中...（提示：这需要接入后端AI服务）</p>'">生成分析</button>
+        </div>
+        <div id="ai-result" class="result" style="min-height:60px">
+          <p style="color:var(--muted)">💡 尝试用AI辅助学习：请它生成时间线、对比不同观点、或解释复杂事件的因果关系。这是增强理解的多模态学习方式。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide-page" data-page-type="summary" data-page-index="12" data-tts="knowledge-graph" data-tsh="知识图谱">
+  <div class="slide-inner"><div class="card card-glow">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">Knowledge Graph</span><h2>知识图谱</h2></div>
+    <p style="color:var(--muted);margin:0 0 16px">本节点的前置、后续和同域知识。</p>
+    <div data-teachany-kg="ext-hist-ir03"><canvas class="tkg-fallback-canvas" width="720" height="120" aria-label="知识图谱" style="display:block;width:100%;max-height:140px;border-radius:12px"></canvas></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="interactive" data-page-index="13" data-tts="ai-tutor" data-tsh="AI 学伴">
+  <div class="slide-inner"><div data-teachany-tutor-card></div></div></section>
+</div>
+<div class="source-section"><h2>📚 内容来源</h2><ul><li>David Landes "The Unbound Prometheus"</li>
+<li>Carlota Perez "Technological Revolutions and Financial Capital"</li>
+<li>Klaus Schwab "The Fourth Industrial Revolution"</li>
+<li>Jeremy Rifkin "The Third Industrial Revolution"</li>
+<li>McKinsey Global Institute AI Reports</li></ul></div>
+<div id="comments-panel">
+  <h2>💬 讨论区</h2>
+  <textarea id="comment-input" placeholder="写下你的问题或感想..."></textarea>
+  <button class="btn-pill comment-submit" style="margin-bottom:16px">发表评论</button>
+  <div class="comment-list"></div></div>
+<div class="slide-toolbar" id="slide-toolbar">
+  <button class="toolbar-btn" id="tb-prev" aria-label="上一页"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+  <div class="toolbar-progress"><div class="toolbar-progress-fill" id="tb-progress-fill"></div></div>
+  <span class="toolbar-page-info" id="tb-page-info">1 / 14</span>
+  <button class="toolbar-btn" id="tb-next" aria-label="下一页"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+</div>
+<div id="audio-config" data-teachany-audio hidden>
+  <script type="application/json" data-teachany-audio-playlist>[{"section": "hero", "src": "tts/history-industrial-revolution-hero.mp3", "label": "封面讲解"}, {"section": "pretest", "src": "tts/history-industrial-revolution-pretest.mp3", "label": "前测"}, {"section": "conceptest", "src": "tts/history-industrial-revolution-conceptest.mp3", "label": "概念测试"}]</script>
+</div>
+<script>(function() {
+  var container = document.getElementById('slide-container');
+  var pages = Array.from(document.querySelectorAll('.slide-page'));
+  var total = pages.length; var current = 0;
+  function update() {
+    document.getElementById('tb-page-info').textContent = (current+1)+' / '+total;
+    document.getElementById('tb-prev').style.opacity = current===0?'0.3':'1';
+    document.getElementById('tb-next').style.opacity = current===total-1?'0.3':'1';
+  }
+  function goTo(i) { if(i>=0&&i<total){current=i;pages[current].scrollIntoView({behavior:'smooth',block:'start'});update();} }
+  document.getElementById('tb-prev').addEventListener('click',function(){goTo(current-1)});
+  document.getElementById('tb-next').addEventListener('click',function(){goTo(current+1)});
+  container.addEventListener('scroll',function(){
+    var st=container.scrollTop, best=0, min=Infinity;
+    pages.forEach(function(p,i){var d=Math.abs(p.offsetTop-st);if(d<min){min=d;best=i;}});
+    if(best!==current){current=best;update();}
+  });
+  update();
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('note-export-btn');
+  var modal = document.getElementById('note-modal');
+  if (!btn || !modal) return;
+  btn.addEventListener('click', function() {
+    var excerpts = [];
+    document.querySelectorAll('.slide-page h2, .slide-page h3').forEach(function(h) { excerpts.push(h.textContent.trim()); });
+    var md = '# ' + document.title + '\n\n' + excerpts.map(function(e) { return '- ' + e; }).join('\n');
+    document.getElementById('note-md').value = md;
+    modal.classList.add('show');
+  });
+  document.getElementById('note-close').addEventListener('click', function() { modal.classList.remove('show'); });
+  document.getElementById('note-copy').addEventListener('click', function() {
+    navigator.clipboard.writeText(document.getElementById('note-md').value).then(function() { alert('\u5df2\u590d\u5236!'); });
+  });
+  document.getElementById('note-download').addEventListener('click', function() {
+    var text = document.getElementById('note-md').value;
+    var a = document.createElement('a'); a.href = 'data:text/markdown;charset=utf-8,' + encodeURIComponent(text); a.download = 'notes.md'; a.click();
+  });
+  var panel = document.getElementById('comments-panel');
+  if (!panel) return;
+  var cid = (document.querySelector('meta[name="course-id"]')||{}).content||'unknown';
+  var key = 'teachany-comments-' + cid;
+  function render() {
+    var data = JSON.parse(localStorage.getItem(key) || '[]');
+    var list = panel.querySelector('.comment-list');
+    if (!list) return;
+    list.innerHTML = data.map(function(c) { return '<div class="comment-item"><div class="ts">'+c.time+'</div><div>'+c.text+'</div></div>'; }).join('');
+  }
+  panel.querySelector('.comment-submit').addEventListener('click', function() {
+    var t = panel.querySelector('textarea').value.trim(); if (!t) return;
+    var data = JSON.parse(localStorage.getItem(key) || '[]');
+    data.push({text: t, time: new Date().toLocaleString('zh-CN')});
+    localStorage.setItem(key, JSON.stringify(data));
+    panel.querySelector('textarea').value = '';
+    render();
+  });
+  render();
+});
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-quiz="true"] .choice').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var isCorrect = this.dataset.correct === 'true';
+      var diagnosis = this.dataset.diagnosis || '';
+      var parent = this.closest('[data-quiz="true"]');
+      parent.querySelectorAll('.choice').forEach(function(b) { b.classList.remove('selected','correct','wrong'); b.disabled = true; });
+      this.classList.add('selected');
+      this.classList.add(isCorrect ? 'correct' : 'wrong');
+      var fb = parent.querySelector('.result');
+      if (fb) { fb.className = isCorrect ? 'result' : 'result error'; fb.innerHTML = (isCorrect ? '\u2705 ' : '\u274c ') + diagnosis; }
+    });
+  });
+});
+</script>
+</body>
+</html>

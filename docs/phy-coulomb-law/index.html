@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>库仑定律：电荷、电力与叠加原理</title>
+<meta name="description" content="掌握库仑定律、电荷量子化、电力叠加原理，通过拖拽模拟器直观理解电荷间相互作用。">
+<meta name="course-id" content="phy-coulomb-law">
+<meta name="course-title" content="库仑定律：电荷、电力与叠加原理">
+<meta name="course-subject" content="physics">
+<meta name="course-grade" content="高中·成人自学">
+<meta name="course-prereqs" content="['ext-phy-cp05']">
+<meta name="course-next" content="">
+<meta name="course-version" content="1.0.0">
+<meta name="teachany-version" content="7.18.0">
+<meta name="teachany-node" content="ext-phy-cl06">
+<meta name="teachany-subject" content="physics">
+<meta name="teachany-grade" content="12">
+<meta name="teachany-stage" content="high">
+<meta name="teachany-domain" content="电磁学">
+<meta name="teachany-prerequisites" content="向量运算,基础力学">
+<meta name="teachany-lesson-type" content="new-concept">
+<meta name="teachany-free-mode" content="false">
+<meta name="teachany-template-version" content="2.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; max-width: 100%; overflow-x: hidden; }
+body { padding-top: var(--safe-top); font-family: var(--sans); color: var(--ink); line-height: 1.75; font-size: 16px;
+  background: radial-gradient(circle at 18% 18%, rgba(37,99,235,.10), transparent 30%), radial-gradient(circle at 88% 18%, rgba(124,58,237,.08), transparent 28%), linear-gradient(135deg, #fbfdff, #eef6ff 48%, #f8f5ff); }
+a { color: var(--blue); text-decoration: none; } a:hover { text-decoration: underline; }
+button, a, input, select, textarea { min-height: 44px; }
+img, video, canvas, svg { max-width: 100%; height: auto; }
+h1, h2, h3, h4 { margin: 0; letter-spacing: -0.035em; }
+
+:root {
+  --bg: #f7faff; --panel: #ffffff; --ink: #0f172a; --muted: #64748b;
+  --line: #dbe7f5; --blue: #2563eb; --green: #16a34a; --purple: #7c3aed;
+  --orange: #f59e0b; --red: #ef4444;
+  --shadow: 0 24px 80px rgba(15,23,42,.12);
+  --mono: "DM Mono", ui-monospace, monospace;
+  --sans: "Inter", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --brand: #2563eb; --brand-2: #7c3aed; --accent: #16a34a; --warn: #f59e0b;
+  --text: #0f172a; --text-secondary: #475569; --bg-subtle: #f1f5f9;
+  --brand-soft: rgba(37,99,235,0.08); --brand-2-soft: rgba(124,58,237,0.08);
+  --accent-soft: rgba(22,163,74,0.08); --line-subtle: rgba(15,23,42,0.08);
+  --card: #ffffff; --card-elevated: #ffffff;
+  --page-padding: 24px; --card-radius: 20px; --card-radius-sm: 14px;
+  --slide-height: 100vh; --slide-height-fallback: 100dvh;
+  --toolbar-height: 56px; --sidenav-width: 48px;
+  --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom);
+}
+body {
+  font-family: var(--sans); color: var(--ink);
+  background: radial-gradient(circle at 18% 18%, rgba(37,99,235,.10), transparent 30%),
+              radial-gradient(circle at 88% 18%, rgba(124,58,237,.08), transparent 28%),
+              linear-gradient(135deg, #fbfdff, #eef6ff 48%, #f8f5ff);
+}
+.card {
+  background: linear-gradient(160deg, rgba(255,255,255,0.95), rgba(248,250,255,0.98));
+  border: 1px solid var(--line); border-radius: var(--card-radius);
+  padding: 24px; box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 32px 96px rgba(15,23,42,.16); }
+.card-accent { border-top: 3px solid; border-image: linear-gradient(90deg, var(--blue), var(--purple)) 1; }
+.card-glow { box-shadow: 0 4px 24px rgba(15,23,42,0.08), 0 0 40px rgba(37,99,235,0.05); }
+.glass {
+  background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line);
+}
+.choice {
+  width: 100%; text-align: left; border: 1px solid var(--line); border-radius: 14px;
+  background: #fff; color: var(--ink); padding: 16px 20px;
+  cursor: pointer; font-size: 15px; line-height: 1.5;
+  transition: all 0.2s ease; font-family: var(--sans);
+}
+.choice:hover { background: rgba(37,99,235,0.04); border-color: var(--blue); transform: translateX(4px); }
+.choice.selected { border-color: var(--blue); background: rgba(37,99,235,0.08); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+.choice.correct { border-color: var(--green); background: rgba(22,163,74,0.08); }
+.choice.wrong { border-color: var(--red); background: rgba(239,68,68,0.06); }
+.result {
+  padding: 16px 20px; border-radius: 14px; font-size: 15px; line-height: 1.6;
+  background: rgba(22,163,74,0.06); border: 1px solid rgba(22,163,74,0.15); color: var(--ink);
+}
+.result.warn { background: rgba(245,158,11,0.06); border-color: rgba(245,158,11,0.15); }
+.result.error { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.15); }
+input, textarea {
+  width: 100%; border-radius: 12px; border: 1px solid var(--line);
+  background: #fff; color: var(--ink); padding: 14px 16px;
+  font-size: 15px; font-family: var(--sans);
+}
+input:focus, textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.10); }
+h1, h2, h3 { letter-spacing: -0.035em; }
+.hero-gradient {
+  background: linear-gradient(135deg, #0f172a 0%, #2563eb 50%, #7c3aed 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.kicker {
+  font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--blue); font-size: 12px; font-weight: 600;
+}
+.btn-pill {
+  font-family: var(--mono); background: var(--blue); color: #fff;
+  border: none; border-radius: 999px; padding: 10px 24px;
+  font-size: 13px; cursor: pointer; transition: all 0.2s;
+}
+.btn-pill:hover { background: #1d4ed8; transform: translateY(-1px); }
+.canvas-wrap {
+  overflow: auto; background: var(--bg); border: 1px solid var(--line);
+  border-radius: 16px; padding: 16px;
+}
+#comments-panel { max-width: 880px; margin: 40px auto; padding: 24px; }
+#comments-panel h2 { font-size: 22px; margin-bottom: 16px; }
+#comments-panel textarea { min-height: 80px; margin-bottom: 12px; }
+.comment-item { padding: 12px 16px; background: #fff; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; }
+.comment-item .ts { font-size: 12px; color: var(--muted); }
+#note-export-btn { position: fixed; top: 16px; right: 16px; z-index: 200; }
+#note-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15,23,42,0.5); z-index: 300; align-items: center; justify-content: center; }
+#note-modal.show { display: flex; }
+#note-modal .modal-content { background: #fff; border-radius: 16px; padding: 32px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
+.section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.section-header h2 { font-size: clamp(20px, 4vw, 26px); font-weight: 700; line-height: 1.3; color: var(--ink); }
+.phase-tag { display: inline-flex; align-items: center; gap: 6px; color: var(--blue); background: var(--brand-soft); border: 1px solid rgba(37,99,235,0.2); border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; font-family: var(--mono); }
+.phase-tag[data-variant="success"] { color: var(--green); background: rgba(22,163,74,0.08); border-color: rgba(22,163,74,0.2); }
+.phase-tag[data-variant="purple"] { color: var(--purple); background: var(--brand-2-soft); border-color: rgba(124,58,237,0.2); }
+.phase-tag[data-variant="warn"] { color: var(--orange); background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.2); }
+.grid { display: grid; grid-template-columns: 1fr; gap: 12px; width: 100%; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.objectives { list-style: none; padding: 0; display: grid; gap: 10px; }
+.objectives li { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; border-radius: 14px; background: rgba(37,99,235,0.04); border: 1px solid var(--line); }
+.objectives li::before { content: "✦"; color: var(--blue); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+.ta-standard-figure { margin: 20px auto; max-width: 980px; }
+.ta-standard-figure img, .ta-standard-figure svg { display: block; width: 100%; border-radius: 16px; border: 1px solid var(--line); }
+.ta-standard-figure figcaption { margin-top: 10px; color: var(--muted); font-size: 14px; text-align: center; }
+.flex-row { display: flex; gap: 12px; margin-top: 14px; align-items: center; flex-wrap: wrap; }
+.flex-row .choice { flex: 1; min-width: 120px; text-align: center; }
+.inner-card { margin: 12px 0; padding: 16px; border-radius: var(--card-radius-sm); border: 1px solid var(--line); background: var(--bg); }
+.inner-card p { margin: 0 0 6px; color: var(--ink); }
+.slide-page .slide-inner { max-width: 880px; width: 100%; position: relative; z-index: 2; margin: 0 auto; }
+.slide-page .slide-inner > * { width: 100%; box-sizing: border-box; }
+.source-section { max-width: 880px; margin: 40px auto; padding: 0 24px; }
+.source-section h2 { font-size: 20px; margin-bottom: 12px; }
+.source-section ul { padding-left: 20px; color: var(--muted); font-size: 14px; }
+@media (max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr !important; } .flex-row { flex-direction: column; } .flex-row .choice { min-width: 100%; } }
+
+.slide-container { scroll-snap-type: y proximity; overflow-y: auto; height: 100dvh; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+.slide-page { min-height: 100dvh; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: var(--page-padding); padding-bottom: calc(var(--page-padding) + 56px); position: relative; overflow: hidden; }
+.slide-page[data-page-type="cover"] { text-align: center; }
+.slide-page[data-page-type="cover"] h1 { font-size: clamp(32px, 7vw, 56px); line-height: 1.15; background: linear-gradient(135deg, #0f172a 0%, #2563eb 50%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 16px; }
+.slide-page[data-page-type="objectives"] { background: radial-gradient(circle at 0% 100%, rgba(22,163,74,0.06), transparent 40%), radial-gradient(circle at 100% 0%, rgba(37,99,235,0.05), transparent 40%); }
+.slide-page[data-page-type="concept"] { background: radial-gradient(circle at 30% 20%, rgba(37,99,235,0.04), transparent 35%), radial-gradient(circle at 70% 80%, rgba(124,58,237,0.04), transparent 35%); }
+.slide-page[data-page-type="interactive"] { background: radial-gradient(circle at 50% 0%, rgba(22,163,74,0.06), transparent 40%), radial-gradient(circle at 80% 100%, rgba(37,99,235,0.04), transparent 35%); }
+.slide-page[data-page-type="quiz"] { background: radial-gradient(circle at 20% 80%, rgba(245,158,11,0.05), transparent 35%), radial-gradient(circle at 80% 20%, rgba(124,58,237,0.04), transparent 35%); }
+.slide-page[data-page-type="summary"] { background: radial-gradient(circle at 50% 50%, rgba(37,99,235,0.06), transparent 45%), radial-gradient(circle at 20% 20%, rgba(22,163,74,0.04), transparent 30%); }
+@media (max-width: 768px) { :root { --page-padding: 16px; --card-radius: 16px; } .slide-page { padding: 16px 14px; padding-bottom: calc(16px + 56px); } .grid-2, .grid-3 { grid-template-columns: 1fr !important; } .flex-row { flex-direction: column; } .flex-row .choice { min-width: 100%; } .card { padding: 18px; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.stagger-1 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.1s; }
+.stagger-2 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.2s; }
+.stagger-3 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+<button class="btn-pill" id="note-export-btn" style="position:fixed;top:16px;right:16px;z-index:200">📝 导出笔记</button>
+<div id="note-modal"><div class="modal-content">
+  <h3 style="margin-top:0">📝 课程笔记</h3>
+  <textarea id="note-md" style="min-height:200px;margin-bottom:16px"></textarea>
+  <div style="display:flex;gap:8px">
+    <button class="btn-pill" id="note-copy">📋 复制</button>
+    <button class="btn-pill" id="note-download">💾 下载 .md</button>
+    <button class="btn-pill" id="note-close" style="background:#64748b">关闭</button>
+  </div></div></div>
+<div class="slide-container" id="slide-container">
+<section class="slide-page" data-page-type="cover" data-page-index="0" data-tts="hero" data-tsh="开场">
+  <div class="slide-inner">
+    <h1 class="hero-gradient" style="font-size:clamp(32px,7vw,56px);line-height:1.15;text-align:center;margin-bottom:16px">库仑定律：电荷、电力与叠加原理</h1>
+    <p style="color:var(--muted);font-size:clamp(16px,3vw,22px);max-width:680px;margin:0 auto;text-align:center">两个电荷之间的力到底怎么计算？多个电荷又如何？</p>
+    <figure class="ta-standard-figure" style="margin-top:32px">
+      <svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#eef6ff"/><stop offset="100%" stop-color="#f8f5ff"/></linearGradient></defs>
+        <rect width="1280" height="720" fill="url(#bg)"/>
+        <circle cx="200" cy="180" r="120" fill="rgba(37,99,235,0.06)"/><circle cx="1080" cy="540" r="160" fill="rgba(124,58,237,0.05)"/><circle cx="640" cy="360" r="200" fill="rgba(37,99,235,0.03)"/>
+        <text x="640" y="320" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="800" fill="#0f172a">库仑定律：电荷、电力与叠加原理</text>
+        <text x="640" y="380" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#64748b">两个电荷之间的力到底怎么计算？多个电荷又如何？</text>
+        <rect x="300" y="420" width="180" height="56" rx="28" fill="rgba(37,99,235,0.1)" stroke="#2563eb" stroke-width="1"/><text x="390" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#2563eb">交互学习</text>
+        <rect x="550" y="420" width="180" height="56" rx="28" fill="rgba(124,58,237,0.1)" stroke="#7c3aed" stroke-width="1"/><text x="640" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#7c3aed">概念测验</text>
+        <rect x="800" y="420" width="180" height="56" rx="28" fill="rgba(22,163,74,0.1)" stroke="#16a34a" stroke-width="1"/><text x="890" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#16a34a">知识迁移</text>
+      </svg>
+      <figcaption>电荷→库仑力→叠加原理→力的矢量合成</figcaption>
+    </figure>
+  </div>
+</section>
+<section class="slide-page" data-page-type="interactive" data-page-index="1" data-tts="problem-anchor" data-tsh="问题锚点">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag">Problem Anchor</span><h2>今天想解决什么问题？</h2></div>
+      <p style="color:var(--muted);margin:0 0 16px">选一个你关心的问题，后面的内容会围绕它展开。</p>
+      <div class="grid"><button class="choice" data-correct="true" data-diagnosis="库仑力可引可斥且强度大~10³⁶倍。两者数学形式相同但物理本质不同。">A. 库仑力和万有引力都是平方反比力，它们有什么不同？</button>
+<button class="choice" data-correct="false" data-diagnosis="电子电量e=1.6×10⁻¹⁹C是最小自由电荷。选A学习完整框架。">B. 为什么说电荷是量子化的？最小电荷是多少？</button>
+<button class="choice" data-correct="false" data-diagnosis="矢量合成——选A系统学习叠加原理。">C. 三个电荷不在一条直线上时，合力怎么求？</button></div>
+      <label style="display:block;margin-top:20px;color:var(--muted);font-size:14px">或者，写下你自己的问题
+        <input id="learner-question-input" placeholder="把你卡住的问题写在这里" style="margin-top:8px">
+      </label>
+      <p id="anchor-feedback" class="result warn" style="margin-top:16px">选择或输入后，本课会围绕你的问题展开。</p>
+    </div>
+  </div>
+</section>
+<section class="slide-page" data-page-type="objectives" data-page-index="2" data-tts="objectives" data-tsh="学习目标">
+  <div class="slide-inner"><div class="card"><div class="section-header"><span class="phase-tag" data-variant="success">Objectives</span><h2>学习目标</h2></div><ul class="objectives"><li>理解电荷量子化和电荷守恒定律</li>
+<li>掌握库仑定律 F=kq₁q₂/r² 及其向量形式</li>
+<li>理解电场叠加原理——多电荷系统中力的矢量合成</li>
+<li>能通过拖拽模拟器直观感受电荷间力的变化</li></ul></div></div></section>
+<section class="slide-page" data-page-type="quiz" data-page-index="3" data-tts="pretest" data-tsh="前测：电荷与电力基础">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="warn">Pretest</span><h2>前测：电荷与电力基础</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">检测你对静电学基本概念的理解。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="库仑力的基本定性规律。">A. 同种电荷相互排斥，异种电荷相互吸引</button>
+<button class="choice" data-correct="false" data-diagnosis="是平方反比！F∝1/r²，不是1/r。这是关键区别。">B. 库仑力与距离成反比</button>
+<button class="choice" data-correct="true" data-diagnosis="密立根油滴实验精确测定。">C. 基本电荷电量e=1.6×10⁻¹⁹C</button>
+<button class="choice" data-correct="true" data-diagnosis="电荷守恒定律——自然界基本守恒律之一。">D. 孤立系统的总电荷守恒</button>
+<button class="choice" data-correct="false" data-diagnosis="现代物理认为力通过场传递。库仑力通过电场，万有引力通过引力场。">E. 库仑力和万有引力都是超距作用</button></div>
+    <div class="result warn" data-feedback-for="pretest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="4" data-tts="c1" data-tsh="电荷与库仑定律">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="">Concept 1</span><h2>电荷与库仑定律</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你知道电荷有正负之分</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>电荷的本质是什么？库仑力如何精确定量？</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>理解电荷量子化，掌握库仑定律F=kq₁q₂/r²</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">电荷量子化</h3><p style="color:var(--muted);margin:0;font-size:15px">所有电荷都是e=1.602×10⁻¹⁹C的整数倍。夸克带±e/3或±2e/3但不自由存在。电子带-e，质子带+e。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">库仑定律标量形式</h3><p style="color:var(--muted);margin:0;font-size:15px">F=k|q₁||q₂|/r²。k=1/(4πε₀)=8.99×10⁹ N·m²/C²。力的方向沿连线：同号排斥，异号吸引。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">力的强度对比</h3><p style="color:var(--muted);margin:0;font-size:15px">两个质子间：库仑力/引力≈10³⁶。电力远强于引力。日常经验中引力主导是因为大物体整体电中性。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="5" data-tts="c2" data-tsh="库仑定律的向量形式">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="success">Concept 2</span><h2>库仑定律的向量形式</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你知道力有大小和方向</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>如何用向量精确描述电荷间力的方向？</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>学习库仑定律的向量形式F₁₂=kq₁q₂/r²·r̂₁₂</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">向量表达</h3><p style="color:var(--muted);margin:0;font-size:15px">F₁₂=(kq₁q₂/r²)·r̂₁₂。r̂₁₂是从q₁指向q₂的单位向量。q₁和q₂同号→F₁₂沿r̂方向(排斥)。异号→F₁₂逆r̂方向(吸引)。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">牛顿第三定律</h3><p style="color:var(--muted);margin:0;font-size:15px">F₁₂=-F₂₁。q₁对q₂的力与q₂对q₁的力等大反向。库仑力满足所有牛顿力学定律。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">电场强度等效</h3><p style="color:var(--muted);margin:0;font-size:15px">E=F/q₀=q/(4πε₀r²)·r̂。电场是"归一化的库仑力"——单位检验电荷受到的力。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="6" data-tts="c3" data-tsh="叠加原理">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">Concept 3</span><h2>叠加原理</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你知道两个电荷间力的计算</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>三个或更多电荷时，合力怎么求？</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>叠加原理：多电荷系统中总电力=各电荷单独作用的矢量和</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">叠加原理表述</h3><p style="color:var(--muted);margin:0;font-size:15px">F_total=F₁+F₂+...+Fₙ=Σ(kqqᵢ/rᵢ²)·r̂ᵢ。每个电荷对检验电荷的力独立计算后矢量相加。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">计算方法</h3><p style="color:var(--muted);margin:0;font-size:15px">①计算每个源电荷对目标电荷的力矢量Fᵢ②分解为x,y分量③分别求和④组合为总力矢量。对称性可简化计算。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">力的平衡</h3><p style="color:var(--muted);margin:0;font-size:15px">多个力矢量之和为零时达到平衡。例如：等边三角形顶点三电荷——中心处检验电荷可能合力为零。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="interactive" data-page-index="7" data-tts="interactive" data-tsh="电荷受力拖拽模拟器">
+  <div class="slide-inner"><div class="card card-glow">
+    <div class="section-header"><span class="phase-tag" data-variant="success">Interactive</span><h2>电荷受力拖拽模拟器</h2></div>
+    <p style="color:var(--muted);margin:0 0 16px">在画布上点击添加电荷(左键正电荷，右键负电荷)。拖拽电荷观察力的矢量变化。箭头表示各电荷受到的合力。</p>
+    <div class="canvas-wrap"><canvas id="clc" width="760" height="420" aria-label="互动画布" style="display:block;width:100%;border-radius:12px"></canvas></div>
+    <div class="grid" style="margin-top:16px"><div class="flex-row"><button class="btn-pill" id="clr" style="background:var(--red)">清除全部</button><span style="color:var(--muted);font-size:13px">💡 左键添加正电荷，右键添加负电荷。红色箭头=该电荷受到的合力方向。</span></div></div>
+  </div></div></section>
+<script>(function(){var c=document.getElementById('clc');if(!c)return;var ctx=c.getContext('2d');var W=c.width,H=c.height;var charges=[{x:380,y:210,q:1}],drag=-1,k=8.99;
+function addCharge(x,y,q){if(charges.length<5)charges.push({x:x,y:y,q:q});}
+function draw(){ctx.fillStyle='#f7faff';ctx.fillRect(0,0,W,H);
+// force arrows
+charges.forEach(function(c,i){
+  var fx=0,fy=0;
+  charges.forEach(function(o,j){if(i===j)return;var dx=c.x-o.x,dy=c.y-o.y,r=Math.sqrt(dx*dx+dy*dy);if(r<10)r=10;
+    var F=k*Math.abs(c.q*o.q)/(r*r)*50;var nx=dx/r,ny=dy/r;
+    if(c.q*o.q>0){fx+=F*nx;fy+=F*ny;}else{fx-=F*nx;fy-=F*ny;}
+  });
+  // draw arrow
+  var ax=c.x+fx*0.3,ay=c.y+fy*0.3;
+  ctx.strokeStyle='#ef4444';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(c.x,c.y);ctx.lineTo(ax,ay);ctx.stroke();
+  // arrowhead
+  var ang=Math.atan2(ay-c.y,ax-c.x);ctx.fillStyle='#ef4444';
+  ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(ax-Math.cos(ang-0.5)*10,ay-Math.sin(ang-0.5)*10);ctx.lineTo(ax-Math.cos(ang+0.5)*10,ay-Math.sin(ang+0.5)*10);ctx.fill();
+});
+charges.forEach(function(c){ctx.beginPath();ctx.fillStyle=c.q>0?'#2563eb':'#ef4444';ctx.arc(c.x,c.y,16,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#fff';ctx.font='14px sans-serif';ctx.fillText(c.q>0?'+':'-',c.x-5,c.y+5);});
+ctx.fillStyle='#0f172a';ctx.font='13px Inter';ctx.fillText('左键+ | 右键- | 拖拽观察力(红箭头) | 最多5个电荷',15,400);
+}
+c.addEventListener('pointerdown',function(e){var r=c.getBoundingClientRect();var mx=e.clientX-r.left,my=e.clientY-r.top;
+for(var i=charges.length-1;i>=0;i--){var dx=mx-charges[i].x,dy=my-charges[i].y;if(dx*dx+dy*dy<400){drag=i;draw();return;}}
+if(e.button===0)addCharge(mx,my,1);else if(e.button===2)addCharge(mx,my,-1);draw();});
+c.addEventListener('pointermove',function(e){if(drag<0)return;var r=c.getBoundingClientRect();charges[drag].x=e.clientX-r.left;charges[drag].y=e.clientY-r.top;draw();});
+c.addEventListener('pointerup',function(){drag=-1;});
+c.addEventListener('contextmenu',function(e){e.preventDefault();});
+document.getElementById('clr').addEventListener('click',function(){charges=[{x:380,y:210,q:1}];draw();});
+draw();})();</script>
+
+  <!-- Scaffolded Exercise Page -->
+  <section class="slide-page" data-page-type="concept" data-page-index="99" data-tts="scaffold" data-tsh="分层练习 - 从示范到独立完成">
+    <div class="slide-inner">
+      <div class="card">
+        <div class="section-header"><span class="phase-tag" data-variant="success">Scaffold</span><h2>分层练习：从示范到独立</h2></div>
+        <div class="grid" style="margin-top:16px">
+          <div class="card" style="padding:20px;border-left:3px solid var(--green)">
+            <h3 style="color:var(--green);margin-bottom:10px;font-size:15px">🟢 全支架示范</h3>
+            <p style="color:var(--muted);margin:0;font-size:15px">回顾上方概念页中的解题分析。每一步的推导逻辑——为什么用这个公式？为什么代入这个数值？理解"为什么这样做"比记住步骤更重要。</p>
+            <p style="color:var(--blue);margin-top:8px;font-size:14px"><strong>支架提示：</strong>分清已知量和未知量→选择正确公式→代入数值→检查单位→验证答案是否合理。</p>
+          </div>
+          <div class="card" style="padding:20px;border-left:3px solid var(--orange)">
+            <h3 style="color:var(--orange);margin-bottom:10px;font-size:15px">🟡 半支架练习</h3>
+            <p style="color:var(--muted);margin:0 0 12px;font-size:15px">试着独立完成与本课主题相关的一道计算或分析题。只给你关键公式提示，解题过程由你自己完成。</p>
+            <input aria-label="半支架填空" placeholder="写下你的解题过程..." style="margin-top:8px">
+            <p style="color:var(--muted);margin-top:8px;font-size:13px">💡 <strong>减弱支架：</strong>这次只有公式提示，不给你完整步骤。完成后对照概念页自检。</p>
+          </div>
+          <div class="card" style="padding:20px;border-left:3px solid var(--blue)">
+            <h3 style="color:var(--blue);margin-bottom:10px;font-size:15px">🔵 独立完成（挑战）</h3>
+            <p style="color:var(--muted);margin:0;font-size:15px">设计一道融合本课至少两个核心概念的综合题，写出完整题目、解题过程和答案。尝试联系实际场景。</p>
+            <textarea aria-label="独立完成" placeholder="题目：
+
+解题过程：
+
+答案：" style="margin-top:8px;min-height:100px"></textarea>
+            <p style="color:var(--purple);margin-top:8px;font-size:13px">🏆 <strong>挑战升级：</strong>尝试将本课知识迁移到一个你从未见过的场景中。真正的理解在于能用到新地方。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide-page" data-page-type="quiz" data-page-index="8" data-tts="conceptest" data-tsh="概念测试：库仑定律">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">ConcepTest</span><h2>概念测试：库仑定律</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">深入检验对库仑力和叠加原理的理解。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="F∝1/r²。这是所有平方反比力的共同特征。">A. 库仑力是平方反比力：距离加倍→力变为1/4</button>
+<button class="choice" data-correct="true" data-diagnosis="F=k(1)(1)/1²≈9×10⁹N——巨大的力。实际电路中电荷量远小于1C。">B. 两个+1C电荷相距1m的力约为9×10⁹N</button>
+<button class="choice" data-correct="false" data-diagnosis="是矢量相加！力有方向，同一直线的力才能直接代数加减。">C. 叠加原理意味着各电荷的力可以直接代数相加</button>
+<button class="choice" data-correct="true" data-diagnosis="F₁₂=(kq₁q₂/r²)r̂₁₂。注意方向：同号F沿r̂(斥)，异号逆r̂(吸)。">D. 库仑定律的向量形式中r̂₁₂是从q₁指向q₂的单位向量</button>
+<button class="choice" data-correct="true" data-diagnosis="e=1.602×10⁻¹⁹C。任何可自由存在的电荷都是e的整数倍。">E. 电子电量是最小的电荷单位</button></div>
+    <div class="result warn" data-feedback-for="conceptest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="quiz" data-page-index="9" data-tts="posttest" data-tsh="后测：库仑定律综合检测">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="warn">Post-Test</span><h2>后测：库仑定律综合检测</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">学完后来检验你的计算能力。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="同号相斥。F=k(2e-6)²/(0.01)²≈360N。">A. 两个-2μC电荷相距1cm时彼此排斥</button>
+<button class="choice" data-correct="true" data-diagnosis="F₁₂=-F₂₁。库仑力是中心力，满足所有牛顿力学。">B. 电荷间的力满足牛顿第三定律</button>
+<button class="choice" data-correct="true" data-diagnosis="高斯定理推论——类比重力中均匀球壳对外部质点的引力。">C. 均匀带电球壳对外部电荷的力=所有电荷集中球心的力</button>
+<button class="choice" data-correct="true" data-diagnosis="对称性导致三个力矢量互相抵消。">D. 三个+1μC电荷在等边三角形顶点，中心处合力为零</button>
+<button class="choice" data-correct="false" data-diagnosis="极短距离下量子电动力学效应显著，经典库仑定律不再精确。">E. 库仑定律在原子核尺度(10⁻¹⁵m)仍然精确成立</button></div>
+    <div class="result warn" data-feedback-for="posttest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="summary" data-page-index="10" data-tts="summary" data-tsh="总结">
+  <div class="slide-inner"><div class="card"><div class="section-header"><span class="phase-tag">Summary</span><h2>本课总结</h2></div><div style="margin-top:16px"><div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">1.</span><span>库仑定律F=kq₁q₂/r²——平方反比中心力</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">2.</span><span>向量形式：F₁₂=(kq₁q₂/r²)r̂₁₂，同号斥异号吸</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">3.</span><span>叠加原理：多电荷系统中力是各单电荷力的矢量和</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">4.</span><span>电荷量子化：最小自由电荷e=1.602×10⁻¹⁹C</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">5.</span><span>库仑力比引力强约10³⁶倍，但宏观物体电中性</span></div></div></div></div></section>
+<section class="slide-page" data-page-type="summary" data-page-index="11" data-tts="knowledge-graph" data-tsh="知识图谱">
+  <div class="slide-inner"><div class="card card-glow">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">Knowledge Graph</span><h2>知识图谱</h2></div>
+    <p style="color:var(--muted);margin:0 0 16px">本节点的前置、后续和同域知识。</p>
+    <div data-teachany-kg="ext-phy-cl06"><canvas class="tkg-fallback-canvas" width="720" height="120" aria-label="知识图谱" style="display:block;width:100%;max-height:140px;border-radius:12px"></canvas></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="interactive" data-page-index="12" data-tts="ai-tutor" data-tsh="AI 学伴">
+  <div class="slide-inner"><div data-teachany-tutor-card></div></div></section>
+</div>
+<div class="source-section"><h2>📚 内容来源</h2><ul><li>赵凯华《电磁学》(第三版)</li>
+<li>Purcell & Morin "Electricity and Magnetism" (3rd Ed.)</li>
+<li>Millikan oil-drop experiment (1909-1913)</li></ul></div>
+<div id="comments-panel">
+  <h2>💬 讨论区</h2>
+  <textarea id="comment-input" placeholder="写下你的问题或感想..."></textarea>
+  <button class="btn-pill comment-submit" style="margin-bottom:16px">发表评论</button>
+  <div class="comment-list"></div></div>
+<div class="slide-toolbar" id="slide-toolbar">
+  <button class="toolbar-btn" id="tb-prev" aria-label="上一页"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+  <div class="toolbar-progress"><div class="toolbar-progress-fill" id="tb-progress-fill"></div></div>
+  <span class="toolbar-page-info" id="tb-page-info">1 / 13</span>
+  <button class="toolbar-btn" id="tb-next" aria-label="下一页"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+</div>
+<div id="audio-config" data-teachany-audio hidden>
+  <script type="application/json" data-teachany-audio-playlist>[{"section": "hero", "src": "tts/phy-coulomb-law-hero.mp3", "label": "封面讲解"}, {"section": "pretest", "src": "tts/phy-coulomb-law-pretest.mp3", "label": "前测"}, {"section": "conceptest", "src": "tts/phy-coulomb-law-conceptest.mp3", "label": "概念测试"}]</script>
+</div>
+<script>(function() {
+  var container = document.getElementById('slide-container');
+  var pages = Array.from(document.querySelectorAll('.slide-page'));
+  var total = pages.length; var current = 0;
+  function update() {
+    document.getElementById('tb-page-info').textContent = (current+1)+' / '+total;
+    document.getElementById('tb-prev').style.opacity = current===0?'0.3':'1';
+    document.getElementById('tb-next').style.opacity = current===total-1?'0.3':'1';
+  }
+  function goTo(i) { if(i>=0&&i<total){current=i;pages[current].scrollIntoView({behavior:'smooth',block:'start'});update();} }
+  document.getElementById('tb-prev').addEventListener('click',function(){goTo(current-1)});
+  document.getElementById('tb-next').addEventListener('click',function(){goTo(current+1)});
+  container.addEventListener('scroll',function(){
+    var st=container.scrollTop, best=0, min=Infinity;
+    pages.forEach(function(p,i){var d=Math.abs(p.offsetTop-st);if(d<min){min=d;best=i;}});
+    if(best!==current){current=best;update();}
+  });
+  update();
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('note-export-btn');
+  var modal = document.getElementById('note-modal');
+  if (!btn || !modal) return;
+  btn.addEventListener('click', function() {
+    var excerpts = [];
+    document.querySelectorAll('.slide-page h2, .slide-page h3').forEach(function(h) { excerpts.push(h.textContent.trim()); });
+    var md = '# ' + document.title + '\n\n' + excerpts.map(function(e) { return '- ' + e; }).join('\n');
+    document.getElementById('note-md').value = md;
+    modal.classList.add('show');
+  });
+  document.getElementById('note-close').addEventListener('click', function() { modal.classList.remove('show'); });
+  document.getElementById('note-copy').addEventListener('click', function() {
+    navigator.clipboard.writeText(document.getElementById('note-md').value).then(function() { alert('\u5df2\u590d\u5236!'); });
+  });
+  document.getElementById('note-download').addEventListener('click', function() {
+    var text = document.getElementById('note-md').value;
+    var a = document.createElement('a'); a.href = 'data:text/markdown;charset=utf-8,' + encodeURIComponent(text); a.download = 'notes.md'; a.click();
+  });
+  var panel = document.getElementById('comments-panel');
+  if (!panel) return;
+  var cid = (document.querySelector('meta[name="course-id"]')||{}).content||'unknown';
+  var key = 'teachany-comments-' + cid;
+  function render() {
+    var data = JSON.parse(localStorage.getItem(key) || '[]');
+    var list = panel.querySelector('.comment-list');
+    if (!list) return;
+    list.innerHTML = data.map(function(c) { return '<div class="comment-item"><div class="ts">'+c.time+'</div><div>'+c.text+'</div></div>'; }).join('');
+  }
+  panel.querySelector('.comment-submit').addEventListener('click', function() {
+    var t = panel.querySelector('textarea').value.trim(); if (!t) return;
+    var data = JSON.parse(localStorage.getItem(key) || '[]');
+    data.push({text: t, time: new Date().toLocaleString('zh-CN')});
+    localStorage.setItem(key, JSON.stringify(data));
+    panel.querySelector('textarea').value = '';
+    render();
+  });
+  render();
+});
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-quiz="true"] .choice').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var isCorrect = this.dataset.correct === 'true';
+      var diagnosis = this.dataset.diagnosis || '';
+      var parent = this.closest('[data-quiz="true"]');
+      parent.querySelectorAll('.choice').forEach(function(b) { b.classList.remove('selected','correct','wrong'); b.disabled = true; });
+      this.classList.add('selected');
+      this.classList.add(isCorrect ? 'correct' : 'wrong');
+      var fb = parent.querySelector('.result');
+      if (fb) { fb.className = isCorrect ? 'result' : 'result error'; fb.innerHTML = (isCorrect ? '\u2705 ' : '\u274c ') + diagnosis; }
+    });
+  });
+});
+</script>
+</body>
+</html>

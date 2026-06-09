@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>电路分析进阶：节点法、网孔法与戴维南定理</title>
+<meta name="description" content="掌握三种高级电路分析方法，能对任意线性电路进行系统求解。">
+<meta name="course-id" content="phy-circuit-analysis">
+<meta name="course-title" content="电路分析进阶：节点法、网孔法与戴维南定理">
+<meta name="course-subject" content="physics">
+<meta name="course-grade" content="高中·成人自学">
+<meta name="course-prereqs" content="['ext-phy-dc01']">
+<meta name="course-next" content="">
+<meta name="course-version" content="1.0.0">
+<meta name="teachany-version" content="7.18.0">
+<meta name="teachany-node" content="ext-phy-ca02">
+<meta name="teachany-subject" content="physics">
+<meta name="teachany-grade" content="12">
+<meta name="teachany-stage" content="high">
+<meta name="teachany-domain" content="电磁学">
+<meta name="teachany-prerequisites" content="直流电路基础">
+<meta name="teachany-lesson-type" content="new-concept">
+<meta name="teachany-free-mode" content="false">
+<meta name="teachany-template-version" content="2.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; max-width: 100%; overflow-x: hidden; }
+body { padding-top: var(--safe-top); font-family: var(--sans); color: var(--ink); line-height: 1.75; font-size: 16px;
+  background: radial-gradient(circle at 18% 18%, rgba(37,99,235,.10), transparent 30%), radial-gradient(circle at 88% 18%, rgba(124,58,237,.08), transparent 28%), linear-gradient(135deg, #fbfdff, #eef6ff 48%, #f8f5ff); }
+a { color: var(--blue); text-decoration: none; } a:hover { text-decoration: underline; }
+button, a, input, select, textarea { min-height: 44px; }
+img, video, canvas, svg { max-width: 100%; height: auto; }
+h1, h2, h3, h4 { margin: 0; letter-spacing: -0.035em; }
+
+:root {
+  --bg: #f7faff; --panel: #ffffff; --ink: #0f172a; --muted: #64748b;
+  --line: #dbe7f5; --blue: #2563eb; --green: #16a34a; --purple: #7c3aed;
+  --orange: #f59e0b; --red: #ef4444;
+  --shadow: 0 24px 80px rgba(15,23,42,.12);
+  --mono: "DM Mono", ui-monospace, monospace;
+  --sans: "Inter", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --brand: #2563eb; --brand-2: #7c3aed; --accent: #16a34a; --warn: #f59e0b;
+  --text: #0f172a; --text-secondary: #475569; --bg-subtle: #f1f5f9;
+  --brand-soft: rgba(37,99,235,0.08); --brand-2-soft: rgba(124,58,237,0.08);
+  --accent-soft: rgba(22,163,74,0.08); --line-subtle: rgba(15,23,42,0.08);
+  --card: #ffffff; --card-elevated: #ffffff;
+  --page-padding: 24px; --card-radius: 20px; --card-radius-sm: 14px;
+  --slide-height: 100vh; --slide-height-fallback: 100dvh;
+  --toolbar-height: 56px; --sidenav-width: 48px;
+  --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom);
+}
+body {
+  font-family: var(--sans); color: var(--ink);
+  background: radial-gradient(circle at 18% 18%, rgba(37,99,235,.10), transparent 30%),
+              radial-gradient(circle at 88% 18%, rgba(124,58,237,.08), transparent 28%),
+              linear-gradient(135deg, #fbfdff, #eef6ff 48%, #f8f5ff);
+}
+.card {
+  background: linear-gradient(160deg, rgba(255,255,255,0.95), rgba(248,250,255,0.98));
+  border: 1px solid var(--line); border-radius: var(--card-radius);
+  padding: 24px; box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 32px 96px rgba(15,23,42,.16); }
+.card-accent { border-top: 3px solid; border-image: linear-gradient(90deg, var(--blue), var(--purple)) 1; }
+.card-glow { box-shadow: 0 4px 24px rgba(15,23,42,0.08), 0 0 40px rgba(37,99,235,0.05); }
+.glass {
+  background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line);
+}
+.choice {
+  width: 100%; text-align: left; border: 1px solid var(--line); border-radius: 14px;
+  background: #fff; color: var(--ink); padding: 16px 20px;
+  cursor: pointer; font-size: 15px; line-height: 1.5;
+  transition: all 0.2s ease; font-family: var(--sans);
+}
+.choice:hover { background: rgba(37,99,235,0.04); border-color: var(--blue); transform: translateX(4px); }
+.choice.selected { border-color: var(--blue); background: rgba(37,99,235,0.08); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+.choice.correct { border-color: var(--green); background: rgba(22,163,74,0.08); }
+.choice.wrong { border-color: var(--red); background: rgba(239,68,68,0.06); }
+.result {
+  padding: 16px 20px; border-radius: 14px; font-size: 15px; line-height: 1.6;
+  background: rgba(22,163,74,0.06); border: 1px solid rgba(22,163,74,0.15); color: var(--ink);
+}
+.result.warn { background: rgba(245,158,11,0.06); border-color: rgba(245,158,11,0.15); }
+.result.error { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.15); }
+input, textarea {
+  width: 100%; border-radius: 12px; border: 1px solid var(--line);
+  background: #fff; color: var(--ink); padding: 14px 16px;
+  font-size: 15px; font-family: var(--sans);
+}
+input:focus, textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.10); }
+h1, h2, h3 { letter-spacing: -0.035em; }
+.hero-gradient {
+  background: linear-gradient(135deg, #0f172a 0%, #2563eb 50%, #7c3aed 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.kicker {
+  font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--blue); font-size: 12px; font-weight: 600;
+}
+.btn-pill {
+  font-family: var(--mono); background: var(--blue); color: #fff;
+  border: none; border-radius: 999px; padding: 10px 24px;
+  font-size: 13px; cursor: pointer; transition: all 0.2s;
+}
+.btn-pill:hover { background: #1d4ed8; transform: translateY(-1px); }
+.canvas-wrap {
+  overflow: auto; background: var(--bg); border: 1px solid var(--line);
+  border-radius: 16px; padding: 16px;
+}
+#comments-panel { max-width: 880px; margin: 40px auto; padding: 24px; }
+#comments-panel h2 { font-size: 22px; margin-bottom: 16px; }
+#comments-panel textarea { min-height: 80px; margin-bottom: 12px; }
+.comment-item { padding: 12px 16px; background: #fff; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; }
+.comment-item .ts { font-size: 12px; color: var(--muted); }
+#note-export-btn { position: fixed; top: 16px; right: 16px; z-index: 200; }
+#note-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15,23,42,0.5); z-index: 300; align-items: center; justify-content: center; }
+#note-modal.show { display: flex; }
+#note-modal .modal-content { background: #fff; border-radius: 16px; padding: 32px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
+.section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.section-header h2 { font-size: clamp(20px, 4vw, 26px); font-weight: 700; line-height: 1.3; color: var(--ink); }
+.phase-tag { display: inline-flex; align-items: center; gap: 6px; color: var(--blue); background: var(--brand-soft); border: 1px solid rgba(37,99,235,0.2); border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; font-family: var(--mono); }
+.phase-tag[data-variant="success"] { color: var(--green); background: rgba(22,163,74,0.08); border-color: rgba(22,163,74,0.2); }
+.phase-tag[data-variant="purple"] { color: var(--purple); background: var(--brand-2-soft); border-color: rgba(124,58,237,0.2); }
+.phase-tag[data-variant="warn"] { color: var(--orange); background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.2); }
+.grid { display: grid; grid-template-columns: 1fr; gap: 12px; width: 100%; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.objectives { list-style: none; padding: 0; display: grid; gap: 10px; }
+.objectives li { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; border-radius: 14px; background: rgba(37,99,235,0.04); border: 1px solid var(--line); }
+.objectives li::before { content: "✦"; color: var(--blue); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+.ta-standard-figure { margin: 20px auto; max-width: 980px; }
+.ta-standard-figure img, .ta-standard-figure svg { display: block; width: 100%; border-radius: 16px; border: 1px solid var(--line); }
+.ta-standard-figure figcaption { margin-top: 10px; color: var(--muted); font-size: 14px; text-align: center; }
+.flex-row { display: flex; gap: 12px; margin-top: 14px; align-items: center; flex-wrap: wrap; }
+.flex-row .choice { flex: 1; min-width: 120px; text-align: center; }
+.inner-card { margin: 12px 0; padding: 16px; border-radius: var(--card-radius-sm); border: 1px solid var(--line); background: var(--bg); }
+.inner-card p { margin: 0 0 6px; color: var(--ink); }
+.slide-page .slide-inner { max-width: 880px; width: 100%; position: relative; z-index: 2; margin: 0 auto; }
+.slide-page .slide-inner > * { width: 100%; box-sizing: border-box; }
+.source-section { max-width: 880px; margin: 40px auto; padding: 0 24px; }
+.source-section h2 { font-size: 20px; margin-bottom: 12px; }
+.source-section ul { padding-left: 20px; color: var(--muted); font-size: 14px; }
+@media (max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr !important; } .flex-row { flex-direction: column; } .flex-row .choice { min-width: 100%; } }
+
+.slide-container { scroll-snap-type: y proximity; overflow-y: auto; height: 100dvh; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+.slide-page { min-height: 100dvh; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: var(--page-padding); padding-bottom: calc(var(--page-padding) + 56px); position: relative; overflow: hidden; }
+.slide-page[data-page-type="cover"] { text-align: center; }
+.slide-page[data-page-type="cover"] h1 { font-size: clamp(32px, 7vw, 56px); line-height: 1.15; background: linear-gradient(135deg, #0f172a 0%, #2563eb 50%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 16px; }
+.slide-page[data-page-type="objectives"] { background: radial-gradient(circle at 0% 100%, rgba(22,163,74,0.06), transparent 40%), radial-gradient(circle at 100% 0%, rgba(37,99,235,0.05), transparent 40%); }
+.slide-page[data-page-type="concept"] { background: radial-gradient(circle at 30% 20%, rgba(37,99,235,0.04), transparent 35%), radial-gradient(circle at 70% 80%, rgba(124,58,237,0.04), transparent 35%); }
+.slide-page[data-page-type="interactive"] { background: radial-gradient(circle at 50% 0%, rgba(22,163,74,0.06), transparent 40%), radial-gradient(circle at 80% 100%, rgba(37,99,235,0.04), transparent 35%); }
+.slide-page[data-page-type="quiz"] { background: radial-gradient(circle at 20% 80%, rgba(245,158,11,0.05), transparent 35%), radial-gradient(circle at 80% 20%, rgba(124,58,237,0.04), transparent 35%); }
+.slide-page[data-page-type="summary"] { background: radial-gradient(circle at 50% 50%, rgba(37,99,235,0.06), transparent 45%), radial-gradient(circle at 20% 20%, rgba(22,163,74,0.04), transparent 30%); }
+@media (max-width: 768px) { :root { --page-padding: 16px; --card-radius: 16px; } .slide-page { padding: 16px 14px; padding-bottom: calc(16px + 56px); } .grid-2, .grid-3 { grid-template-columns: 1fr !important; } .flex-row { flex-direction: column; } .flex-row .choice { min-width: 100%; } .card { padding: 18px; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.stagger-1 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.1s; }
+.stagger-2 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.2s; }
+.stagger-3 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+<button class="btn-pill" id="note-export-btn" style="position:fixed;top:16px;right:16px;z-index:200">📝 导出笔记</button>
+<div id="note-modal"><div class="modal-content">
+  <h3 style="margin-top:0">📝 课程笔记</h3>
+  <textarea id="note-md" style="min-height:200px;margin-bottom:16px"></textarea>
+  <div style="display:flex;gap:8px">
+    <button class="btn-pill" id="note-copy">📋 复制</button>
+    <button class="btn-pill" id="note-download">💾 下载 .md</button>
+    <button class="btn-pill" id="note-close" style="background:#64748b">关闭</button>
+  </div></div></div>
+<div class="slide-container" id="slide-container">
+<section class="slide-page" data-page-type="cover" data-page-index="0" data-tts="hero" data-tsh="开场">
+  <div class="slide-inner">
+    <h1 class="hero-gradient" style="font-size:clamp(32px,7vw,56px);line-height:1.15;text-align:center;margin-bottom:16px">电路分析进阶：节点法、网孔法与戴维南定理</h1>
+    <p style="color:var(--muted);font-size:clamp(16px,3vw,22px);max-width:680px;margin:0 auto;text-align:center">面对一个复杂电路，有没有系统化的方法求出任意两点间的电压？</p>
+    <figure class="ta-standard-figure" style="margin-top:32px">
+      <svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#eef6ff"/><stop offset="100%" stop-color="#f8f5ff"/></linearGradient></defs>
+        <rect width="1280" height="720" fill="url(#bg)"/>
+        <circle cx="200" cy="180" r="120" fill="rgba(37,99,235,0.06)"/><circle cx="1080" cy="540" r="160" fill="rgba(124,58,237,0.05)"/><circle cx="640" cy="360" r="200" fill="rgba(37,99,235,0.03)"/>
+        <text x="640" y="320" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="800" fill="#0f172a">电路分析进阶：节点法、网孔法与戴维南定理</text>
+        <text x="640" y="380" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#64748b">面对一个复杂电路，有没有系统化的方法求出任意两点间的电压？</text>
+        <rect x="300" y="420" width="180" height="56" rx="28" fill="rgba(37,99,235,0.1)" stroke="#2563eb" stroke-width="1"/><text x="390" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#2563eb">交互学习</text>
+        <rect x="550" y="420" width="180" height="56" rx="28" fill="rgba(124,58,237,0.1)" stroke="#7c3aed" stroke-width="1"/><text x="640" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#7c3aed">概念测验</text>
+        <rect x="800" y="420" width="180" height="56" rx="28" fill="rgba(22,163,74,0.1)" stroke="#16a34a" stroke-width="1"/><text x="890" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#16a34a">知识迁移</text>
+      </svg>
+      <figcaption>三种方法递进：节点电压法→网孔电流法→戴维南定理</figcaption>
+    </figure>
+  </div>
+</section>
+<section class="slide-page" data-page-type="interactive" data-page-index="1" data-tts="problem-anchor" data-tsh="问题锚点">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag">Problem Anchor</span><h2>今天想解决什么问题？</h2></div>
+      <p style="color:var(--muted);margin:0 0 16px">选一个你关心的问题，后面的内容会围绕它展开。</p>
+      <div class="grid"><button class="choice" data-correct="true" data-diagnosis="这正是节点电压法和网孔电流法的用武之地——将电路转化为线性方程组。">A. 复杂电路有多个节点和支路，如何系统地求解？</button>
+<button class="choice" data-correct="false" data-diagnosis="戴维南定理将复杂网络简化为Vth+Rth。选A系统学习全部方法。">B. 戴维南定理说的"等效"到底是什么意思？</button>
+<button class="choice" data-correct="false" data-diagnosis="节点少→节点法，网孔少→网孔法。选A学习具体判断标准。">C. 节点法和网孔法什么时候用哪个？</button></div>
+      <label style="display:block;margin-top:20px;color:var(--muted);font-size:14px">或者，写下你自己的问题
+        <input id="learner-question-input" placeholder="把你卡住的问题写在这里" style="margin-top:8px">
+      </label>
+      <p id="anchor-feedback" class="result warn" style="margin-top:16px">选择或输入后，本课会围绕你的问题展开。</p>
+    </div>
+  </div>
+</section>
+<section class="slide-page" data-page-type="objectives" data-page-index="2" data-tts="objectives" data-tsh="学习目标">
+  <div class="slide-inner"><div class="card"><div class="section-header"><span class="phase-tag" data-variant="success">Objectives</span><h2>学习目标</h2></div><ul class="objectives"><li>掌握节点电压法的原理和列方程步骤</li>
+<li>理解网孔电流法，能用KVL列出网孔方程</li>
+<li>理解戴维南定理：任意线性二端网络可等效为电压源串电阻</li>
+<li>能用分步动画验证电路分析的求解过程</li></ul></div></div></section>
+<section class="slide-page" data-page-type="quiz" data-page-index="3" data-tts="pretest" data-tsh="前测：电路分析基础">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="warn">Pretest</span><h2>前测：电路分析基础</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">检测你对KCL、KVL和等效电阻的掌握程度。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="正确！n节点→n-1独立KCL方程。">A. 4个节点的电路有3个独立KCL方程</button>
+<button class="choice" data-correct="false" data-diagnosis="网孔电流是假想的环流(数学工具)，实际支路电流是相邻网孔电流的代数和。">B. 网孔电流是真实流过的物理电流</button>
+<button class="choice" data-correct="false" data-diagnosis="戴维南等效是串联电阻。并联电阻是诺顿等效的形式。">C. 戴维南等效含一个电压源和一个并联电阻</button>
+<button class="choice" data-correct="true" data-diagnosis="正确！每个网孔一个KVL方程。">D. 4个网孔需要4个独立网孔方程</button>
+<button class="choice" data-correct="false" data-diagnosis="叠加定理仅适用于线性电路。非线性元件不能用叠加定理。">E. 叠加定理适用于含非线性元件的电路</button></div>
+    <div class="result warn" data-feedback-for="pretest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="4" data-tts="c1" data-tsh="节点电压法">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="">Method 1</span><h2>节点电压法</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你会用KCL列节点电流方程</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>用支路电流为未知量方程数太多</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>引入节点电压为未知量，用导纳矩阵求解</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">核心思想</h3><p style="color:var(--muted);margin:0;font-size:15px">选参考节点(地)，其他节点电势为未知量。每个非参考节点列KCL。方程数=节点数-1。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">自导与互导</h3><p style="color:var(--muted);margin:0;font-size:15px">自导Gii=连接节点i的所有电导之和(正)。互导Gij=节点i和j之间电导之和的负值。GV=I求解。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">四步求解</h3><p style="color:var(--muted);margin:0;font-size:15px">①选参考节点②标节点电压③列自导互导矩阵④解线性方程组。含电压源用超节点法。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="5" data-tts="c2" data-tsh="网孔电流法">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="success">Method 2</span><h2>网孔电流法</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你会用KVL沿回路列方程</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>直接写各元件电压太繁琐</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>引入网孔环流为未知量，建立阻抗矩阵</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">核心思想</h3><p style="color:var(--muted);margin:0;font-size:15px">每个网孔假想环流。实际支路电流=相邻网孔电流代数和。对每个网孔列KVL。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">自阻与互阻</h3><p style="color:var(--muted);margin:0;font-size:15px">自阻Rii=网孔i中所有电阻之和。互阻Rij=网孔i和j共享电阻(取负，因环流反向)。RI=V求解。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">选取原则</h3><p style="color:var(--muted);margin:0;font-size:15px">节点少→节点法，网孔少→网孔法。平面电路网孔数=b-n+1。选方程数少的。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="6" data-tts="c3" data-tsh="戴维南定理与诺顿定理">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">Theorem</span><h2>戴维南定理与诺顿定理</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你能求解任意支路电流</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>只关心端口行为时完整求解太冗余</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>用戴维南定理将电路浓缩为Vth+Rth</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">戴维南定理</h3><p style="color:var(--muted);margin:0;font-size:15px">任意线性二端网络↔Vth+Rth串联。Vth=开路电压，Rth=独立源置零后的端口等效电阻。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">诺顿定理</h3><p style="color:var(--muted);margin:0;font-size:15px">对偶：In+RN并联。In=短路电流，RN=Rth。两种表示等价：Vth=In·RN。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">最大功率传输</h3><p style="color:var(--muted);margin:0;font-size:15px">RL=Rth时负载获最大功率。Pmax=Vth²/(4Rth)。这是阻抗匹配的基本原理。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="interactive" data-page-index="7" data-tts="interactive" data-tsh="分步求解动画：戴维南等效">
+  <div class="slide-inner"><div class="card card-glow">
+    <div class="section-header"><span class="phase-tag" data-variant="success">Interactive</span><h2>分步求解动画：戴维南等效</h2></div>
+    <p style="color:var(--muted);margin:0 0 16px">观看电路从原始网络逐步等效为戴维南模型的过程。每次点击进入下一步。</p>
+    <div class="canvas-wrap"><canvas id="thv" width="760" height="420" aria-label="互动画布" style="display:block;width:100%;border-radius:12px"></canvas></div>
+    <div class="grid" style="margin-top:16px"><div class="flex-row"><button class="btn-pill" onclick="prv()">← 上一步</button><span style="color:var(--muted);font-size:14px">分步求解</span><button class="btn-pill" onclick="nxt()">下一步 →</button></div></div>
+  </div></div></section>
+<script>(function(){var c=document.getElementById('thv');if(!c)return;var ctx=c.getContext('2d');var W=c.width,H=c.height;var step=0;
+function draw(){ctx.clearRect(0,0,W,H);ctx.fillStyle='#f7faff';ctx.fillRect(0,0,W,H);ctx.font='18px Inter,sans-serif';ctx.fillStyle='#0f172a';
+if(step===0){ctx.fillText('步骤1: 原始电路 - 12V电源经6Ω∥3Ω分压后输出到a,b端',15,40);ctx.strokeStyle='#2563eb';ctx.lineWidth=2;
+ctx.beginPath();ctx.moveTo(40,150);ctx.lineTo(120,150);ctx.lineTo(140,180);ctx.lineTo(200,180);ctx.rect(200,160,60,40);ctx.moveTo(260,180);ctx.lineTo(320,180);ctx.lineTo(340,210);ctx.lineTo(400,210);ctx.rect(400,190,60,40);ctx.moveTo(460,210);ctx.lineTo(560,210);ctx.rect(560,190,50,40);ctx.stroke();
+ctx.fillStyle='#0f172a';ctx.font='13px Inter';ctx.fillText('12V',50,180);ctx.fillText('6Ω',210,210);ctx.fillText('3Ω',410,230);ctx.fillText('a',570,250);ctx.fillText('b',570,290);
+ctx.beginPath();ctx.moveTo(610,210);ctx.lineTo(610,280);ctx.moveTo(40,280);ctx.lineTo(320,280);ctx.lineTo(320,210);ctx.stroke();}
+else if(step===1){ctx.fillText('步骤2: 求开路电压 Vth',15,40);ctx.fillText('a端电压=12×3/(6+3)=4V',200,160);
+ctx.fillText('b端电压=0V (地)',200,220);ctx.fillText('Vth=Va-Vb=4V',200,280);ctx.fillText('(断开a,b端负载, 测量端口电压)',200,340);}
+else if(step===2){ctx.fillText('步骤3: 求等效电阻 Rth',15,40);ctx.fillText('将12V电压源短路(置零)',200,160);
+ctx.fillText('6Ω与3Ω并联= (6×3)/(6+3)=2Ω',200,230);ctx.fillText('Rth=2Ω',200,300);}
+else{ctx.fillText('步骤4: 戴维南等效电路',15,40);ctx.fillText('Vth=4V串联Rth=2Ω',200,180);
+ctx.fillText('这就是原电路的端口等效模型',200,240);ctx.fillText('可接入任意负载RL到a,b端分析',200,300);}}
+function nxt(){step=(step+1)%4;draw();}function prv(){step=(step+3)%4;draw();}draw();})();</script>
+
+  <!-- Scaffolded Exercise Page -->
+  <section class="slide-page" data-page-type="concept" data-page-index="99" data-tts="scaffold" data-tsh="分层练习 - 从示范到独立完成">
+    <div class="slide-inner">
+      <div class="card">
+        <div class="section-header"><span class="phase-tag" data-variant="success">Scaffold</span><h2>分层练习：从示范到独立</h2></div>
+        <div class="grid" style="margin-top:16px">
+          <div class="card" style="padding:20px;border-left:3px solid var(--green)">
+            <h3 style="color:var(--green);margin-bottom:10px;font-size:15px">🟢 全支架示范</h3>
+            <p style="color:var(--muted);margin:0;font-size:15px">回顾上方概念页中的解题分析。每一步的推导逻辑——为什么用这个公式？为什么代入这个数值？理解"为什么这样做"比记住步骤更重要。</p>
+            <p style="color:var(--blue);margin-top:8px;font-size:14px"><strong>支架提示：</strong>分清已知量和未知量→选择正确公式→代入数值→检查单位→验证答案是否合理。</p>
+          </div>
+          <div class="card" style="padding:20px;border-left:3px solid var(--orange)">
+            <h3 style="color:var(--orange);margin-bottom:10px;font-size:15px">🟡 半支架练习</h3>
+            <p style="color:var(--muted);margin:0 0 12px;font-size:15px">试着独立完成与本课主题相关的一道计算或分析题。只给你关键公式提示，解题过程由你自己完成。</p>
+            <input aria-label="半支架填空" placeholder="写下你的解题过程..." style="margin-top:8px">
+            <p style="color:var(--muted);margin-top:8px;font-size:13px">💡 <strong>减弱支架：</strong>这次只有公式提示，不给你完整步骤。完成后对照概念页自检。</p>
+          </div>
+          <div class="card" style="padding:20px;border-left:3px solid var(--blue)">
+            <h3 style="color:var(--blue);margin-bottom:10px;font-size:15px">🔵 独立完成（挑战）</h3>
+            <p style="color:var(--muted);margin:0;font-size:15px">设计一道融合本课至少两个核心概念的综合题，写出完整题目、解题过程和答案。尝试联系实际场景。</p>
+            <textarea aria-label="独立完成" placeholder="题目：
+
+解题过程：
+
+答案：" style="margin-top:8px;min-height:100px"></textarea>
+            <p style="color:var(--purple);margin-top:8px;font-size:13px">🏆 <strong>挑战升级：</strong>尝试将本课知识迁移到一个你从未见过的场景中。真正的理解在于能用到新地方。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide-page" data-page-type="quiz" data-page-index="8" data-tts="conceptest" data-tsh="概念测试：分析方法选择">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">ConcepTest</span><h2>概念测试：分析方法选择</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">选出正确的分析结果并理解每一步的物理含义。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="5-1=4。">A. 5节点6支路的电路，节点电压法需要4个方程</button>
+<button class="choice" data-correct="true" data-diagnosis="这是求等效电阻的有效方法。">B. Rth=Vth/In(开路电压/短路电流)</button>
+<button class="choice" data-correct="true" data-diagnosis="无受控源时互导Gij=Gji。">C. 节点电压法的系数矩阵是对称矩阵</button>
+<button class="choice" data-correct="false" data-diagnosis="互为对偶：RN=Rth, In=Vth/Rth。">D. 诺顿等效与戴维南等效互不相关</button>
+<button class="choice" data-correct="false" data-diagnosis="适用于任何线性电路，含受控源也可用。">E. 含受控源的电路不能用戴维南定理</button></div>
+    <div class="result warn" data-feedback-for="conceptest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="quiz" data-page-index="9" data-tts="posttest" data-tsh="后测：电路分析能力检验">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="warn">Post-Test</span><h2>后测：电路分析能力检验</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">完成学习后，检验你的分析能力。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="这是戴维南定理的核心定义。">A. Vth等于端口开路电压</button>
+<button class="choice" data-correct="true" data-diagnosis="n-1 vs b，一般b>n-1。">B. 节点电压法比支路电流法方程数少</button>
+<button class="choice" data-correct="false" data-diagnosis="可用超网孔技术处理电流源。">C. 网孔电流法不能处理含电流源的电路</button>
+<button class="choice" data-correct="true" data-diagnosis="阻抗匹配基本原理。">D. 最大功率传输条件：RL=Rs</button>
+<button class="choice" data-correct="true" data-diagnosis="将多源电路分解为单源电路的叠加。">E. 叠加定理简化含多个独立源的电路</button></div>
+    <div class="result warn" data-feedback-for="posttest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="summary" data-page-index="10" data-tts="summary" data-tsh="总结">
+  <div class="slide-inner"><div class="card"><div class="section-header"><span class="phase-tag">Summary</span><h2>本课总结</h2></div><div style="margin-top:16px"><div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">1.</span><span>节点电压法：以节点电势为变量，方程数=n-1</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">2.</span><span>网孔电流法：以网孔环流为变量，适合网孔少的电路</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">3.</span><span>戴维南定理：Vth+Rth浓缩任意线性二端网络</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">4.</span><span>诺顿定理是对偶：In+RN，In=Vth/RN</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">5.</span><span>最大功率传输：RL=Rth</span></div></div></div></div></section>
+<section class="slide-page" data-page-type="summary" data-page-index="11" data-tts="knowledge-graph" data-tsh="知识图谱">
+  <div class="slide-inner"><div class="card card-glow">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">Knowledge Graph</span><h2>知识图谱</h2></div>
+    <p style="color:var(--muted);margin:0 0 16px">本节点的前置、后续和同域知识。</p>
+    <div data-teachany-kg="ext-phy-ca02"><canvas class="tkg-fallback-canvas" width="720" height="120" aria-label="知识图谱" style="display:block;width:100%;max-height:140px;border-radius:12px"></canvas></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="interactive" data-page-index="12" data-tts="ai-tutor" data-tsh="AI 学伴">
+  <div class="slide-inner"><div data-teachany-tutor-card></div></div></section>
+</div>
+<div class="source-section"><h2>📚 内容来源</h2><ul><li>邱关源《电路》(第5版)，高等教育出版社</li>
+<li>C.K.Alexander "Fundamentals of Electric Circuits" (7th Ed.)</li></ul></div>
+<div id="comments-panel">
+  <h2>💬 讨论区</h2>
+  <textarea id="comment-input" placeholder="写下你的问题或感想..."></textarea>
+  <button class="btn-pill comment-submit" style="margin-bottom:16px">发表评论</button>
+  <div class="comment-list"></div></div>
+<div class="slide-toolbar" id="slide-toolbar">
+  <button class="toolbar-btn" id="tb-prev" aria-label="上一页"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+  <div class="toolbar-progress"><div class="toolbar-progress-fill" id="tb-progress-fill"></div></div>
+  <span class="toolbar-page-info" id="tb-page-info">1 / 13</span>
+  <button class="toolbar-btn" id="tb-next" aria-label="下一页"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+</div>
+<div id="audio-config" data-teachany-audio hidden>
+  <script type="application/json" data-teachany-audio-playlist>[{"section": "hero", "src": "tts/phy-circuit-analysis-hero.mp3", "label": "封面讲解"}, {"section": "pretest", "src": "tts/phy-circuit-analysis-pretest.mp3", "label": "前测"}, {"section": "conceptest", "src": "tts/phy-circuit-analysis-conceptest.mp3", "label": "概念测试"}]</script>
+</div>
+<script>(function() {
+  var container = document.getElementById('slide-container');
+  var pages = Array.from(document.querySelectorAll('.slide-page'));
+  var total = pages.length; var current = 0;
+  function update() {
+    document.getElementById('tb-page-info').textContent = (current+1)+' / '+total;
+    document.getElementById('tb-prev').style.opacity = current===0?'0.3':'1';
+    document.getElementById('tb-next').style.opacity = current===total-1?'0.3':'1';
+  }
+  function goTo(i) { if(i>=0&&i<total){current=i;pages[current].scrollIntoView({behavior:'smooth',block:'start'});update();} }
+  document.getElementById('tb-prev').addEventListener('click',function(){goTo(current-1)});
+  document.getElementById('tb-next').addEventListener('click',function(){goTo(current+1)});
+  container.addEventListener('scroll',function(){
+    var st=container.scrollTop, best=0, min=Infinity;
+    pages.forEach(function(p,i){var d=Math.abs(p.offsetTop-st);if(d<min){min=d;best=i;}});
+    if(best!==current){current=best;update();}
+  });
+  update();
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('note-export-btn');
+  var modal = document.getElementById('note-modal');
+  if (!btn || !modal) return;
+  btn.addEventListener('click', function() {
+    var excerpts = [];
+    document.querySelectorAll('.slide-page h2, .slide-page h3').forEach(function(h) { excerpts.push(h.textContent.trim()); });
+    var md = '# ' + document.title + '\n\n' + excerpts.map(function(e) { return '- ' + e; }).join('\n');
+    document.getElementById('note-md').value = md;
+    modal.classList.add('show');
+  });
+  document.getElementById('note-close').addEventListener('click', function() { modal.classList.remove('show'); });
+  document.getElementById('note-copy').addEventListener('click', function() {
+    navigator.clipboard.writeText(document.getElementById('note-md').value).then(function() { alert('\u5df2\u590d\u5236!'); });
+  });
+  document.getElementById('note-download').addEventListener('click', function() {
+    var text = document.getElementById('note-md').value;
+    var a = document.createElement('a'); a.href = 'data:text/markdown;charset=utf-8,' + encodeURIComponent(text); a.download = 'notes.md'; a.click();
+  });
+  var panel = document.getElementById('comments-panel');
+  if (!panel) return;
+  var cid = (document.querySelector('meta[name="course-id"]')||{}).content||'unknown';
+  var key = 'teachany-comments-' + cid;
+  function render() {
+    var data = JSON.parse(localStorage.getItem(key) || '[]');
+    var list = panel.querySelector('.comment-list');
+    if (!list) return;
+    list.innerHTML = data.map(function(c) { return '<div class="comment-item"><div class="ts">'+c.time+'</div><div>'+c.text+'</div></div>'; }).join('');
+  }
+  panel.querySelector('.comment-submit').addEventListener('click', function() {
+    var t = panel.querySelector('textarea').value.trim(); if (!t) return;
+    var data = JSON.parse(localStorage.getItem(key) || '[]');
+    data.push({text: t, time: new Date().toLocaleString('zh-CN')});
+    localStorage.setItem(key, JSON.stringify(data));
+    panel.querySelector('textarea').value = '';
+    render();
+  });
+  render();
+});
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-quiz="true"] .choice').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var isCorrect = this.dataset.correct === 'true';
+      var diagnosis = this.dataset.diagnosis || '';
+      var parent = this.closest('[data-quiz="true"]');
+      parent.querySelectorAll('.choice').forEach(function(b) { b.classList.remove('selected','correct','wrong'); b.disabled = true; });
+      this.classList.add('selected');
+      this.classList.add(isCorrect ? 'correct' : 'wrong');
+      var fb = parent.querySelector('.result');
+      if (fb) { fb.className = isCorrect ? 'result' : 'result error'; fb.innerHTML = (isCorrect ? '\u2705 ' : '\u274c ') + diagnosis; }
+    });
+  });
+});
+</script>
+</body>
+</html>

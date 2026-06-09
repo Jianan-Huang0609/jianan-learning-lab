@@ -1,0 +1,57 @@
+{
+  "id": "history-industrial-revolution",
+  "course_id": "history-industrial-revolution",
+  "node_id": "ext-hist-ir03",
+  "name": "四次工业革命：从蒸汽机到人工智能",
+  "name_en": "Industrial Revolutions",
+  "subject": "history",
+  "grade": 12,
+  "stage": "high",
+  "domain": "世界历史",
+  "lesson_type": "new-concept",
+  "status": "community",
+  "author": "TeachAny",
+  "version": "1.0.0",
+  "teachany_version": "7.18.0",
+  "template_version": "2.0",
+  "curriculum": "成人自学·历史",
+  "description": "系统理解四次工业革命的驱动技术、社会影响和发展逻辑：蒸汽→电力→信息→AI。",
+  "tags": [
+    "工业革命",
+    "科技史",
+    "人工智能",
+    "第四次工业革命"
+  ],
+  "prerequisites": [
+    "ext-hist-st02"
+  ],
+  "leads_to": [],
+  "learning_objectives": [
+    "理解第一次工业革命(蒸汽)的驱动技术和影响",
+    "掌握第二次工业革命(电力+内燃机)如何改变生产组织方式",
+    "理解第三次工业革命(计算机+互联网)的信息化本质",
+    "分析第四次工业革命(AI+IoT+量子)的特征和发展趋势"
+  ],
+  "assets": {
+    "hero": "assets/history-industrial-revolution-hero.svg",
+    "tts_manifest": "tts/manifest.json",
+    "videos": [],
+    "images": [
+      "assets/history-industrial-revolution-hero.svg"
+    ]
+  },
+  "has_tts": true,
+  "has_video": false,
+  "has_images": true,
+  "has_hero": true,
+  "has_canvas": true,
+  "has_knowledge_graph": true,
+  "free_mode": false,
+  "feedback": {
+    "require_password": false,
+    "password_sha256": "",
+    "password_hint": ""
+  },
+  "created_at": "2026-06-09",
+  "updated_at": "2026-06-09"
+}

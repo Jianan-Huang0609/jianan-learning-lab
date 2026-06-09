@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>直流电路：从欧姆定律到基尔霍夫</title>
+<meta name="description" content="掌握直流电路的基本定律：欧姆定律、电阻串并联、基尔霍夫定律，通过电路模拟器实时计算理解电路行为。">
+<meta name="course-id" content="phy-dc-circuits">
+<meta name="course-title" content="直流电路：从欧姆定律到基尔霍夫">
+<meta name="course-subject" content="physics">
+<meta name="course-grade" content="高中·成人自学">
+<meta name="course-prereqs" content="[]">
+<meta name="course-next" content="">
+<meta name="course-version" content="1.0.0">
+<meta name="teachany-version" content="7.18.0">
+<meta name="teachany-node" content="ext-phy-dc01">
+<meta name="teachany-subject" content="physics">
+<meta name="teachany-grade" content="12">
+<meta name="teachany-stage" content="high">
+<meta name="teachany-domain" content="电磁学">
+<meta name="teachany-prerequisites" content="基础代数">
+<meta name="teachany-lesson-type" content="new-concept">
+<meta name="teachany-free-mode" content="false">
+<meta name="teachany-template-version" content="2.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; max-width: 100%; overflow-x: hidden; }
+body { padding-top: var(--safe-top); font-family: var(--sans); color: var(--ink); line-height: 1.75; font-size: 16px;
+  background: radial-gradient(circle at 18% 18%, rgba(37,99,235,.10), transparent 30%), radial-gradient(circle at 88% 18%, rgba(124,58,237,.08), transparent 28%), linear-gradient(135deg, #fbfdff, #eef6ff 48%, #f8f5ff); }
+a { color: var(--blue); text-decoration: none; } a:hover { text-decoration: underline; }
+button, a, input, select, textarea { min-height: 44px; }
+img, video, canvas, svg { max-width: 100%; height: auto; }
+h1, h2, h3, h4 { margin: 0; letter-spacing: -0.035em; }
+
+:root {
+  --bg: #f7faff; --panel: #ffffff; --ink: #0f172a; --muted: #64748b;
+  --line: #dbe7f5; --blue: #2563eb; --green: #16a34a; --purple: #7c3aed;
+  --orange: #f59e0b; --red: #ef4444;
+  --shadow: 0 24px 80px rgba(15,23,42,.12);
+  --mono: "DM Mono", ui-monospace, monospace;
+  --sans: "Inter", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --brand: #2563eb; --brand-2: #7c3aed; --accent: #16a34a; --warn: #f59e0b;
+  --text: #0f172a; --text-secondary: #475569; --bg-subtle: #f1f5f9;
+  --brand-soft: rgba(37,99,235,0.08); --brand-2-soft: rgba(124,58,237,0.08);
+  --accent-soft: rgba(22,163,74,0.08); --line-subtle: rgba(15,23,42,0.08);
+  --card: #ffffff; --card-elevated: #ffffff;
+  --page-padding: 24px; --card-radius: 20px; --card-radius-sm: 14px;
+  --slide-height: 100vh; --slide-height-fallback: 100dvh;
+  --toolbar-height: 56px; --sidenav-width: 48px;
+  --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom);
+}
+body {
+  font-family: var(--sans); color: var(--ink);
+  background: radial-gradient(circle at 18% 18%, rgba(37,99,235,.10), transparent 30%),
+              radial-gradient(circle at 88% 18%, rgba(124,58,237,.08), transparent 28%),
+              linear-gradient(135deg, #fbfdff, #eef6ff 48%, #f8f5ff);
+}
+.card {
+  background: linear-gradient(160deg, rgba(255,255,255,0.95), rgba(248,250,255,0.98));
+  border: 1px solid var(--line); border-radius: var(--card-radius);
+  padding: 24px; box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 32px 96px rgba(15,23,42,.16); }
+.card-accent { border-top: 3px solid; border-image: linear-gradient(90deg, var(--blue), var(--purple)) 1; }
+.card-glow { box-shadow: 0 4px 24px rgba(15,23,42,0.08), 0 0 40px rgba(37,99,235,0.05); }
+.glass {
+  background: rgba(255,255,255,0.7); backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); border: 1px solid var(--line);
+}
+.choice {
+  width: 100%; text-align: left; border: 1px solid var(--line); border-radius: 14px;
+  background: #fff; color: var(--ink); padding: 16px 20px;
+  cursor: pointer; font-size: 15px; line-height: 1.5;
+  transition: all 0.2s ease; font-family: var(--sans);
+}
+.choice:hover { background: rgba(37,99,235,0.04); border-color: var(--blue); transform: translateX(4px); }
+.choice.selected { border-color: var(--blue); background: rgba(37,99,235,0.08); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+.choice.correct { border-color: var(--green); background: rgba(22,163,74,0.08); }
+.choice.wrong { border-color: var(--red); background: rgba(239,68,68,0.06); }
+.result {
+  padding: 16px 20px; border-radius: 14px; font-size: 15px; line-height: 1.6;
+  background: rgba(22,163,74,0.06); border: 1px solid rgba(22,163,74,0.15); color: var(--ink);
+}
+.result.warn { background: rgba(245,158,11,0.06); border-color: rgba(245,158,11,0.15); }
+.result.error { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.15); }
+input, textarea {
+  width: 100%; border-radius: 12px; border: 1px solid var(--line);
+  background: #fff; color: var(--ink); padding: 14px 16px;
+  font-size: 15px; font-family: var(--sans);
+}
+input:focus, textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.10); }
+h1, h2, h3 { letter-spacing: -0.035em; }
+.hero-gradient {
+  background: linear-gradient(135deg, #0f172a 0%, #2563eb 50%, #7c3aed 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.kicker {
+  font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--blue); font-size: 12px; font-weight: 600;
+}
+.btn-pill {
+  font-family: var(--mono); background: var(--blue); color: #fff;
+  border: none; border-radius: 999px; padding: 10px 24px;
+  font-size: 13px; cursor: pointer; transition: all 0.2s;
+}
+.btn-pill:hover { background: #1d4ed8; transform: translateY(-1px); }
+.canvas-wrap {
+  overflow: auto; background: var(--bg); border: 1px solid var(--line);
+  border-radius: 16px; padding: 16px;
+}
+#comments-panel { max-width: 880px; margin: 40px auto; padding: 24px; }
+#comments-panel h2 { font-size: 22px; margin-bottom: 16px; }
+#comments-panel textarea { min-height: 80px; margin-bottom: 12px; }
+.comment-item { padding: 12px 16px; background: #fff; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; }
+.comment-item .ts { font-size: 12px; color: var(--muted); }
+#note-export-btn { position: fixed; top: 16px; right: 16px; z-index: 200; }
+#note-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15,23,42,0.5); z-index: 300; align-items: center; justify-content: center; }
+#note-modal.show { display: flex; }
+#note-modal .modal-content { background: #fff; border-radius: 16px; padding: 32px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
+.section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.section-header h2 { font-size: clamp(20px, 4vw, 26px); font-weight: 700; line-height: 1.3; color: var(--ink); }
+.phase-tag { display: inline-flex; align-items: center; gap: 6px; color: var(--blue); background: var(--brand-soft); border: 1px solid rgba(37,99,235,0.2); border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; font-family: var(--mono); }
+.phase-tag[data-variant="success"] { color: var(--green); background: rgba(22,163,74,0.08); border-color: rgba(22,163,74,0.2); }
+.phase-tag[data-variant="purple"] { color: var(--purple); background: var(--brand-2-soft); border-color: rgba(124,58,237,0.2); }
+.phase-tag[data-variant="warn"] { color: var(--orange); background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.2); }
+.grid { display: grid; grid-template-columns: 1fr; gap: 12px; width: 100%; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.objectives { list-style: none; padding: 0; display: grid; gap: 10px; }
+.objectives li { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; border-radius: 14px; background: rgba(37,99,235,0.04); border: 1px solid var(--line); }
+.objectives li::before { content: "✦"; color: var(--blue); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+.ta-standard-figure { margin: 20px auto; max-width: 980px; }
+.ta-standard-figure img, .ta-standard-figure svg { display: block; width: 100%; border-radius: 16px; border: 1px solid var(--line); }
+.ta-standard-figure figcaption { margin-top: 10px; color: var(--muted); font-size: 14px; text-align: center; }
+.flex-row { display: flex; gap: 12px; margin-top: 14px; align-items: center; flex-wrap: wrap; }
+.flex-row .choice { flex: 1; min-width: 120px; text-align: center; }
+.inner-card { margin: 12px 0; padding: 16px; border-radius: var(--card-radius-sm); border: 1px solid var(--line); background: var(--bg); }
+.inner-card p { margin: 0 0 6px; color: var(--ink); }
+.slide-page .slide-inner { max-width: 880px; width: 100%; position: relative; z-index: 2; margin: 0 auto; }
+.slide-page .slide-inner > * { width: 100%; box-sizing: border-box; }
+.source-section { max-width: 880px; margin: 40px auto; padding: 0 24px; }
+.source-section h2 { font-size: 20px; margin-bottom: 12px; }
+.source-section ul { padding-left: 20px; color: var(--muted); font-size: 14px; }
+@media (max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr !important; } .flex-row { flex-direction: column; } .flex-row .choice { min-width: 100%; } }
+
+.slide-container { scroll-snap-type: y proximity; overflow-y: auto; height: 100dvh; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+.slide-page { min-height: 100dvh; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: var(--page-padding); padding-bottom: calc(var(--page-padding) + 56px); position: relative; overflow: hidden; }
+.slide-page[data-page-type="cover"] { text-align: center; }
+.slide-page[data-page-type="cover"] h1 { font-size: clamp(32px, 7vw, 56px); line-height: 1.15; background: linear-gradient(135deg, #0f172a 0%, #2563eb 50%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 16px; }
+.slide-page[data-page-type="objectives"] { background: radial-gradient(circle at 0% 100%, rgba(22,163,74,0.06), transparent 40%), radial-gradient(circle at 100% 0%, rgba(37,99,235,0.05), transparent 40%); }
+.slide-page[data-page-type="concept"] { background: radial-gradient(circle at 30% 20%, rgba(37,99,235,0.04), transparent 35%), radial-gradient(circle at 70% 80%, rgba(124,58,237,0.04), transparent 35%); }
+.slide-page[data-page-type="interactive"] { background: radial-gradient(circle at 50% 0%, rgba(22,163,74,0.06), transparent 40%), radial-gradient(circle at 80% 100%, rgba(37,99,235,0.04), transparent 35%); }
+.slide-page[data-page-type="quiz"] { background: radial-gradient(circle at 20% 80%, rgba(245,158,11,0.05), transparent 35%), radial-gradient(circle at 80% 20%, rgba(124,58,237,0.04), transparent 35%); }
+.slide-page[data-page-type="summary"] { background: radial-gradient(circle at 50% 50%, rgba(37,99,235,0.06), transparent 45%), radial-gradient(circle at 20% 20%, rgba(22,163,74,0.04), transparent 30%); }
+@media (max-width: 768px) { :root { --page-padding: 16px; --card-radius: 16px; } .slide-page { padding: 16px 14px; padding-bottom: calc(16px + 56px); } .grid-2, .grid-3 { grid-template-columns: 1fr !important; } .flex-row { flex-direction: column; } .flex-row .choice { min-width: 100%; } .card { padding: 18px; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+.stagger-1 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.1s; }
+.stagger-2 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.2s; }
+.stagger-3 { animation: fadeUp 0.5s ease-out both; animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+<button class="btn-pill" id="note-export-btn" style="position:fixed;top:16px;right:16px;z-index:200">📝 导出笔记</button>
+<div id="note-modal"><div class="modal-content">
+  <h3 style="margin-top:0">📝 课程笔记</h3>
+  <textarea id="note-md" style="min-height:200px;margin-bottom:16px"></textarea>
+  <div style="display:flex;gap:8px">
+    <button class="btn-pill" id="note-copy">📋 复制</button>
+    <button class="btn-pill" id="note-download">💾 下载 .md</button>
+    <button class="btn-pill" id="note-close" style="background:#64748b">关闭</button>
+  </div></div></div>
+<div class="slide-container" id="slide-container">
+<section class="slide-page" data-page-type="cover" data-page-index="0" data-tts="hero" data-tsh="开场">
+  <div class="slide-inner">
+    <h1 class="hero-gradient" style="font-size:clamp(32px,7vw,56px);line-height:1.15;text-align:center;margin-bottom:16px">直流电路：从欧姆定律到基尔霍夫</h1>
+    <p style="color:var(--muted);font-size:clamp(16px,3vw,22px);max-width:680px;margin:0 auto;text-align:center">为什么家里的电器并联而不是串联？</p>
+    <figure class="ta-standard-figure" style="margin-top:32px">
+      <svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#eef6ff"/><stop offset="100%" stop-color="#f8f5ff"/></linearGradient></defs>
+        <rect width="1280" height="720" fill="url(#bg)"/>
+        <circle cx="200" cy="180" r="120" fill="rgba(37,99,235,0.06)"/><circle cx="1080" cy="540" r="160" fill="rgba(124,58,237,0.05)"/><circle cx="640" cy="360" r="200" fill="rgba(37,99,235,0.03)"/>
+        <text x="640" y="320" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="800" fill="#0f172a">直流电路：从欧姆定律到基尔霍夫</text>
+        <text x="640" y="380" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#64748b">为什么家里的电器并联而不是串联？</text>
+        <rect x="300" y="420" width="180" height="56" rx="28" fill="rgba(37,99,235,0.1)" stroke="#2563eb" stroke-width="1"/><text x="390" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#2563eb">交互学习</text>
+        <rect x="550" y="420" width="180" height="56" rx="28" fill="rgba(124,58,237,0.1)" stroke="#7c3aed" stroke-width="1"/><text x="640" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#7c3aed">概念测验</text>
+        <rect x="800" y="420" width="180" height="56" rx="28" fill="rgba(22,163,74,0.1)" stroke="#16a34a" stroke-width="1"/><text x="890" y="455" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#16a34a">知识迁移</text>
+      </svg>
+      <figcaption>直流电路核心定律：欧姆定律 → 串并联 → 基尔霍夫定律</figcaption>
+    </figure>
+  </div>
+</section>
+<section class="slide-page" data-page-type="interactive" data-page-index="1" data-tts="problem-anchor" data-tsh="问题锚点">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag">Problem Anchor</span><h2>今天想解决什么问题？</h2></div>
+      <p style="color:var(--muted);margin:0 0 16px">选一个你关心的问题，后面的内容会围绕它展开。</p>
+      <div class="grid"><button class="choice" data-correct="true" data-diagnosis="串联分压、并联分流——这是电路设计的核心原则。串联总电阻相加，并联总电阻倒数相加。">A. 串联和并联有什么本质区别？如何计算总电阻？</button>
+<button class="choice" data-correct="false" data-diagnosis="这需要基尔霍夫定律来系统性解决。选择A可以打下全部基础。">B. 复杂电路中有多个电源和回路，怎么分析各支路的电流？</button>
+<button class="choice" data-correct="false" data-diagnosis="V=IR有三种变形——选择A可以系统学习如何灵活变换。">C. 欧姆定律 V=IR 中三个量之间的关系到底怎么灵活运用？</button></div>
+      <label style="display:block;margin-top:20px;color:var(--muted);font-size:14px">或者，写下你自己的问题
+        <input id="learner-question-input" placeholder="把你卡住的问题写在这里" style="margin-top:8px">
+      </label>
+      <p id="anchor-feedback" class="result warn" style="margin-top:16px">选择或输入后，本课会围绕你的问题展开。</p>
+    </div>
+  </div>
+</section>
+<section class="slide-page" data-page-type="objectives" data-page-index="2" data-tts="objectives" data-tsh="学习目标">
+  <div class="slide-inner"><div class="card"><div class="section-header"><span class="phase-tag" data-variant="success">Objectives</span><h2>学习目标</h2></div><ul class="objectives"><li>理解欧姆定律 V=IR 的物理意义和适用条件</li>
+<li>掌握串联和并联电路中电压、电流、电阻的计算方法</li>
+<li>应用基尔霍夫电压定律(KVL)和电流定律(KCL)分析复杂电路</li>
+<li>能通过电路模拟器验证理论计算结果</li></ul></div></div></section>
+<section class="slide-page" data-page-type="quiz" data-page-index="3" data-tts="pretest" data-tsh="前测：检测你的电路基础">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="warn">Pretest</span><h2>前测：检测你的电路基础</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">在深入学习直流电路之前，先检测你对基本概念的理解程度。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="正确！R_total = R1 + R2 + ...，串联电阻值简单相加。">A. 电阻串联时总电阻等于各电阻之和</button>
+<button class="choice" data-correct="false" data-diagnosis="并联电阻的倒数是各电阻倒数之和：1/R = 1/R1 + 1/R2。总电阻小于任何单个电阻！">B. 电阻并联时总电阻等于各电阻之和</button>
+<button class="choice" data-correct="false" data-diagnosis="欧姆定律是 V = IR，V = P/I 是功率公式 P=VI 的变形。两公式不能混淆。">C. 欧姆定律的公式是 V = P/I</button>
+<button class="choice" data-correct="false" data-diagnosis="串联电路只有一条回路，各元件电流必然相同。并联电路中各支路电流才可能不同。">D. 串联电路中各元件电流不同</button>
+<button class="choice" data-correct="true" data-diagnosis="正确！理想电压源内阻为零，输出电压恒定不变。">E. 理想电压源内阻为零</button></div>
+    <div class="result warn" data-feedback-for="pretest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="4" data-tts="concept-1" data-tsh="欧姆定律：电路的基础方程">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="">Concept 1</span><h2>欧姆定律：电路的基础方程</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你已知道电压、电流、电阻这三个基本概念</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>但它们之间的定量关系 V=IR 在不同条件下有不同含义，比如线性与非线性元件的区别</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>深入理解 V=IR 的物理意义，掌握线性电阻和非线性元件的分析方法</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">V=IR 的三种形式</h3><p style="color:var(--muted);margin:0;font-size:15px">欧姆定律可写成 V=IR（求电压）、I=V/R（求电流）、R=V/I（求电阻）。三种形式等价但分别对应不同分析场景。线性电阻满足此关系，非线性元件（二极管等）不满足。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">电阻与电导</h3><p style="color:var(--muted);margin:0;font-size:15px">电阻 R 单位欧姆(Ω)，电导 G=1/R 单位西门子(S)。并联分析中用电导更方便——G_total = G1+G2+...。串联分析中用电阻更方便——R_total = R1+R2+...</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">功率与焦耳定律</h3><p style="color:var(--muted);margin:0;font-size:15px">P = VI = I²R = V²/R（焦耳定律）。功率以热的形式耗散，选择电阻时要考虑功率额定值。I²R 形式在已知电流时最方便。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="5" data-tts="concept-2" data-tsh="串联与并联：电路的基本拓扑">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="">Concept 2</span><h2>串联与并联：电路的基本拓扑</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你已经能区分串联和并联的连接方式</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>但串联和并联的电压、电流、电阻规律完全不同，混合电路的分析需要系统方法</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>掌握串并联的等效电阻计算和分压分流原理</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">串联电路三规律</h3><p style="color:var(--muted);margin:0;font-size:15px">①电流处处相等 I₁=I₂=...；②总电压=各电压之和 V=V₁+V₂+...；③总电阻=各电阻之和 R=R₁+R₂+...。分压公式：Vx=(Rx/R_total)×V_total。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">并联电路三规律</h3><p style="color:var(--muted);margin:0;font-size:15px">①各支路电压相等 V₁=V₂=...；②总电流=各支路电流之和 I=I₁+I₂+...；③1/R=1/R₁+1/R₂+...。分流公式：Ix=(R_other/(R₁+R₂))×I_total（两支路时）。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">混联电路化简策略</h3><p style="color:var(--muted);margin:0;font-size:15px">从最内层开始：先合并纯并联组→再合并纯串联组→重复直至单一等效电阻。然后用分压/分流公式反向展开，求出每个元件上的电压和电流。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="concept" data-page-index="6" data-tts="concept-3" data-tsh="基尔霍夫定律：复杂电路的系统解法">
+  <div class="slide-inner"><div class="card">
+    <div class="section-header"><span class="phase-tag" data-variant="">Concept 3</span><h2>基尔霍夫定律：复杂电路的系统解法</h2></div>
+    <div class="card glass" style="margin:16px 0;padding:20px;border-radius:14px">
+      <p style="margin:0 0 8px"><strong style="color:var(--green)">已经知道：</strong>你已经能用欧姆定律分析简单串并联电路</p>
+      <p style="margin:0 0 8px"><strong style="color:var(--orange)">但是问题是：</strong>当电路有多个独立回路和节点时，仅靠欧姆定律和串并联化简不够用——需要更高阶的定律</p>
+      <p style="margin:0"><strong style="color:var(--blue)">所以这一段要解决：</strong>学习基尔霍夫电流定律(KCL)和电压定律(KVL)，建立系统化的电路方程求解方法</p>
+    </div>
+    <div class="grid" style="margin-top:20px"><div class="card inner-card stagger-1" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">KCL 电流定律</h3><p style="color:var(--muted);margin:0;font-size:15px">在任一节点，ΣI_in=ΣI_out，即 ΣI=0（流入正流出负）。本质是电荷守恒——节点不积累电荷。应用时标注各支路电流方向，方向可任意假设（解出来为负即反向）。</p></div><div class="card inner-card stagger-2" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">KVL 电压定律</h3><p style="color:var(--muted);margin:0;font-size:15px">沿闭合回路绕行一周，ΣV_rise=ΣV_drop，即 ΣV=0。本质是能量守恒——单位电荷绕回路一周电势能净变化为零。选定绕行方向后，电压升取正、电压降取负。</p></div><div class="card inner-card stagger-3" style="padding:18px"><h3 style="color:var(--blue);margin-bottom:8px;font-size:16px">列方程四步法</h3><p style="color:var(--muted);margin:0;font-size:15px">①标出所有支路电流方向（未知可假设）；②对 n-1 个独立节点列 KCL；③对 b-(n-1) 个独立回路列 KVL；④联立方程组求解。b=支路数，n=节点数。</p></div></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="interactive" data-page-index="7" data-tts="interactive" data-tsh="电路模拟器：搭建你的电路">
+  <div class="slide-inner"><div class="card card-glow">
+    <div class="section-header"><span class="phase-tag" data-variant="success">Interactive</span><h2>电路模拟器：搭建你的电路</h2></div>
+    <p style="color:var(--muted);margin:0 0 16px">调整电阻值和电压值，观察电流变化。串联时R1和R2电流相同；并联时电压相同。</p>
+    <div class="canvas-wrap"><canvas id="circuit-canvas" width="760" height="420" aria-label="互动画布" style="display:block;width:100%;border-radius:12px"></canvas></div>
+    <div class="grid" style="margin-top:16px"><div class="flex-row"><button class="btn-pill" id="bs" style="background:var(--blue)">串联模式</button><button class="btn-pill" id="bp" style="background:var(--purple)">并联模式</button></div>
+<label style="display:flex;flex-direction:column;gap:4px;margin-top:8px"><span style="color:var(--muted);font-size:13px">R1: <span id="r1v">100</span>Ω</span><input id="sr1" type="range" min="10" max="500" value="100" oninput="upd()"></label>
+<label style="display:flex;flex-direction:column;gap:4px;margin-top:8px"><span style="color:var(--muted);font-size:13px">R2: <span id="r2v">200</span>Ω</span><input id="sr2" type="range" min="10" max="500" value="200" oninput="upd()"></label>
+<label style="display:flex;flex-direction:column;gap:4px;margin-top:8px"><span style="color:var(--muted);font-size:13px">电压: <span id="vv">12</span>V</span><input id="sv" type="range" min="1" max="30" value="12" oninput="upd()"></label></div>
+  </div></div></section>
+<script>(function(){var c=document.getElementById('circuit-canvas');if(!c)return;var ctx=c.getContext('2d');var W=c.width,H=c.height;var R1=100,R2=200,V=12,mode='series';
+function draw(){ctx.clearRect(0,0,W,H);ctx.fillStyle='#f7faff';ctx.fillRect(0,0,W,H);ctx.strokeStyle='#2563eb';ctx.lineWidth=2;ctx.lineCap='round';
+if(mode==='series'){ctx.beginPath();ctx.moveTo(30,210);ctx.lineTo(150,210);ctx.lineTo(170,170);ctx.lineTo(230,170);ctx.lineTo(250,210);ctx.rect(250,190,80,40);ctx.moveTo(330,210);ctx.lineTo(410,210);ctx.lineTo(430,170);ctx.lineTo(490,170);ctx.lineTo(510,210);ctx.rect(510,190,80,40);ctx.moveTo(590,210);ctx.lineTo(730,210);ctx.rect(150,180,60,60);ctx.rect(410,180,60,60);ctx.stroke();
+ctx.fillStyle='#0f172a';ctx.font='14px Inter,sans-serif';ctx.fillText('R1='+R1+'Ω',170,235);ctx.fillText('R2='+R2+'Ω',430,235);
+var I=V/(R1+R2);ctx.fillText('I='+I.toFixed(3)+'A',320,280);}
+else{ctx.beginPath();ctx.moveTo(30,210);ctx.lineTo(200,210);ctx.lineTo(220,170);ctx.lineTo(300,170);ctx.lineTo(320,210);ctx.rect(200,180,60,60);ctx.stroke();
+ctx.beginPath();ctx.moveTo(320,210);ctx.lineTo(500,210);ctx.lineTo(520,250);ctx.lineTo(600,250);ctx.rect(520,230,80,40);ctx.stroke();
+ctx.beginPath();ctx.moveTo(500,210);ctx.rect(500,190,80,40);ctx.stroke();
+ctx.beginPath();ctx.moveTo(600,250);ctx.lineTo(710,250);ctx.lineTo(710,210);ctx.moveTo(710,210);ctx.lineTo(710,50);ctx.rect(690,50,40,40);ctx.stroke();
+ctx.beginPath();ctx.moveTo(710,90);ctx.lineTo(710,150);ctx.moveTo(30,210);ctx.rect(10,180,40,40);ctx.stroke();
+ctx.fillStyle='#0f172a';ctx.font='14px Inter,sans-serif';ctx.fillText('R1='+R1+'Ω',160,235);ctx.fillText('R2='+R2+'Ω',460,235);
+var Req=1/(1/R1+1/R2);ctx.fillText('Req='+Req.toFixed(1)+'Ω','I='+(V/Req).toFixed(3)+'A',320,290);}
+ctx.fillStyle='#2563eb';ctx.font='bold 24px sans-serif';ctx.fillText('V='+V+'V',355,120);}
+function upd(){R1=parseInt(document.getElementById('sr1').value);R2=parseInt(document.getElementById('sr2').value);V=parseInt(document.getElementById('sv').value);document.getElementById('r1v').textContent=R1;document.getElementById('r2v').textContent=R2;document.getElementById('vv').textContent=V;draw();}
+document.getElementById('bs').addEventListener('click',function(){mode='series';upd();});
+document.getElementById('bp').addEventListener('click',function(){mode='parallel';upd();});
+draw();})();</script>
+
+  <!-- Scaffolded Exercise Page -->
+  <section class="slide-page" data-page-type="concept" data-page-index="99" data-tts="scaffold" data-tsh="分层练习 - 从示范到独立完成">
+    <div class="slide-inner">
+      <div class="card">
+        <div class="section-header"><span class="phase-tag" data-variant="success">Scaffold</span><h2>分层练习：从示范到独立</h2></div>
+        <div class="grid" style="margin-top:16px">
+          <div class="card" style="padding:20px;border-left:3px solid var(--green)">
+            <h3 style="color:var(--green);margin-bottom:10px;font-size:15px">🟢 全支架示范</h3>
+            <p style="color:var(--muted);margin:0;font-size:15px">回顾上方概念页中的解题分析。每一步的推导逻辑——为什么用这个公式？为什么代入这个数值？理解"为什么这样做"比记住步骤更重要。</p>
+            <p style="color:var(--blue);margin-top:8px;font-size:14px"><strong>支架提示：</strong>分清已知量和未知量→选择正确公式→代入数值→检查单位→验证答案是否合理。</p>
+          </div>
+          <div class="card" style="padding:20px;border-left:3px solid var(--orange)">
+            <h3 style="color:var(--orange);margin-bottom:10px;font-size:15px">🟡 半支架练习</h3>
+            <p style="color:var(--muted);margin:0 0 12px;font-size:15px">试着独立完成与本课主题相关的一道计算或分析题。只给你关键公式提示，解题过程由你自己完成。</p>
+            <input aria-label="半支架填空" placeholder="写下你的解题过程..." style="margin-top:8px">
+            <p style="color:var(--muted);margin-top:8px;font-size:13px">💡 <strong>减弱支架：</strong>这次只有公式提示，不给你完整步骤。完成后对照概念页自检。</p>
+          </div>
+          <div class="card" style="padding:20px;border-left:3px solid var(--blue)">
+            <h3 style="color:var(--blue);margin-bottom:10px;font-size:15px">🔵 独立完成（挑战）</h3>
+            <p style="color:var(--muted);margin:0;font-size:15px">设计一道融合本课至少两个核心概念的综合题，写出完整题目、解题过程和答案。尝试联系实际场景。</p>
+            <textarea aria-label="独立完成" placeholder="题目：
+
+解题过程：
+
+答案：" style="margin-top:8px;min-height:100px"></textarea>
+            <p style="color:var(--purple);margin-top:8px;font-size:13px">🏆 <strong>挑战升级：</strong>尝试将本课知识迁移到一个你从未见过的场景中。真正的理解在于能用到新地方。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="slide-page" data-page-type="quiz" data-page-index="8" data-tts="conceptest" data-tsh="概念测试：基尔霍夫定律">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">ConcepTest</span><h2>概念测试：基尔霍夫定律</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">测试你对 KCL 和 KVL 的理解深度——每一步都是诊断机会。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="正确！节点处电荷不会凭空产生或消失，流入=流出是电荷守恒的直接体现。">A. KCL 的本质是电荷守恒</button>
+<button class="choice" data-correct="true" data-diagnosis="正确！沿闭合回路一周，电势能净变化为零。">B. KVL 的本质是能量守恒</button>
+<button class="choice" data-correct="true" data-diagnosis="正确！n个节点有n-1个独立KCL方程。">C. 含3个节点的电路只能列出2个独立KCL方程</button>
+<button class="choice" data-correct="false" data-diagnosis="KCL适用于任何集总参数电路（交流/直流/瞬态），因为电荷守恒是普适的。">D. KCL只适用于直流电路</button>
+<button class="choice" data-correct="true" data-diagnosis="正确！约定：顺绕行方向电压降取正（或负），关键在于一致性。">E. KVL沿回路绕行，电压升取正、电压降取负</button></div>
+    <div class="result warn" data-feedback-for="conceptest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="quiz" data-page-index="9" data-tts="posttest" data-tsh="后测：检验你的学习成果">
+  <div class="slide-inner"><div class="card card-accent" data-quiz="true">
+    <div class="section-header"><span class="phase-tag" data-variant="warn">Post-Test</span><h2>后测：检验你的学习成果</h2></div>
+    <p style="color:var(--muted);margin:0 0 20px;font-size:16px">学完直流电路的所有核心概念后，来检测你的掌握程度。</p>
+    <div class="grid"><button class="choice" data-correct="true" data-diagnosis="1/R=1/10+1/10=2/10→R=5Ω。并联总电阻总是小于最小电阻。">A. 两个10Ω电阻并联，总电阻为5Ω</button>
+<button class="choice" data-correct="true" data-diagnosis="I=V/R=12/3=4A。">B. 一个12V电源接3Ω电阻，电流为4A</button>
+<button class="choice" data-correct="true" data-diagnosis="KCL适用于任何集总电路，包括含储能元件的动态电路。">C. KCL可以用于分析含电容的动态电路</button>
+<button class="choice" data-correct="false" data-diagnosis="串联分压、电压按电阻比例分配。并联电路中电压才相等。仔细区分！">D. 串联电路中各元件两端电压相等</button>
+<button class="choice" data-correct="true" data-diagnosis="保证输出电流恒定，不受负载影响。">E. 理想电流源内阻无穷大</button></div>
+    <div class="result warn" data-feedback-for="posttest" style="margin-top:16px">点击选项查看诊断反馈。</div>
+  </div></div></section>
+<section class="slide-page" data-page-type="summary" data-page-index="10" data-tts="summary" data-tsh="总结">
+  <div class="slide-inner"><div class="card"><div class="section-header"><span class="phase-tag">Summary</span><h2>本课总结：直流电路的三大支柱</h2></div><div style="margin-top:16px"><div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">1.</span><span>欧姆定律 V=IR 是电路分析的基石，适用于线性电阻元件</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">2.</span><span>串联分压(电流相同)、并联分流(电压相同)，混联电路逐步化简</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">3.</span><span>基尔霍夫定律(KCL+KVL)是复杂电路的系统解法：列方程→联立求解</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">4.</span><span>KCL本质是电荷守恒，KVL本质是能量守恒</span></div>
+<div class="card" style="padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line)"><span style="font-weight:700;flex-shrink:0;color:var(--blue)">5.</span><span>n节点 → n-1个独立KCL方程；b-(n-1)个独立KVL方程</span></div></div></div></div></section>
+<section class="slide-page" data-page-type="summary" data-page-index="11" data-tts="knowledge-graph" data-tsh="知识图谱">
+  <div class="slide-inner"><div class="card card-glow">
+    <div class="section-header"><span class="phase-tag" data-variant="purple">Knowledge Graph</span><h2>知识图谱</h2></div>
+    <p style="color:var(--muted);margin:0 0 16px">本节点的前置、后续和同域知识。</p>
+    <div data-teachany-kg="ext-phy-dc01"><canvas class="tkg-fallback-canvas" width="720" height="120" aria-label="知识图谱" style="display:block;width:100%;max-height:140px;border-radius:12px"></canvas></div>
+  </div></div></section>
+<section class="slide-page" data-page-type="interactive" data-page-index="12" data-tts="ai-tutor" data-tsh="AI 学伴">
+  <div class="slide-inner"><div data-teachany-tutor-card></div></div></section>
+</div>
+<div class="source-section"><h2>📚 内容来源</h2><ul><li>赵凯华、陈熙谋《电磁学》(第三版)，高等教育出版社</li>
+<li>Halliday, Resnick, Walker "Fundamentals of Physics" (11th Ed.)</li>
+<li>MIT OpenCourseWare 8.02: Electricity and Magnetism</li></ul></div>
+<div id="comments-panel">
+  <h2>💬 讨论区</h2>
+  <textarea id="comment-input" placeholder="写下你的问题或感想..."></textarea>
+  <button class="btn-pill comment-submit" style="margin-bottom:16px">发表评论</button>
+  <div class="comment-list"></div></div>
+<div class="slide-toolbar" id="slide-toolbar">
+  <button class="toolbar-btn" id="tb-prev" aria-label="上一页"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+  <div class="toolbar-progress"><div class="toolbar-progress-fill" id="tb-progress-fill"></div></div>
+  <span class="toolbar-page-info" id="tb-page-info">1 / 13</span>
+  <button class="toolbar-btn" id="tb-next" aria-label="下一页"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+</div>
+<div id="audio-config" data-teachany-audio hidden>
+  <script type="application/json" data-teachany-audio-playlist>[{"section": "hero", "src": "tts/phy-dc-circuits-hero.mp3", "label": "封面讲解"}, {"section": "pretest", "src": "tts/phy-dc-circuits-pretest.mp3", "label": "前测"}, {"section": "conceptest", "src": "tts/phy-dc-circuits-conceptest.mp3", "label": "概念测试"}]</script>
+</div>
+<script>(function() {
+  var container = document.getElementById('slide-container');
+  var pages = Array.from(document.querySelectorAll('.slide-page'));
+  var total = pages.length; var current = 0;
+  function update() {
+    document.getElementById('tb-page-info').textContent = (current+1)+' / '+total;
+    document.getElementById('tb-prev').style.opacity = current===0?'0.3':'1';
+    document.getElementById('tb-next').style.opacity = current===total-1?'0.3':'1';
+  }
+  function goTo(i) { if(i>=0&&i<total){current=i;pages[current].scrollIntoView({behavior:'smooth',block:'start'});update();} }
+  document.getElementById('tb-prev').addEventListener('click',function(){goTo(current-1)});
+  document.getElementById('tb-next').addEventListener('click',function(){goTo(current+1)});
+  container.addEventListener('scroll',function(){
+    var st=container.scrollTop, best=0, min=Infinity;
+    pages.forEach(function(p,i){var d=Math.abs(p.offsetTop-st);if(d<min){min=d;best=i;}});
+    if(best!==current){current=best;update();}
+  });
+  update();
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('note-export-btn');
+  var modal = document.getElementById('note-modal');
+  if (!btn || !modal) return;
+  btn.addEventListener('click', function() {
+    var excerpts = [];
+    document.querySelectorAll('.slide-page h2, .slide-page h3').forEach(function(h) { excerpts.push(h.textContent.trim()); });
+    var md = '# ' + document.title + '\n\n' + excerpts.map(function(e) { return '- ' + e; }).join('\n');
+    document.getElementById('note-md').value = md;
+    modal.classList.add('show');
+  });
+  document.getElementById('note-close').addEventListener('click', function() { modal.classList.remove('show'); });
+  document.getElementById('note-copy').addEventListener('click', function() {
+    navigator.clipboard.writeText(document.getElementById('note-md').value).then(function() { alert('\u5df2\u590d\u5236!'); });
+  });
+  document.getElementById('note-download').addEventListener('click', function() {
+    var text = document.getElementById('note-md').value;
+    var a = document.createElement('a'); a.href = 'data:text/markdown;charset=utf-8,' + encodeURIComponent(text); a.download = 'notes.md'; a.click();
+  });
+  var panel = document.getElementById('comments-panel');
+  if (!panel) return;
+  var cid = (document.querySelector('meta[name="course-id"]')||{}).content||'unknown';
+  var key = 'teachany-comments-' + cid;
+  function render() {
+    var data = JSON.parse(localStorage.getItem(key) || '[]');
+    var list = panel.querySelector('.comment-list');
+    if (!list) return;
+    list.innerHTML = data.map(function(c) { return '<div class="comment-item"><div class="ts">'+c.time+'</div><div>'+c.text+'</div></div>'; }).join('');
+  }
+  panel.querySelector('.comment-submit').addEventListener('click', function() {
+    var t = panel.querySelector('textarea').value.trim(); if (!t) return;
+    var data = JSON.parse(localStorage.getItem(key) || '[]');
+    data.push({text: t, time: new Date().toLocaleString('zh-CN')});
+    localStorage.setItem(key, JSON.stringify(data));
+    panel.querySelector('textarea').value = '';
+    render();
+  });
+  render();
+});
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-quiz="true"] .choice').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var isCorrect = this.dataset.correct === 'true';
+      var diagnosis = this.dataset.diagnosis || '';
+      var parent = this.closest('[data-quiz="true"]');
+      parent.querySelectorAll('.choice').forEach(function(b) { b.classList.remove('selected','correct','wrong'); b.disabled = true; });
+      this.classList.add('selected');
+      this.classList.add(isCorrect ? 'correct' : 'wrong');
+      var fb = parent.querySelector('.result');
+      if (fb) { fb.className = isCorrect ? 'result' : 'result error'; fb.innerHTML = (isCorrect ? '\u2705 ' : '\u274c ') + diagnosis; }
+    });
+  });
+});
+</script>
+</body>
+</html>
