@@ -9,279 +9,611 @@
 <meta name="course-title" content="从 Chatbox 到 Agentic RAG">
 <meta name="course-subject" content="AI-Engineering">
 <meta name="course-grade" content="adult">
-<meta name="course-version" content="1.1.0">
+<meta name="course-prereqs" content="">
+<meta name="course-next" content="embedding-models">
+<meta name="course-version" content="1.0.0">
 <meta name="teachany-version" content="7.18.0">
-<meta name="teachany-template-version" content="interactive-v2">
+<meta name="teachany-node" content="agentic-rag-chatbox-node">
+<meta name="teachany-subject" content="AI-Engineering">
+<meta name="teachany-grade" content="99">
+<meta name="teachany-stage" content="high">
+<meta name="teachany-domain" content="AI-Engineering">
+<meta name="teachany-prerequisites" content="LLM基础概念,RAG基础概念">
+<meta name="teachany-lesson-type" content="new-concept">
+<meta name="teachany-free-mode" content="false">
+<meta name="teachany-template-version" content="2.0">
 <link rel="stylesheet" href="https://weponusa.github.io/teachany-courseware/assets/scripts/ai-tutor.css">
 <link rel="stylesheet" href="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-tutor-card.css">
+<link rel="stylesheet" href="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-tts-narrator.css">
 <link rel="stylesheet" href="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-section-hints.css">
 <link rel="stylesheet" href="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-knowledge-graph.css">
+<link rel="stylesheet" href="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-audio-player.css">
+<link rel="stylesheet" href="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-floating-dock.css">
 <style>
-:root{--bg:#0f172a;--bg2:#111c33;--panel:#17233d;--card:#1e3050;--card2:#253b5e;--line:rgba(148,163,184,.18);--text:#eef6ff;--muted:#a8bdd4;--brand:#60a5fa;--brand2:#a78bfa;--accent:#34d399;--warn:#f59e0b;--danger:#ef4444;--ok:#22c55e;--toolbar:58px;--sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
-*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden}body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.65}button,input,textarea{font:inherit}.slide-container{height:100dvh;overflow-y:auto;scroll-snap-type:y mandatory;scroll-behavior:smooth}.slide{min-height:100dvh;scroll-snap-align:start;display:flex;align-items:center;justify-content:center;padding:76px 22px 86px;position:relative;overflow:hidden}.slide:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 18% 18%,rgba(96,165,250,.12),transparent 34%),radial-gradient(circle at 85% 80%,rgba(167,139,250,.10),transparent 36%);pointer-events:none}.inner{width:min(1040px,100%);position:relative;z-index:1}.cover{text-align:center}.kicker{display:inline-block;font:800 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--brand);background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.22);border-radius:999px;padding:8px 12px;margin-bottom:18px}h1{font-size:clamp(36px,7vw,74px);line-height:1.04;letter-spacing:-.05em;margin:0 0 16px;background:linear-gradient(135deg,#fff,var(--brand),var(--brand2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}h2{font-size:clamp(26px,4vw,42px);line-height:1.12;letter-spacing:-.035em;margin:0 0 18px}h3{font-size:22px;margin:20px 0 10px}.lead{font-size:clamp(17px,2.2vw,23px);color:var(--muted);max-width:760px;margin:0 auto 24px}.card{background:linear-gradient(160deg,rgba(30,48,80,.96),rgba(17,28,51,.98));border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 18px 50px rgba(0,0,0,.20)}.grid{display:grid;gap:14px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.muted{color:var(--muted)}.tag{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;background:rgba(96,165,250,.12);color:#bfdbfe;font-size:13px;font-weight:700;margin:4px}.flow{display:flex;flex-wrap:wrap;gap:9px;align-items:center}.pill{border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:999px;padding:9px 12px}.arrow{color:var(--muted)}pre{white-space:pre-wrap;background:#0b1220;border:1px solid var(--line);border-radius:14px;padding:16px;overflow:auto;color:#dbeafe;font-family:var(--mono);font-size:13px;line-height:1.55}.choice{width:100%;text-align:left;color:var(--text);background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.18);border-radius:14px;padding:14px 16px;margin:8px 0;cursor:pointer;transition:.18s}.choice:hover{transform:translateX(4px);background:rgba(96,165,250,.12)}.choice.correct{border-color:var(--ok);background:rgba(34,197,94,.16)}.choice.wrong{border-color:var(--danger);background:rgba(239,68,68,.12)}.feedback{min-height:42px;margin-top:10px;color:#dbeafe}.input-row{display:grid;grid-template-columns:1fr auto;gap:10px;margin:12px 0}textarea{width:100%;min-height:110px;border-radius:14px;background:#0b1220;border:1px solid var(--line);color:var(--text);padding:14px;resize:vertical}.btn{min-height:44px;border:0;border-radius:13px;background:linear-gradient(135deg,var(--brand),var(--brand2));color:white;font-weight:800;padding:0 16px;cursor:pointer}.btn.secondary{background:rgba(255,255,255,.08);border:1px solid var(--line)}.result{border:1px solid rgba(52,211,153,.22);background:rgba(52,211,153,.09);border-radius:14px;padding:14px;margin-top:10px}.toolbar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 16px;background:rgba(15,23,42,.90);backdrop-filter:blur(14px);border-top:1px solid var(--line)}.progress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--brand),var(--brand2));z-index:30;width:0}.counter{font-family:var(--mono);color:var(--muted);min-width:70px;text-align:center}.dots{position:fixed;right:12px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:5px;z-index:15}.dot{width:28px;height:4px;border:0;border-radius:3px;background:rgba(255,255,255,.18);cursor:pointer}.dot.active{background:var(--brand);width:36px}.note{border-left:4px solid var(--warn)}.ok{border-left:4px solid var(--accent)}.mini{font-size:14px}.hide{display:none!important}.canvas{width:100%;height:330px;background:#0b1220;border:1px solid var(--line);border-radius:16px}.score{font-size:28px;font-weight:900;color:var(--accent)}@media(max-width:820px){.g2,.g3{grid-template-columns:1fr}.slide{padding:62px 16px 86px}.dots{display:none}.input-row{grid-template-columns:1fr}}
+:root{--bg:#0f172a;--bg-subtle:#131c33;--panel:#1a2744;--card:#1e3050;--card-elevated:#253b5e;--line:#334b6e;--line-subtle:rgba(148,163,184,0.12);--text:#eef6ff;--text-secondary:#c8d8ea;--muted:#9fb4cc;--brand:#60a5fa;--brand-soft:rgba(96,165,250,0.12);--brand-2:#a78bfa;--brand-2-soft:rgba(167,139,250,0.12);--accent:#34d399;--accent-soft:rgba(52,211,153,0.1);--ok:#22c55e;--warn:#f59e0b;--danger:#ef4444;--safe-top:env(safe-area-inset-top);--safe-bottom:env(safe-area-inset-bottom);--page-padding:24px;--card-radius:14px;--card-radius-sm:12px;--slide-height:100vh;--slide-height-fallback:100dvh;--toolbar-height:56px;--sidenav-width:48px}
+*{box-sizing:border-box}
+html,body{margin:0;max-width:100%;overflow-x:hidden}
+body{padding-top:var(--safe-top);background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Source Han Sans SC",system-ui,sans-serif;line-height:1.75;font-size:16px}
+a{color:var(--brand);text-decoration:none}
+a:hover{text-decoration:underline}
+button,a,input,select,textarea{min-height:44px}
+img,video,canvas,svg{max-width:100%;height:auto}
+h1,h2,h3,h4{margin:0}
+.slide-container{scroll-snap-type:y mandatory;overflow-y:auto;height:var(--slide-height-fallback,var(--slide-height));scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+body:not(.play-mode) .slide-container{scroll-snap-type:y proximity}
+body.play-mode .slide-container{scroll-snap-type:y mandatory;overflow:hidden}
+.slide-page{min-height:var(--slide-height-fallback,var(--slide-height));scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:var(--page-padding);padding-bottom:calc(var(--page-padding) + var(--toolbar-height));position:relative;overflow:hidden}
+.slide-page .slide-inner{max-width:880px;width:100%;position:relative;z-index:2;margin:0 auto}
+.slide-page .slide-inner>*{width:100%;box-sizing:border-box}
+.card .card{padding:18px;box-shadow:none;border:1px solid var(--line-subtle)}
+.slide-page[data-page-type="cover"]{background:radial-gradient(ellipse at 20% 20%,rgba(96,165,250,0.15),transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(167,139,250,0.12),transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(52,211,153,0.06),transparent 60%);text-align:center}
+.slide-page[data-page-type="cover"] h1{font-size:clamp(32px,7vw,56px);line-height:1.15;background:linear-gradient(135deg,var(--text) 0%,var(--brand) 50%,var(--brand-2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px}
+.slide-page[data-page-type="cover"] .subtitle{color:var(--text-secondary);font-size:clamp(16px,3vw,22px);max-width:680px;margin:0 auto}
+.slide-page[data-page-type="objectives"]{background:radial-gradient(circle at 0% 100%,rgba(52,211,153,0.1),transparent 40%),radial-gradient(circle at 100% 0%,rgba(96,165,250,0.08),transparent 40%)}
+.slide-page[data-page-type="concept"]{background:radial-gradient(circle at 30% 20%,rgba(96,165,250,0.08),transparent 35%),radial-gradient(circle at 70% 80%,rgba(167,139,250,0.06),transparent 35%)}
+.slide-page[data-page-type="interactive"]{background:radial-gradient(circle at 50% 0%,rgba(52,211,153,0.1),transparent 40%),radial-gradient(circle at 80% 100%,rgba(96,165,250,0.06),transparent 35%)}
+.slide-page[data-page-type="quiz"]{background:radial-gradient(circle at 20% 80%,rgba(245,158,11,0.08),transparent 35%),radial-gradient(circle at 80% 20%,rgba(167,139,250,0.06),transparent 35%)}
+.slide-page[data-page-type="summary"]{background:radial-gradient(circle at 50% 50%,rgba(96,165,250,0.1),transparent 45%),radial-gradient(circle at 20% 20%,rgba(52,211,153,0.06),transparent 30%)}
+.teachany-brand-bar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 20px;background:rgba(15,23,42,0.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line-subtle);transition:transform 0.3s ease}
+body.play-mode .teachany-brand-bar{transform:translateY(-100%)}
+.brand-logo{display:flex;align-items:center;gap:8px;color:#f8fafc;text-decoration:none;font-weight:800}
+.brand-mark{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#0f172a;font-weight:900;font-size:14px}
+.brand-right{display:flex;align-items:center;gap:12px;font-size:13px}
+.brand-link{color:var(--muted);transition:color 0.2s}
+.brand-link:hover{color:var(--text);text-decoration:none}
+.brand-version{color:#cbd5e1;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:rgba(255,255,255,.06);padding:4px 10px;border-radius:999px;font-size:12px}
+.card{background:linear-gradient(160deg,rgba(30,48,80,0.95),rgba(19,28,51,0.98));border:1px solid var(--line-subtle);border-radius:var(--card-radius);padding:24px;box-shadow:0 4px 24px rgba(0,0,0,0.2),0 1px 0 rgba(255,255,255,0.03) inset;transition:transform 0.2s ease,box-shadow 0.2s ease}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,0.3),0 1px 0 rgba(255,255,255,0.04) inset}
+.card-accent{border-top:3px solid;border-image:linear-gradient(90deg,var(--brand),var(--brand-2)) 1}
+.card-glow{box-shadow:0 4px 24px rgba(0,0,0,0.2),0 0 40px rgba(96,165,250,0.05)}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.section-header h2{font-size:clamp(20px,4vw,26px);font-weight:700;line-height:1.3}
+.phase-tag{display:inline-flex;align-items:center;gap:6px;color:var(--brand);background:var(--brand-soft);border:1px solid rgba(96,165,250,0.2);border-radius:999px;padding:5px 12px;font-size:12px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase}
+.phase-tag[data-variant="success"]{color:var(--accent);background:var(--accent-soft);border-color:rgba(52,211,153,0.2)}
+.phase-tag[data-variant="purple"]{color:var(--brand-2);background:var(--brand-2-soft);border-color:rgba(167,139,250,0.2)}
+.phase-tag[data-variant="warn"]{color:var(--warn);background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2)}
+.grid{display:grid;grid-template-columns:1fr;gap:12px;width:100%}
+.grid.grid-2{grid-template-columns:repeat(2,1fr)}
+.grid.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid>*{min-width:0}
+.grid-2col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.flex-row{display:flex;gap:12px;margin-top:14px;align-items:center;flex-wrap:wrap}
+.flex-row .choice{flex:1;min-width:120px;text-align:center}
+.inner-card{margin:12px 0;padding:16px;border-radius:var(--card-radius-sm);border:1px solid var(--line-subtle)}
+.inner-card p{margin:0 0 6px}
+.inner-card p:last-child{margin-bottom:0}
+.summary-item{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-radius:var(--card-radius-sm);border:1px solid var(--line-subtle)}
+.summary-item .num{font-weight:700;flex-shrink:0}
+.step-grid{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px}
+.objectives{list-style:none;padding:0;display:grid;grid-template-columns:1fr;gap:10px}
+.objectives li{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-radius:var(--card-radius-sm);background:rgba(96,165,250,0.04);border:1px solid var(--line-subtle);transition:background 0.2s}
+.objectives li:hover{background:rgba(96,165,250,0.08)}
+.objectives li::before{content:"✦";color:var(--brand);font-size:14px;margin-top:2px;flex-shrink:0}
+.choice{width:100%;text-align:left;border:1px solid rgba(96,165,250,0.18);border-radius:var(--card-radius-sm);background:rgba(96,165,250,0.04);color:var(--text);padding:16px 20px;cursor:pointer;font-size:15px;line-height:1.5;transition:all 0.2s ease}
+.choice:hover{background:rgba(96,165,250,0.1);border-color:rgba(96,165,250,0.35);transform:translateX(4px)}
+.choice.selected{border-color:var(--brand);background:rgba(96,165,250,0.15);box-shadow:0 0 0 3px rgba(96,165,250,0.12)}
+.choice.correct{border-color:var(--ok);background:rgba(34,197,94,0.12)}
+.choice.wrong{border-color:var(--danger);background:rgba(239,68,68,0.08)}
+input,textarea{width:100%;border-radius:12px;border:1px solid var(--line);background:var(--bg-subtle);color:var(--text);padding:14px 16px;font-size:15px;transition:border-color 0.2s,box-shadow 0.2s}
+input:focus,textarea:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(96,165,250,0.12)}
+.result{padding:16px 20px;border-radius:var(--card-radius-sm);background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);font-size:15px;line-height:1.6}
+.result.warn{background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.2)}
+.result.error{background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.2)}
+.canvas-wrap{overflow:auto;background:var(--bg-subtle);border:1px solid var(--line-subtle);border-radius:16px;padding:16px}
+.ta-standard-figure{margin:20px auto;max-width:980px}
+.ta-standard-figure img{display:block;width:100%;border-radius:16px;border:1px solid var(--line-subtle)}
+.ta-standard-figure figcaption{margin-top:10px;color:var(--muted);font-size:14px;text-align:center}
+.slide-progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--brand),var(--brand-2));z-index:200;transition:width 0.3s ease;border-radius:0 2px 2px 0}
+.slide-toolbar{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 20px;padding-bottom:calc(10px + var(--safe-bottom));background:rgba(15,23,42,0.92);backdrop-filter:blur(12px);border-top:1px solid var(--line-subtle);transform:translateY(100%);transition:transform 0.3s ease}
+body.play-mode .slide-toolbar,body.toolbar-visible .slide-toolbar{transform:translateY(0)}
+.toolbar-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:none;border-radius:10px;background:rgba(255,255,255,0.06);color:var(--text);cursor:pointer;transition:all 0.2s;font-size:18px}
+.toolbar-btn:hover{background:rgba(255,255,255,0.12)}
+.toolbar-btn.active{background:var(--brand-soft);color:var(--brand)}
+.toolbar-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.toolbar-page-info{color:var(--muted);font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;min-width:60px;text-align:center}
+.toolbar-progress{flex:1;max-width:200px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;cursor:pointer}
+.toolbar-progress-fill{height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-2));border-radius:2px;transition:width 0.3s ease}
+.slide-sidenav{position:fixed;right:12px;top:50%;transform:translateY(-50%);z-index:90;display:flex;flex-direction:column;align-items:flex-end;gap:3px;opacity:0;transition:opacity 0.3s ease;max-height:70vh;overflow-y:auto;scrollbar-width:none;padding:8px 4px;border-radius:12px;background:rgba(15,23,42,0.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.06)}
+.slide-sidenav::-webkit-scrollbar{display:none}
+body.play-mode .slide-sidenav,body.toolbar-visible .slide-sidenav{opacity:1}
+.sidenav-dot{width:28px;height:4px;border-radius:2px;background:rgba(255,255,255,0.12);border:none;cursor:pointer;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);position:relative;padding:0;flex-shrink:0}
+.sidenav-dot:hover{background:rgba(96,165,250,0.4);width:36px}
+.sidenav-dot.active{background:var(--brand);width:36px;height:5px;box-shadow:0 0 10px rgba(96,165,250,0.5)}
+.sidenav-dot[data-tooltip]::before{content:attr(data-tooltip);position:absolute;right:calc(100% + 10px);top:50%;transform:translateY(-50%);padding:5px 10px;background:rgba(15,23,42,0.95);border:1px solid var(--line);border-radius:6px;color:var(--text);font-size:11px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s}
+.sidenav-dot:hover[data-tooltip]::before{opacity:1}
+.sidenav-counter{font-size:10px;color:rgba(255,255,255,0.5);text-align:center;padding:4px 0 2px;font-variant-numeric:tabular-nums;letter-spacing:0.5px;width:100%}
+.play-mode-fab{position:fixed;bottom:24px;right:24px;z-index:90;width:48px;height:48px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(96,165,250,0.3);transition:all 0.3s ease}
+.play-mode-fab:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(96,165,250,0.4)}
+body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--safe-bottom))}
+.play-mode-fab svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.text-gradient{background:linear-gradient(135deg,var(--brand),var(--brand-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.glass{background:rgba(30,48,80,0.6);backdrop-filter:blur(10px);border:1px solid var(--line-subtle)}
+.animate-in{animation:fadeUp 0.5s ease-out both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.stagger-1{animation-delay:0.1s}
+.stagger-2{animation-delay:0.2s}
+.stagger-3{animation-delay:0.3s}
+.stagger-4{animation-delay:0.4s}
+.code-block{background:#0d1525;border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;line-height:1.6;color:var(--text-secondary);white-space:pre}
+@media(max-width:768px){:root{--page-padding:16px;--card-radius:14px}.slide-page{padding:16px 14px;padding-bottom:calc(16px + var(--toolbar-height))}.grid,.grid-2,.grid-3,.objectives,.grid-2col{grid-template-columns:1fr!important}.flex-row{flex-direction:column}.flex-row .choice{min-width:100%}.card{padding:18px}.slide-sidenav{right:6px;gap:2px;padding:6px 3px}.sidenav-dot{width:22px;height:3px}.sidenav-dot.active{width:28px}.sidenav-counter{font-size:9px}.teachany-brand-bar{padding:8px 12px}.brand-name{display:none}.brand-right{gap:8px;font-size:12px}}
+@media(max-width:480px){.slide-page[data-page-type="cover"] h1{font-size:28px}.toolbar-progress{max-width:120px}}
 </style>
 </head>
+
 <body>
-<div class="progress" id="progress"></div>
-<div class="dots" id="dots"></div>
-<main class="slide-container" id="scroller">
 
-<section class="slide cover" data-title="封面">
-  <div class="inner">
-    <div class="kicker">TeachAny Interactive Courseware · AI Engineering</div>
+<div class="slide-progress-bar" id="slide-progress-bar" style="width:0%"></div>
+
+<div class="teachany-brand-bar">
+  <a class="brand-logo" href="https://weponusa.github.io/teachany/" aria-label="TeachAny Gallery">
+    <img src="https://weponusa.github.io/teachany-courseware/assets/teachany-logo.png" alt="TeachAny" style="width:28px;height:28px;border-radius:7px;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-grid'"><span class="brand-mark" style="display:none">T</span><span class="brand-name">TeachAny</span>
+  </a>
+  <div class="brand-right">
+    <a class="brand-link" href="https://weponusa.github.io/teachany/">Gallery</a>
+    <span class="brand-version">v<span id="course-version-display">1.1.0</span> · skill v<span id="skill-version-display">7.18.0</span></span>
+  </div>
+</div>
+
+<div class="slide-container" id="slide-container">
+
+<section class="slide-page" data-page-type="cover" data-page-index="0" data-tts="hero" data-tsh="开场 - 从一个文档问答框拆出后端系统">
+  <div class="slide-inner">
     <h1>从 Chatbox 到 Agentic RAG</h1>
-    <p class="lead">你将用一个 NotebookLM-like 文档问答库案例，亲手拆出 Chatbox 后端、Intent Router、RAG 证据链、工具调用、答案规划和可解释输出。</p>
-    <div><span class="tag">前测</span><span class="tag">互动架构图</span><span class="tag">Route 练习</span><span class="tag">Tool Plan</span><span class="tag">后测</span></div>
-  </div>
-</section>
-
-<section class="slide" data-title="学习产出">
-  <div class="inner">
-    <h2>学完你要能做出自己的 Chatbox 框架</h2>
-    <div class="grid g2">
-      <div class="card"><h3>1. 后端总链路图</h3><p class="muted">从 user_message 到 final_answer，每一步谁负责。</p></div>
-      <div class="card"><h3>2. Intent Route 表</h3><p class="muted">区分 definition、process_operation、evidence_lookup、comparison、table_lookup。</p></div>
-      <div class="card"><h3>3. Tool Plan</h3><p class="muted">知道什么时候检索、什么时候读上下文、什么时候查表、什么时候验证引用。</p></div>
-      <div class="card"><h3>4. 升级 Checklist</h3><p class="muted">能把轻量 RAG 升级成可信 Agentic RAG。</p></div>
+    <p class="subtitle">一个 NotebookLM-like 问答库，背后如何做意图识别、检索、工具调用、证据组织、答案规划与可解释输出？</p>
+    <div class="card glass" style="margin-top:28px;text-align:left">
+      <div class="section-header"><span class="phase-tag">Course Goal</span><h2>这不是展示页，而是一套互动课件</h2></div>
+      <ul class="objectives">
+        <li>前测：先暴露你对 RAG / Agent 的直觉误区</li>
+        <li>互动图：把 Chatbox 后端拆成可点击模块</li>
+        <li>练习：自己判断 route，并生成 Tool Plan</li>
+        <li>后测：确认你能产出自己的 Chatbox 框架</li>
+      </ul>
     </div>
   </div>
 </section>
 
-<section class="slide" data-title="前测">
-  <div class="inner">
-    <h2>前测：你现在怎么理解 RAG？</h2>
-    <div class="card quiz" data-answer="1" data-explain="RAG 的核心是证据供应链。向量库只是 Retriever 的一种实现，不是 RAG 的全部。">
-      <p><b>问题 1：</b>RAG 最准确的定义是什么？</p>
-      <button class="choice">A. 一个向量数据库</button>
-      <button class="choice">B. 回答前先检索可信证据，再基于证据生成</button>
-      <button class="choice">C. 一个更长的 Prompt</button>
-      <div class="feedback"></div>
-    </div>
-    <div class="card quiz" data-answer="2" data-explain="流程类问题通常要走 process_operation，检索 Procedure、Scope、Deliverables 等证据。" style="margin-top:14px">
-      <p><b>问题 2：</b>“PEP 文档的流程如何操作？”最像哪类意图？</p>
-      <button class="choice">A. definition</button>
-      <button class="choice">B. summary</button>
-      <button class="choice">C. process_operation</button>
-      <div class="feedback"></div>
+<section class="slide-page" data-page-type="interactive" data-page-index="1" data-tts="problem-anchor" data-tsh="问题锚点 - 选择你最想解决的 Chatbox 问题">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag">Problem Anchor</span><h2>你现在最想搞懂哪一块？</h2></div>
+      <p style="color:var(--muted);margin:0 0 16px">选一个问题，后面会围绕它建立框架。</p>
+      <div class="grid" id="problem-anchor-choices">
+        <button class="choice animate-in stagger-1" data-anchor-choice="Chatbox 后端到底怎么判断用户意图？">Chatbox 后端到底怎么判断用户意图？</button>
+        <button class="choice animate-in stagger-2" data-anchor-choice="RAG 怎么从文档里找可信证据？">RAG 怎么从文档里找可信证据？</button>
+        <button class="choice animate-in stagger-3" data-anchor-choice="Agentic Design 里的工具调用和思考展示怎么落地？">Agentic Design 里的工具调用和思考展示怎么落地？</button>
+      </div>
+      <label style="display:block;margin-top:20px;color:var(--muted);font-size:14px">或者写下你的项目问题
+        <input id="learner-question-input" placeholder="例如：我的 QT-wiki chatbox 应该怎么设计 route？" style="margin-top:8px">
+      </label>
+      <p id="anchor-feedback" class="result warn" style="margin-top:16px">选择或输入后，本课会围绕你的问题展开。</p>
     </div>
   </div>
 </section>
 
-<section class="slide" data-title="Chatbox 总链路">
-  <div class="inner">
-    <h2>Chatbox 不是输入框，是任务调度入口</h2>
-    <p class="muted">用户只看到“提问→回答”，系统看到的是一条可审计流水线。</p>
+<section class="slide-page" data-page-type="objectives" data-page-index="2" data-tts="objectives" data-tsh="学习目标 - 学完后要能产出自己的框架">
+  <div class="slide-inner">
     <div class="card">
-      <div class="flow"><span class="pill">User Question</span><span class="arrow">→</span><span class="pill">Session Context</span><span class="arrow">→</span><span class="pill">Intent Router</span><span class="arrow">→</span><span class="pill">Query Rewrite</span><span class="arrow">→</span><span class="pill">Retriever</span><span class="arrow">→</span><span class="pill">Evidence</span><span class="arrow">→</span><span class="pill">Answer Planner</span><span class="arrow">→</span><span class="pill">Composer</span><span class="arrow">→</span><span class="pill">Verifier</span><span class="arrow">→</span><span class="pill">UI</span></div>
+      <div class="section-header"><span class="phase-tag" data-variant="success">Objectives</span><h2>学完你要能产出什么？</h2></div>
+      <ul class="objectives">
+        <li>画出 Chatbox 后端链路：Input → Intent → Retrieval → Evidence → Planner → Verifier → UI</li>
+        <li>定义 Intent Route 表：definition / process_operation / evidence_lookup / comparison / table_lookup</li>
+        <li>写出 Tool Plan：检索、读上下文、构造证据、答案规划、事实校验</li>
+        <li>设计 Reasoning Summary：展示可审计执行轨迹，而不是 raw chain-of-thought</li>
+        <li>给当前 QT-wiki 项目列出下一步升级路线</li>
+      </ul>
     </div>
-    <div class="card ok" style="margin-top:14px"><b>关键判断：</b>如果没有 Intent Router，所有问题都会被同一种检索策略处理，流程类、定义类、查表类问题就会互相污染。</div>
   </div>
 </section>
 
-<section class="slide" data-title="互动架构图">
-  <div class="inner">
-    <h2>互动：点模块，看它负责什么</h2>
-    <canvas id="archCanvas" class="canvas" width="1000" height="330"></canvas>
-    <div class="result" id="archInfo">点击上面的模块，例如 Intent Router 或 Claim Verifier。</div>
-  </div>
-</section>
-
-<section class="slide" data-title="Intent Router">
-  <div class="inner">
-    <h2>Intent Recognition：先判断问题，再选择工具</h2>
-    <div class="grid g3">
-      <div class="card"><h3>definition</h3><p class="muted">问是什么：PEP 是什么？</p></div>
-      <div class="card"><h3>process_operation</h3><p class="muted">问流程步骤：R2 阶段 PO 应该做什么？</p></div>
-      <div class="card"><h3>evidence_lookup</h3><p class="muted">问原文依据：在哪个章节？</p></div>
-      <div class="card"><h3>comparison</h3><p class="muted">问差异：CT 和 MI 有什么不同？</p></div>
-      <div class="card"><h3>summary</h3><p class="muted">问总结：总结这份文档。</p></div>
-      <div class="card"><h3>table_lookup</h3><p class="muted">问记录项/表格：有哪些 deliverables？</p></div>
+<section class="slide-page" data-page-type="quiz" data-page-index="3" data-tts="pretest" data-tsh="前测 - 先暴露对 RAG 的常见误解">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag" data-variant="warn">Pretest</span><h2>前测：RAG 到底是什么？</h2></div>
+      <p style="color:var(--muted);margin:0 0 20px">选一个你觉得最准确的定义。</p>
+      <div class="grid">
+        <button class="choice animate-in stagger-1" data-correct="false" data-diagnosis="❌ 向量数据库只是 Retriever 的一种实现，不是 RAG 的全部。">A. RAG 就是向量数据库</button>
+        <button class="choice animate-in stagger-2" data-correct="true" data-diagnosis="✅ 正确。RAG 的核心是回答前先找到可信证据，再基于证据生成。">B. 回答前先检索可信证据，再基于证据生成</button>
+        <button class="choice animate-in stagger-3" data-correct="false" data-diagnosis="❌ 长 Prompt 不能替代证据组织、引用校验和事实验证。">C. RAG 就是把 Prompt 写长一点</button>
+      </div>
+      <div class="result warn" data-feedback-for="pretest" style="margin-top:16px">先独立判断，再看诊断反馈。</div>
     </div>
-    <pre>{
-  "route": "process_operation",
-  "confidence": 0.82,
-  "required_tools": ["section_retriever", "direct_context_reader", "answer_planner"]
-}</pre>
   </div>
 </section>
 
-<section class="slide" data-title="Route 练习">
-  <div class="inner">
-    <h2>练习：给问题分类</h2>
+<section class="slide-page" data-page-type="concept" data-page-index="4" data-tts="chatbox-chain" data-tsh="核心概念 - Chatbox 不是输入框而是任务入口">
+  <div class="slide-inner">
     <div class="card">
-      <p><b>题目：</b>把问题拖进脑子里判断：它应该走哪条 route？</p>
-      <div class="input-row"><textarea id="routeInput">R2 阶段 PO 应该做什么？</textarea><button class="btn" onclick="classifyRoute()">判断</button></div>
-      <div class="result" id="routeResult">点击“判断”查看推荐 route。</div>
-    </div>
-    <p class="mini muted">你可以改成：“PEP 是什么？”“这个要求在哪个章节？”“CT 和 MI 有什么差异？”再试。</p>
-  </div>
-</section>
-
-<section class="slide" data-title="RAG 五层">
-  <div class="inner">
-    <h2>RAG 不是向量库，而是证据供应链</h2>
-    <div class="grid g2">
-      <div class="card"><h3>Document Store</h3><p class="muted">存原文和 canonical JSON。</p></div>
-      <div class="card"><h3>Chunk Store</h3><p class="muted">把文档切成可检索小块。</p></div>
-      <div class="card"><h3>Retriever</h3><p class="muted">规则、全文、BM25、向量、表格、直接读取。</p></div>
-      <div class="card"><h3>Evidence Package</h3><p class="muted">citation_id、quote、anchor、source_ref。</p></div>
-      <div class="card"><h3>Answer Composer</h3><p class="muted">只基于证据生成答案。</p></div>
-      <div class="card note"><h3>关键误区</h3><p class="muted">Vector DB 只是 Retriever 的一种，不是完整 RAG。</p></div>
+      <div class="section-header"><span class="phase-tag">Concept</span><h2>Chatbox 不是输入框，是任务调度入口</h2></div>
+      <div class="step-grid">
+        <div class="summary-item"><span class="num">1</span><div><strong>用户问题</strong><br><span style="color:var(--muted)">例如：PEP 文档的流程如何操作？</span></div></div>
+        <div class="summary-item"><span class="num">2</span><div><strong>意图识别</strong><br><span style="color:var(--muted)">判断它是流程类、定义类、证据类还是对比类。</span></div></div>
+        <div class="summary-item"><span class="num">3</span><div><strong>检索与工具调用</strong><br><span style="color:var(--muted)">选择 section 检索、全文检索、直接上下文读取、表格查询等工具。</span></div></div>
+        <div class="summary-item"><span class="num">4</span><div><strong>证据和答案</strong><br><span style="color:var(--muted)">构造 evidence package，规划答案，再做 claim verification。</span></div></div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="slide" data-title="当前项目链路">
-  <div class="inner">
-    <h2>当前 QT-wiki / Ask Workspace 的真实状态</h2>
-    <pre>前端调用 /api/session/query
-→ 读取 Tool/output/parsed/{document_id}.json
-→ runtime 构建 SectionChunk
-→ 判断 route，例如 process_operation
-→ 改写 query
-→ HybridRetriever: RuleSectionRetriever + FullTextRetriever
-→ route-aware rerank
-→ AnswerEvidencePackage
-→ citation validation
-→ answer_run / evidence_preview / self_check</pre>
-    <div class="grid g2">
-      <div class="card ok"><b>已做：</b><p class="muted">文件型 canonical store + runtime chunk + lexical hybrid retrieval + citation validation。</p></div>
-      <div class="card note"><b>未做：</b><p class="muted">persistent chunk index、embedding cache、runtime VectorRetriever、Answer Planner、Claim Verifier。</p></div>
+<section class="slide-page" data-page-type="interactive" data-page-index="5" data-tts="architecture-map" data-tsh="主交互 - 点击 Chatbox 后端架构模块">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag" data-variant="purple">Interactive</span><h2>点击模块，理解职责分工</h2></div>
+      <div class="canvas-wrap"><canvas id="rag-pipeline-canvas" width="760" height="260"></canvas></div>
+      <p id="pipeline-result" class="result warn" style="margin-top:16px">把鼠标移到管线上方每一步查看详情。</p>
     </div>
   </div>
 </section>
 
-<section class="slide" data-title="Tool Plan Builder">
-  <div class="inner">
-    <h2>互动：生成 Tool Plan</h2>
+<section class="slide-page" data-page-type="concept" data-page-index="6" data-tts="intent-router" data-tsh="核心概念 - Intent Router 决定后端怎么走">
+  <div class="slide-inner">
     <div class="card">
-      <p>输入一个文档问题，生成后端应调用的工具链。</p>
-      <div class="input-row"><textarea id="toolInput">PEP 文档的流程如何操作？</textarea><button class="btn" onclick="buildToolPlan()">生成 Plan</button></div>
-      <div class="result" id="toolResult">等待生成...</div>
+      <div class="section-header"><span class="phase-tag">Router</span><h2>Intent Recognition：先分流，再执行</h2></div>
+      <div class="grid grid-3">
+        <div class="inner-card"><strong>definition</strong><p style="color:var(--muted)">问“是什么”</p></div>
+        <div class="inner-card"><strong>process_operation</strong><p style="color:var(--muted)">问流程/步骤/如何操作</p></div>
+        <div class="inner-card"><strong>evidence_lookup</strong><p style="color:var(--muted)">问原文依据在哪里</p></div>
+        <div class="inner-card"><strong>comparison</strong><p style="color:var(--muted)">问差异和对比</p></div>
+        <div class="inner-card"><strong>summary</strong><p style="color:var(--muted)">问总结</p></div>
+        <div class="inner-card"><strong>table_lookup</strong><p style="color:var(--muted)">问表格/记录/字段</p></div>
+      </div>
+      <div class="code-block">{"route":"process_operation","confidence":0.82,"required_tools":["section_retriever","direct_context_reader","answer_planner"]}</div>
     </div>
   </div>
 </section>
 
-<section class="slide" data-title="Evidence Package">
-  <div class="inner">
-    <h2>Evidence Package：把检索结果变成可引用证据</h2>
-    <pre>{
-  "citation_id": "c1",
-  "document_id": "pep_doc",
-  "section_id": "procedure",
-  "section_title": "Procedure",
-  "quote": "...原文片段...",
-  "anchor": "page-12-fragment-3",
-  "source_ref": "PEP.pdf#page=12",
-  "supports": ["R2 phase review requirement"]
-}</pre>
-    <div class="card ok"><b>为什么重要：</b>没有 Evidence Package，答案就无法验证；有了它，Composer 和 Verifier 才知道每个事实从哪里来。</div>
-  </div>
-</section>
-
-<section class="slide" data-title="Answer Planner">
-  <div class="inner">
-    <h2>Answer Planner：先规划答案，再写答案</h2>
-    <p class="muted">对于 process_operation，不要直接生成长文。先固定答案骨架，每个 slot 绑定证据。</p>
-    <div class="grid g2">
-      <div class="card"><b>适用范围</b><p class="muted">scope evidence</p></div>
-      <div class="card"><b>前置条件</b><p class="muted">input / prerequisite evidence</p></div>
-      <div class="card"><b>主流程阶段</b><p class="muted">procedure evidence</p></div>
-      <div class="card"><b>角色责任</b><p class="muted">role evidence，缺失就标缺证</p></div>
-      <div class="card"><b>交付物 / 记录</b><p class="muted">deliverables / records evidence</p></div>
-      <div class="card"><b>review / approval</b><p class="muted">approval evidence</p></div>
+<section class="slide-page" data-page-type="interactive" data-page-index="7" data-tts="route-practice" data-tsh="互动练习 - 判断用户问题应该走哪条 route">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag" data-variant="success">Practice</span><h2>Route 判断练习</h2></div>
+      <label style="color:var(--muted)">输入一个文档问题</label>
+      <input id="route-input" value="R2 阶段 PO 应该做什么？" style="margin:8px 0 12px">
+      <button class="choice" id="route-btn">判断 route</button>
+      <div id="route-result" class="result warn" style="margin-top:16px">点击后查看推荐 route 和原因。</div>
     </div>
   </div>
 </section>
 
-<section class="slide" data-title="Reasoning Summary">
-  <div class="inner">
-    <h2>思考链路展示：不是 raw CoT，是可解释执行轨迹</h2>
+<section class="slide-page" data-page-type="concept" data-page-index="8" data-tts="rag-layers" data-tsh="核心概念 - RAG 是证据供应链而不是向量库">
+  <div class="slide-inner">
     <div class="card">
-      <p><b>用户可见：</b></p>
-      <pre>分析过程
-- 问题类型：流程操作
-- 检索范围：当前选中文档
-- 命中章节：Purpose / Scope / Procedure / Deliverables
-- 使用证据：5 条有效引用
-- 自检结果：流程证据充足，角色责任证据不足</pre>
-    </div>
-    <div class="card note" style="margin-top:14px"><b>边界：</b>展示系统做了什么、证据从哪里来、哪里缺证；不展示模型完整内心推理。</div>
-  </div>
-</section>
-
-<section class="slide" data-title="框架模板">
-  <div class="inner">
-    <h2>你的 Chatbox Framework 模板</h2>
-    <pre>1. Input Contract: user_message / session_id / selected_document_ids
-2. Intent Router: route / confidence / required_tools / answer_shape
-3. Retrieval Plan: query_rewrite / retrievers / rerank_policy
-4. Evidence Package: citation_id / quote / anchor / source_ref
-5. Answer Planner: slots / evidence_per_slot / missing_evidence
-6. Composer: grounded answer only
-7. Verifier: claim support / citation validity / hallucination risk
-8. UI Renderer: final answer / references / reasoning summary</pre>
-  </div>
-</section>
-
-<section class="slide" data-title="后测">
-  <div class="inner">
-    <h2>后测：检查你是否真的会了</h2>
-    <div class="card quiz" data-answer="3" data-explain="Agentic RAG 的关键是 Router + Planner + Tools + Evidence + Verifier，不只是检索再回答。">
-      <p><b>问题 1：</b>Agentic RAG 相比普通 RAG，最关键多了什么？</p>
-      <button class="choice">A. 更大的模型</button>
-      <button class="choice">B. 更长的上下文</button>
-      <button class="choice">C. Router / Planner / Tools / Verifier 的任务编排</button>
-      <div class="feedback"></div>
-    </div>
-    <div class="card quiz" data-answer="1" data-explain="Reasoning Summary 应展示可审计执行轨迹，而不是模型 raw chain-of-thought。" style="margin-top:14px">
-      <p><b>问题 2：</b>“思考过程”正确的展示方式是？</p>
-      <button class="choice">A. 展示问题类型、检索范围、证据、自检结果</button>
-      <button class="choice">B. 展示模型完整内心独白</button>
-      <button class="choice">C. 什么都不展示</button>
-      <div class="feedback"></div>
-    </div>
-    <div class="result"><b>最终任务：</b>拿“R2 阶段 PO 应该做什么？”写出 route、tool plan、evidence package 和 answer skeleton。能写出来，你就可以开始设计自己的 Chatbox 框架。</div>
-  </div>
-</section>
-
-<section class="slide" data-title="升级路线">
-  <div class="inner">
-    <h2>从当前项目升级到 NotebookLM-like QA</h2>
-    <div class="grid g2">
-      <div class="card"><h3>RAG-01 Direct Source Context Reader</h3><p class="muted">命中 citation 后回读前后文。</p></div>
-      <div class="card"><h3>RAG-02 Golden Cases</h3><p class="muted">建立真实问题测试集。</p></div>
-      <div class="card"><h3>RAG-03 Persistent Chunk Index</h3><p class="muted">落地 chunks.jsonl。</p></div>
-      <div class="card"><h3>RAG-04 Vector Index</h3><p class="muted">加入 embeddings.sqlite / jsonl。</p></div>
-      <div class="card"><h3>ANS-01 Answer Planner</h3><p class="muted">slot 填充 + 缺证提示。</p></div>
-      <div class="card"><h3>ANS-02 Claim Verifier</h3><p class="muted">检查每个事实是否有 citation 支持。</p></div>
+      <div class="section-header"><span class="phase-tag">RAG</span><h2>RAG 五层：证据供应链</h2></div>
+      <div class="grid grid-2">
+        <div class="summary-item"><span class="num">1</span><div><strong>Document Store</strong><br><span style="color:var(--muted)">原文与 canonical JSON</span></div></div>
+        <div class="summary-item"><span class="num">2</span><div><strong>Chunk Store</strong><br><span style="color:var(--muted)">可检索的小块</span></div></div>
+        <div class="summary-item"><span class="num">3</span><div><strong>Retriever</strong><br><span style="color:var(--muted)">规则、全文、BM25、向量、表格</span></div></div>
+        <div class="summary-item"><span class="num">4</span><div><strong>Evidence Package</strong><br><span style="color:var(--muted)">quote / anchor / source_ref</span></div></div>
+        <div class="summary-item"><span class="num">5</span><div><strong>Answer Composer</strong><br><span style="color:var(--muted)">只基于证据写答案</span></div></div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="slide cover" data-title="完成">
-  <div class="inner">
-    <div class="kicker">Course Complete</div>
-    <h1>现在你可以设计自己的 Chatbox 框架了</h1>
-    <p class="lead">下一步：把你的 QT-wiki 项目按 Input Contract、Intent Router、Retrieval Plan、Evidence Package、Answer Planner、Verifier、UI Renderer 七块画出来。</p>
-    <button class="btn" onclick="window.print()">打印/保存课件</button>
+<section class="slide-page" data-page-type="concept" data-page-index="9" data-tts="project-chain" data-tsh="案例拆解 - 当前 QT-wiki Ask Workspace 的真实链路">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag" data-variant="purple">Case</span><h2>当前项目真实链路</h2></div>
+      <div class="code-block">/api/session/query\n→ 读取 Tool/output/parsed/{document_id}.json\n→ runtime 构建 SectionChunk\n→ 判断 route，例如 process_operation\n→ HybridRetriever: RuleSectionRetriever + FullTextRetriever\n→ route-aware rerank\n→ AnswerEvidencePackage\n→ citation validation\n→ answer_run / evidence_preview / self_check</div>
+      <div class="grid grid-2">
+        <div class="result"><strong>已做：</strong>文件型 canonical store + runtime chunk + lexical hybrid retrieval + citation validation。</div>
+        <div class="result warn"><strong>未做：</strong>persistent chunk index、embedding cache、runtime VectorRetriever、Answer Planner、Claim Verifier。</div>
+      </div>
+    </div>
   </div>
 </section>
 
-</main>
-<div class="toolbar"><button class="btn secondary" onclick="go(-1)">上一页</button><span class="counter" id="counter">1 / 16</span><button class="btn" onclick="go(1)">下一页</button></div>
+<section class="slide-page" data-page-type="interactive" data-page-index="10" data-tts="tool-plan" data-tsh="互动练习 - 为问题生成 Tool Plan">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag" data-variant="success">Practice</span><h2>Tool Plan Builder</h2></div>
+      <label style="color:var(--muted)">输入问题，看看后端应该调用哪些工具</label>
+      <input id="tool-input" value="PEP 文档的流程如何操作？" style="margin:8px 0 12px">
+      <button class="choice" id="tool-btn">生成 Tool Plan</button>
+      <div id="tool-result" class="result warn" style="margin-top:16px">点击后生成工具调用顺序。</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="concept" data-page-index="11" data-tts="planner-verifier" data-tsh="核心概念 - Answer Planner 与 Claim Verifier">
+  <div class="slide-inner">
+    <div class="card">
+      <div class="section-header"><span class="phase-tag">Planner + Verifier</span><h2>先规划答案，再验证事实</h2></div>
+      <div class="grid grid-2">
+        <div class="inner-card"><strong>Answer Planner</strong><p style="color:var(--muted)">流程类答案固定覆盖：范围、前置条件、步骤、角色、交付物、审批、缺证。</p></div>
+        <div class="inner-card"><strong>Claim Verifier</strong><p style="color:var(--muted)">逐句检查：有没有 citation？citation 是否真的支持？有没有编造角色/阶段/记录？</p></div>
+      </div>
+      <div class="code-block">Evidence Package = { citation_id, document_id, section_id, quote, anchor, source_ref, supports }</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="quiz" data-page-index="12" data-tts="concept-test" data-tsh="概念测试 - 区分 raw CoT 和 Reasoning Summary">
+  <div class="slide-inner">
+    <div class="card card-accent" data-conceptest>
+      <div class="section-header"><span class="phase-tag" data-variant="warn">Concept Test</span><h2>思考链路应该怎么展示？</h2></div>
+      <div class="grid">
+        <button class="choice" data-correct="true" data-diagnosis="✅ 正确。展示系统执行轨迹、证据与自检结果，而不是模型内心独白。">A. 展示问题类型、检索范围、命中章节、使用证据和自检结果</button>
+        <button class="choice" data-correct="false" data-diagnosis="❌ 不应该展示 raw chain-of-thought。">B. 展示模型完整内心推理</button>
+        <button class="choice" data-correct="false" data-diagnosis="❌ 完全不展示会降低可审计性和用户信任。">C. 什么过程都不展示</button>
+      </div>
+      <div class="result warn" data-feedback-for="concept-test" style="margin-top:16px">选择后查看诊断。</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="quiz" data-page-index="13" data-tts="posttest" data-tsh="后测 - 你是否能生成自己的 Chatbox 框架">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag" data-variant="warn">Post-test</span><h2>后测：Agentic RAG 最关键多了什么？</h2></div>
+      <div class="grid">
+        <button class="choice" data-correct="false" data-diagnosis="❌ 大模型有帮助，但不是架构关键。">A. 更大的模型</button>
+        <button class="choice" data-correct="false" data-diagnosis="❌ 长上下文不能替代工具和证据验证。">B. 更长的上下文窗口</button>
+        <button class="choice" data-correct="true" data-diagnosis="✅ 正确。Agentic RAG 的关键是 Router + Planner + Tools + Evidence + Verifier 的任务编排。">C. Router / Planner / Tools / Evidence / Verifier</button>
+      </div>
+      <div class="result warn" data-feedback-for="posttest" style="margin-top:16px">选择后查看诊断。</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="summary" data-page-index="14" data-tts="summary" data-tsh="小结 - 你的 Chatbox Framework 模板">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag" data-variant="success">Output</span><h2>你的 Chatbox Framework 模板</h2></div>
+      <div class="code-block">1. Input Contract: user_message / session_id / selected_document_ids\n2. Intent Router: route / confidence / required_tools / answer_shape\n3. Retrieval Plan: query_rewrite / retrievers / rerank_policy\n4. Evidence Package: citation_id / quote / anchor / source_ref\n5. Answer Planner: slots / evidence_per_slot / missing_evidence\n6. Composer: grounded answer only\n7. Verifier: claim support / citation validity / hallucination risk\n8. UI Renderer: final answer / references / reasoning summary</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="summary" data-page-index="15" data-tts="knowledge-graph" data-tsh="知识图谱 - 这节课与已有 RAG 课程的关系">
+  <div class="slide-inner">
+    <div class="card">
+      <div class="section-header"><span class="phase-tag" data-variant="purple">Knowledge Graph</span><h2>知识图谱</h2></div>
+      <div data-teachany-knowledge-graph='{"nodes":[{"id":"minimal-rag","label":"最小RAG流程"},{"id":"embedding-models","label":"Embedding模型"},{"id":"agentic-rag-chatbox","label":"Chatbox Agentic RAG"},{"id":"claim-verifier","label":"Claim Verifier"}],"edges":[["minimal-rag","agentic-rag-chatbox"],["embedding-models","agentic-rag-chatbox"],["agentic-rag-chatbox","claim-verifier"]]}'></div>
+      <p style="color:var(--muted)">你现在学的是在“最小 RAG”之上，补 Router、Tools、Evidence、Planner、Verifier 和 UI 可解释层。</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="interactive" data-page-index="16" data-tts="ai-tutor" data-tsh="AI 学伴 - 说出你卡在哪一步">
+  <div class="slide-inner">
+    <div data-teachany-tutor-card></div>
+  </div>
+</section>
+
+</div>
+
+<div id="audio-config" data-teachany-audio hidden>
+  <script type="application/json" data-teachany-audio-playlist>
+[{"id":"hero","section":"cover","src":"./tts/s01.mp3","label":"开场"},{"id":"problem-anchor","section":"problem","src":"./tts/s01.mp3","label":"问题锚点"},{"id":"objectives","section":"objectives","src":"./tts/s01.mp3","label":"学习目标"},{"id":"pretest","section":"pretest","src":"./tts/s01.mp3","label":"前测"},{"id":"summary","section":"summary","src":"./tts/s03.mp3","label":"小结"},{"id":"ai-tutor","section":"tutor","src":"./tts/s03.mp3","label":"AI学伴"}]
+  </script>
+</div>
+
+<nav class="slide-sidenav" id="slide-sidenav" aria-label="页面导航"></nav>
+
+<button class="play-mode-fab" id="play-mode-fab" aria-label="切换播放模式" title="切换播放模式">
+  <svg id="fab-icon-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+  <svg id="fab-icon-browse" viewBox="0 0 24 24" style="display:none"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+</button>
+
+<div class="slide-toolbar" id="slide-toolbar">
+  <button class="toolbar-btn" id="tb-prev" aria-label="上一页"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+  <div class="toolbar-progress" id="tb-progress"><div class="toolbar-progress-fill" id="tb-progress-fill"></div></div>
+  <span class="toolbar-page-info" id="tb-page-info">1 / 17</span>
+  <button class="toolbar-btn" id="tb-next" aria-label="下一页"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+  <button class="toolbar-btn" id="tb-autoplay" aria-label="自动播放"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg></button>
+  <button class="toolbar-btn" id="tb-fullscreen" aria-label="全屏"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg></button>
+</div>
 <script>
-const scroller=document.getElementById('scroller');const slides=[...document.querySelectorAll('.slide')];const dots=document.getElementById('dots');let idx=0;
-slides.forEach((s,i)=>{const b=document.createElement('button');b.className='dot';b.title=s.dataset.title||'';b.onclick=()=>scrollToSlide(i);dots.appendChild(b)});
-function scrollToSlide(i){idx=Math.max(0,Math.min(slides.length-1,i));slides[idx].scrollIntoView({behavior:'smooth'});update()}
-function go(d){scrollToSlide(idx+d)}
-function update(){const top=scroller.scrollTop;let best=0,dist=1e9;slides.forEach((s,i)=>{const d=Math.abs(s.offsetTop-top);if(d<dist){dist=d;best=i}});idx=best;document.getElementById('counter').textContent=(idx+1)+' / '+slides.length;document.getElementById('progress').style.width=((idx+1)/slides.length*100)+'%';[...dots.children].forEach((d,i)=>d.classList.toggle('active',i===idx))}
-scroller.addEventListener('scroll',()=>requestAnimationFrame(update));update();
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')go(1);if(e.key==='ArrowLeft'||e.key==='PageUp')go(-1)});
-document.querySelectorAll('.quiz').forEach(q=>{const ans=Number(q.dataset.answer);q.querySelectorAll('.choice').forEach((btn,i)=>{btn.onclick=()=>{q.querySelectorAll('.choice').forEach(c=>c.classList.remove('correct','wrong'));btn.classList.add(i+1===ans?'correct':'wrong');q.querySelector('.feedback').innerHTML=(i+1===ans?'✅ 答对。':'❌ 还不对。')+q.dataset.explain}})});
-function classifyRoute(){const t=document.getElementById('routeInput').value.toLowerCase();let route='summary',why='默认按总结类处理。';if(/是什么|定义|what/.test(t)){route='definition';why='用户在问概念定义。'}else if(/怎么|流程|操作|步骤|阶段|r2|procedure|workflow/.test(t)){route='process_operation';why='用户在问流程、阶段或操作步骤。'}else if(/哪里|章节|原文|依据|citation|evidence/.test(t)){route='evidence_lookup';why='用户在找原文依据。'}else if(/差异|不同|比较|对比|compare/.test(t)){route='comparison';why='用户在问多对象差异。'}else if(/表|记录|deliverable|输出|字段/.test(t)){route='table_lookup';why='用户在问表格/输出物/记录项。'}document.getElementById('routeResult').innerHTML='<b>推荐 route：</b>'+route+'<br><span class="muted">'+why+'</span><pre>{\n  "route": "'+route+'",\n  "confidence": 0.78,\n  "required_tools": ["retrieve_sections", "read_context", "build_evidence", "verify_claims"]\n}</pre>'}
-function buildToolPlan(){const t=document.getElementById('toolInput').value;const isProcess=/流程|操作|步骤|阶段|R2|r2|怎么/.test(t);const plan=isProcess?['intent_router → process_operation','query_rewrite → add workflow / procedure / phase / deliverables','retrieve_sections → Rule + FullText + Vector(optional)','direct_context_reader → 回读命中章节前后文','build_evidence_package → citation_id / quote / anchor','answer_planner → 范围/前置/步骤/角色/交付物/审批','compose_answer → 只基于 evidence','claim_verifier → 检查事实和 citation']:['intent_router','retrieve_relevant_context','build_evidence_package','answer_planner','compose_answer','claim_verifier'];document.getElementById('toolResult').innerHTML='<b>Tool Plan</b><ol>'+plan.map(x=>'<li>'+x+'</li>').join('')+'</ol>'}
-const canvas=document.getElementById('archCanvas'),ctx=canvas.getContext('2d'),info=document.getElementById('archInfo');const nodes=[['Input',40,70,'接收 user_message、session_id、selected docs。'],['Intent',190,70,'判断问题属于 definition / process_operation / evidence_lookup 等。'],['Retriever',340,70,'按 route 选择规则、全文、向量、表格或直接读取。'],['Evidence',510,70,'把命中内容整理成可验证引用包。'],['Planner',680,70,'先决定答案结构，每个 slot 绑定 evidence。'],['Verifier',830,70,'检查 citation validity 和 claim support。']];function draw(){ctx.clearRect(0,0,1000,330);ctx.font='16px sans-serif';nodes.forEach((n,i)=>{ctx.fillStyle='#1e3050';ctx.strokeStyle='#60a5fa';ctx.lineWidth=2;roundRect(ctx,n[1],n[2],120,70,16);ctx.fill();ctx.stroke();ctx.fillStyle='#eef6ff';ctx.textAlign='center';ctx.fillText(n[0],n[1]+60,n[2]+42);if(i<nodes.length-1){ctx.strokeStyle='rgba(238,246,255,.45)';ctx.beginPath();ctx.moveTo(n[1]+120,n[2]+35);ctx.lineTo(nodes[i+1][1],n[2]+35);ctx.stroke();ctx.fillStyle='rgba(238,246,255,.65)';ctx.fillText('→',n[1]+138,n[2]+40)}});ctx.fillStyle='#a8bdd4';ctx.textAlign='left';ctx.fillText('点击任意模块查看职责',40,220)}function roundRect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}draw();canvas.addEventListener('click',e=>{const rect=canvas.getBoundingClientRect();const x=(e.clientX-rect.left)*canvas.width/rect.width,y=(e.clientY-rect.top)*canvas.height/rect.height;for(const n of nodes){if(x>=n[1]&&x<=n[1]+120&&y>=n[2]&&y<=n[2]+70){info.innerHTML='<b>'+n[0]+'</b><br>'+n[3]}}});
+(function() {
+  'use strict';
+  const container = document.getElementById('slide-container');
+  const pages = Array.from(document.querySelectorAll('.slide-page'));
+  const totalPages = pages.length;
+  let currentPage = 0, isPlayMode = false, isAutoPlay = false, autoPlayTimer = null;
+  const progressBar = document.getElementById('slide-progress-bar');
+  const sidenav = document.getElementById('slide-sidenav');
+  const fab = document.getElementById('play-mode-fab');
+  const fabIconPlay = document.getElementById('fab-icon-play');
+  const fabIconBrowse = document.getElementById('fab-icon-browse');
+  const tbPrev = document.getElementById('tb-prev');
+  const tbNext = document.getElementById('tb-next');
+  const tbPageInfo = document.getElementById('tb-page-info');
+  const tbProgressFill = document.getElementById('tb-progress-fill');
+  const tbProgress = document.getElementById('tb-progress');
+  const tbAutoplay = document.getElementById('tb-autoplay');
+  const tbFullscreen = document.getElementById('tb-fullscreen');
+
+  function buildSidenav() {
+    sidenav.innerHTML = '';
+    const counter = document.createElement('div');
+    counter.className = 'sidenav-counter';
+    counter.id = 'sidenav-counter';
+    counter.textContent = `1/${totalPages}`;
+    sidenav.appendChild(counter);
+    pages.forEach((page, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'sidenav-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('data-tooltip', (page.dataset.tsh || '').split(' - ')[0] || `第${i + 1}页`);
+      dot.setAttribute('aria-label', `跳转到第${i + 1}页`);
+      dot.addEventListener('click', () => goToPage(i));
+      sidenav.appendChild(dot);
+    });
+  }
+
+  function updateUI() {
+    const progress = totalPages > 1 ? (currentPage / (totalPages - 1)) * 100 : 100;
+    progressBar.style.width = progress + '%';
+    tbProgressFill.style.width = progress + '%';
+    tbPageInfo.textContent = `${currentPage + 1} / ${totalPages}`;
+    sidenav.querySelectorAll('.sidenav-dot').forEach((dot, i) => dot.classList.toggle('active', i === currentPage));
+    const counterEl = document.getElementById('sidenav-counter');
+    if (counterEl) counterEl.textContent = `${currentPage + 1}/${totalPages}`;
+    tbPrev.style.opacity = currentPage === 0 ? '0.3' : '1';
+    tbNext.style.opacity = currentPage === totalPages - 1 ? '0.3' : '1';
+  }
+
+  function goToPage(index) {
+    if (index < 0 || index >= totalPages) return;
+    currentPage = index;
+    if (isPlayMode) pages[currentPage].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    else container.scrollTo({ top: pages[currentPage].offsetTop, behavior: 'smooth' });
+    updateUI();
+  }
+
+  function nextPage() { if (currentPage < totalPages - 1) goToPage(currentPage + 1); }
+  function prevPage() { if (currentPage > 0) goToPage(currentPage - 1); }
+
+  let scrollTimeout;
+  container.addEventListener('scroll', () => {
+    if (isPlayMode) return;
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      let closest = 0, minDist = Infinity;
+      pages.forEach((page, i) => {
+        const dist = Math.abs(page.offsetTop - container.scrollTop);
+        if (dist < minDist) { minDist = dist; closest = i; }
+      });
+      if (closest !== currentPage) { currentPage = closest; updateUI(); }
+    }, 100);
+  }, { passive: true });
+
+  fab.addEventListener('click', () => {
+    isPlayMode = !isPlayMode;
+    document.body.classList.toggle('play-mode', isPlayMode);
+    document.body.classList.toggle('toolbar-visible', isPlayMode);
+    fabIconPlay.style.display = isPlayMode ? 'none' : 'block';
+    fabIconBrowse.style.display = isPlayMode ? 'block' : 'none';
+    if (isPlayMode) goToPage(currentPage);
+  });
+
+  tbPrev.addEventListener('click', prevPage);
+  tbNext.addEventListener('click', nextPage);
+  tbProgress.addEventListener('click', (e) => {
+    const rect = tbProgress.getBoundingClientRect();
+    goToPage(Math.round(((e.clientX - rect.left) / rect.width) * (totalPages - 1)));
+  });
+
+  tbAutoplay.addEventListener('click', () => {
+    isAutoPlay = !isAutoPlay;
+    tbAutoplay.classList.toggle('active', isAutoPlay);
+    if (isAutoPlay) { autoPlayTimer = setInterval(() => { if (currentPage < totalPages - 1) nextPage(); else { isAutoPlay = false; tbAutoplay.classList.remove('active'); clearInterval(autoPlayTimer); } }, 8000); }
+    else { clearInterval(autoPlayTimer); autoPlayTimer = null; }
+  });
+
+  tbFullscreen.addEventListener('click', () => {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextPage(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevPage(); }
+    else if ((e.key === 'f' || e.key === 'F') && !e.ctrlKey && !e.metaKey) { isPlayMode = !isPlayMode; document.body.classList.toggle('play-mode', isPlayMode); document.body.classList.toggle('toolbar-visible', isPlayMode); }
+    else if (e.key === 'Escape' && isPlayMode) { isPlayMode = false; document.body.classList.remove('play-mode', 'toolbar-visible'); }
+  });
+
+  window.__TEACHANY_LEARNER_QUESTION__ = '';
+  window.__TEACHANY_TUTOR_CONFIG__ = {
+    courseId: 'agentic-rag-chatbox', courseTitle: '从 Chatbox 到 Agentic RAG',
+    subject: 'AI-Engineering', grade: '99',
+    nodeId: 'agentic-rag-chatbox-node', lessonType: 'new-concept',
+    getLearnerQuestion: () => window.__TEACHANY_LEARNER_QUESTION__ || '',
+    getContext: () => { const p = pages[currentPage]; return (p || document.body).innerText.slice(0, 3000); }
+  };
+
+  function setLearnerQuestion(q) {
+    window.__TEACHANY_LEARNER_QUESTION__ = q || '';
+    const fb = document.getElementById('anchor-feedback');
+    if (fb) fb.textContent = q ? `你的问题：${q}` : '选择或输入后，本课会围绕你的问题展开。';
+  }
+
+  document.querySelectorAll('[data-anchor-choice]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-anchor-choice]').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      setLearnerQuestion(btn.getAttribute('data-anchor-choice') || btn.textContent.trim());
+    });
+  });
+
+  document.getElementById('learner-question-input')?.addEventListener('input', (e) => setLearnerQuestion(e.target.value.trim()));
+
+  document.querySelectorAll('[data-conceptest] .choice, [data-answer], [data-posttest-choice]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const parent = btn.closest('[data-conceptest], .card');
+      if (!parent) return;
+      parent.querySelectorAll('.choice').forEach(b => { b.classList.remove('correct', 'wrong', 'selected'); });
+      const isCorrect = btn.getAttribute('data-correct') === 'true';
+      btn.classList.add(isCorrect ? 'correct' : 'wrong');
+      const feedbackEl = parent.querySelector('[data-feedback-for]') || parent.querySelector('.result');
+      if (feedbackEl) {
+        feedbackEl.textContent = btn.getAttribute('data-diagnosis') || (isCorrect ? '✅ 正确！' : '❌ 再想想。');
+        feedbackEl.classList.remove('warn');
+        feedbackEl.classList.add(isCorrect ? '' : 'error');
+      }
+    });
+  });
+
+  
+  (function drawPipeline() {
+    const canvas = document.getElementById('rag-pipeline-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const steps = [
+      { label: 'Input', sub: '问题+会话+文档范围', x: 35, color: '#60a5fa' },
+      { label: 'Intent', sub: '判断route', x: 155, color: '#818cf8' },
+      { label: 'Retrieve', sub: '多路检索', x: 275, color: '#a78bfa' },
+      { label: 'Evidence', sub: '引用证据包', x: 395, color: '#34d399' },
+      { label: 'Plan', sub: '答案骨架', x: 515, color: '#f59e0b' },
+      { label: 'Verify', sub: '事实校验', x: 635, color: '#f472b6' }
+    ];
+    function draw(hl) {
+      ctx.clearRect(0,0,W,H); ctx.fillStyle='#0d1525'; ctx.fillRect(0,0,W,H);
+      ctx.setLineDash([8,6]); ctx.beginPath(); ctx.moveTo(85,H/2); ctx.lineTo(700,H/2); ctx.strokeStyle='rgba(148,163,184,.3)'; ctx.lineWidth=2; ctx.stroke(); ctx.setLineDash([]);
+      steps.forEach((s,i)=>{ const h=hl===i; ctx.beginPath(); ctx.arc(s.x+25,H/2,h?38:32,0,Math.PI*2); ctx.fillStyle=s.color+(h?'45':'22'); ctx.fill(); ctx.strokeStyle=s.color; ctx.lineWidth=h?3:2; ctx.stroke(); ctx.fillStyle=s.color; ctx.font='bold '+(h?16:14)+'px -apple-system,sans-serif'; ctx.textAlign='center'; ctx.fillText(i+1,s.x+25,H/2+5); ctx.fillStyle='#eef6ff'; ctx.font='bold '+(h?14:13)+'px -apple-system,sans-serif'; ctx.fillText(s.label,s.x+25,H/2+(h?60:55)); ctx.fillStyle='#9fb4cc'; ctx.font='11px -apple-system,sans-serif'; ctx.fillText(s.sub,s.x+25,H/2+(h?78:70)); });
+      if(hl>=0){const s=steps[hl]; ctx.fillStyle=s.color; ctx.font='bold 15px -apple-system,sans-serif'; ctx.fillText(`模块 ${hl+1}: ${s.label} — ${s.sub}`, W/2, 30)}
+      ctx.fillStyle='#9fb4cc'; ctx.font='12px -apple-system,sans-serif'; ctx.fillText('用户提问 →', 50, H/2-50); ctx.fillText('→ 可信答案', 710, H/2-50);
+    }
+    draw(-1);
+    canvas.addEventListener('mousemove', e=>{ const rect=canvas.getBoundingClientRect(); const mx=(e.clientX-rect.left)*W/rect.width; let found=-1; steps.forEach((s,i)=>{if(Math.abs(mx-(s.x+25))<45) found=i}); draw(found); const el=document.getElementById('pipeline-result'); if(el&&found>=0){ const s=steps[found]; el.textContent=`模块 ${found+1}: ${s.label} — ${s.sub}`; el.classList.remove('warn','error'); }});
+    canvas.addEventListener('mouseleave', ()=>{draw(-1); const el=document.getElementById('pipeline-result'); if(el){el.textContent='把鼠标移到管线上方每一步查看详情。'; el.classList.add('warn')}});
+  })();
+
+  document.getElementById('route-btn')?.addEventListener('click', () => {
+    const t = (document.getElementById('route-input')?.value || '').toLowerCase();
+    let route='summary', why='默认按总结类处理。';
+    if(/是什么|定义|what/.test(t)){route='definition';why='用户在问概念定义。'}
+    else if(/怎么|流程|操作|步骤|阶段|r2|procedure|workflow/.test(t)){route='process_operation';why='用户在问流程、阶段或操作步骤。'}
+    else if(/哪里|章节|原文|依据|citation|evidence/.test(t)){route='evidence_lookup';why='用户在找原文依据。'}
+    else if(/差异|不同|比较|对比|compare/.test(t)){route='comparison';why='用户在问多对象差异。'}
+    else if(/表|记录|deliverable|输出|字段/.test(t)){route='table_lookup';why='用户在问表格/输出物/记录项。'}
+    document.getElementById('route-result').innerHTML = `<strong>推荐 route：</strong>${route}<br>${why}<div class="code-block">{"route":"${route}","required_tools":["retrieve_sections","read_context","build_evidence","verify_claims"]}</div>`;
+  });
+
+  document.getElementById('tool-btn')?.addEventListener('click', () => {
+    const plan = ['intent_router → process_operation','query_rewrite → workflow / procedure / phase / deliverables','retrieve_sections → Rule + FullText + Vector(optional)','direct_context_reader → 回读命中章节前后文','build_evidence_package → citation_id / quote / anchor','answer_planner → 范围/前置/步骤/角色/交付物/审批','compose_answer → 只基于 evidence','claim_verifier → 检查事实和 citation'];
+    document.getElementById('tool-result').innerHTML = '<strong>Tool Plan</strong><ol>'+plan.map(x=>`<li>${x}</li>`).join('')+'</ol>';
+  });
+
+  buildSidenav();
+  updateUI();
+  document.body.classList.add('toolbar-visible');
+  setTimeout(() => { if (!isPlayMode) document.body.classList.remove('toolbar-visible'); }, 3000);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const cv = document.querySelector('meta[name="course-version"]')?.content;
+    const sv = document.querySelector('meta[name="teachany-version"]')?.content;
+    if (cv) document.getElementById('course-version-display').textContent = cv;
+    if (sv) document.getElementById('skill-version-display').textContent = sv.replace(/^v/, '');
+  });
+})();
 </script>
+
+<script src="https://weponusa.github.io/teachany-courseware/assets/scripts/ai-tutor.js"></script>
+<script src="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-tutor-card.js" defer></script>
+<script src="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-tts-narrator.js" defer></script>
+<script src="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-section-hints.js" defer></script>
+<script src="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-knowledge-graph.js" defer></script>
+<script src="https://weponusa.github.io/teachany-courseware/assets/scripts/teachany-audio-player.js?v=paged-20260521" defer></script>
 </body>
 </html>
