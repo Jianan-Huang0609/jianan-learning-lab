@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TeachAny：从 Chatbox 到 Agentic RAG</title>
+  <style>
+    :root{
+      --bg:#f6f3ee; --paper:#fffaf2; --ink:#17130f; --muted:#6f655b;
+      --line:rgba(23,19,15,.14); --card:#ffffffcc; --accent:#3157ff;
+      --accent2:#00a88f; --warn:#f07b2d; --shadow:0 24px 80px rgba(30,20,10,.11);
+      --sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",Arial,sans-serif;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;background:radial-gradient(900px 600px at 12% -8%,rgba(49,87,255,.16),transparent 60%),radial-gradient(800px 520px at 90% 8%,rgba(0,168,143,.13),transparent 58%),var(--bg);font-family:var(--sans);color:var(--ink)}
+    .shell{max-width:1180px;margin:0 auto;padding:34px 22px 80px}
+    .hero{background:linear-gradient(135deg,rgba(255,250,242,.96),rgba(255,255,255,.86));border:1px solid var(--line);border-radius:32px;box-shadow:var(--shadow);padding:42px;position:relative;overflow:hidden}
+    .hero:after{content:"";position:absolute;inset:0;background-image:linear-gradient(to right,rgba(23,19,15,.055) 1px,transparent 1px),linear-gradient(to bottom,rgba(23,19,15,.045) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(circle at 20% 0%,#000,transparent 62%);pointer-events:none}
+    .kicker{display:inline-flex;gap:10px;align-items:center;border:1px solid var(--line);background:#fff8;border-radius:999px;padding:9px 13px;color:var(--muted);font-size:13px;letter-spacing:.4px}
+    .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 6px rgba(49,87,255,.12)}
+    h1{font-size:clamp(40px,7vw,78px);line-height:.98;letter-spacing:-2.8px;margin:24px 0 18px;max-width:900px}
+    .lead{font-size:20px;line-height:1.72;color:#403832;max-width:820px;margin:0}
+    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;margin-top:32px;position:relative;z-index:1}
+    .panel{border:1px solid var(--line);background:var(--card);border-radius:24px;padding:22px;backdrop-filter:blur(12px)}
+    .panel h3{margin:0 0 12px;font-size:18px}.panel p{margin:8px 0;color:var(--muted);line-height:1.65}
+    .toc{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 0;position:relative;z-index:1}
+    .toc a{color:var(--ink);text-decoration:none;border:1px solid var(--line);background:#fff9;border-radius:999px;padding:9px 13px;font-size:14px}.toc a:hover{border-color:var(--accent);color:var(--accent)}
+    section{margin-top:28px;background:rgba(255,250,242,.82);border:1px solid var(--line);border-radius:28px;padding:32px;box-shadow:0 12px 40px rgba(30,20,10,.055)}
+    h2{font-size:32px;letter-spacing:-.8px;margin:0 0 18px} h3{font-size:21px;margin:24px 0 10px} p,li{line-height:1.78;color:#352e28} ul,ol{padding-left:1.25em}
+    .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px}.card b{display:block;margin-bottom:7px}.card span{color:var(--muted);line-height:1.65}
+    code,pre{font-family:var(--mono)} pre{background:#17130f;color:#fff7ec;border-radius:18px;padding:18px;overflow:auto;line-height:1.6;font-size:13px} code{background:rgba(49,87,255,.09);padding:2px 6px;border-radius:7px}
+    .flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.step{background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 13px;font-size:14px}.arrow{color:var(--muted)}
+    .tag{display:inline-block;margin:4px 6px 4px 0;border-radius:999px;background:rgba(0,168,143,.1);color:#067968;padding:5px 9px;font-size:13px}
+    .warn{border-left:5px solid var(--warn);background:#fff7ef}.accent{border-left:5px solid var(--accent);background:#f7f8ff}
+    .footer{margin-top:30px;text-align:center;color:var(--muted);font-size:13px}
+    @media(max-width:860px){.hero,.shell section{padding:24px}.hero-grid,.grid2,.grid3{grid-template-columns:1fr}h1{letter-spacing:-1.4px}}
+    @media print{body{background:#fff}.shell{max-width:none;padding:0}.hero,section{box-shadow:none;break-inside:avoid}.toc{display:none}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <article class="hero">
+      <div class="kicker"><span class="dot"></span>TeachAny Courseware · Agentic RAG</div>
+      <h1>从 Chatbox 到 Agentic RAG</h1>
+      <p class="lead">用一个 NotebookLM-like 文档问答库项目，讲清楚 Chatbox、意图识别、RAG、工具调用、思考展示与答案校验如何组成可信 QA 系统。</p>
+      <div class="hero-grid">
+        <div class="panel">
+          <h3>一句话主线</h3>
+          <p>Chatbox 不是输入框，而是 Agentic RAG 的任务入口：它把用户问题转成意图、检索策略、工具调用、证据包、答案计划、引用校验和可解释输出。</p>
+        </div>
+        <div class="panel">
+          <h3>适合谁</h3>
+          <p>会写代码但还不理解 RAG / Agent 后端链路的产品、开发、AI 应用同学。</p>
+        </div>
+      </div>
+      <nav class="toc">
+        <a href="#objectives">学习目标</a><a href="#chatbox">Chatbox</a><a href="#intent">Intent</a><a href="#rag">RAG</a><a href="#project">当前项目</a><a href="#agent">Agent Design</a><a href="#reasoning">思考展示</a><a href="#framework">框架模板</a><a href="#labs">练习</a><a href="#upgrade">升级路线</a>
+      </nav>
+    </article>
+
+
+    <section id="objectives">
+      <h2>0. 学完你应该能产出什么？</h2>
+      <div class="grid2">
+        <div class="card"><b>一张 Chatbox 后端架构图</b><span>能画出从用户问题到答案展示的完整链路。</span></div>
+        <div class="card"><b>一份 Intent Route 表</b><span>能定义 definition、process_operation、evidence_lookup 等问题类型。</span></div>
+        <div class="card"><b>一套 Tool Plan 模板</b><span>知道什么时候调用检索、读上下文、查表、验证引用。</span></div>
+        <div class="card"><b>一个 RAG 升级 Checklist</b><span>知道当前项目下一步该补 Direct Source Read、Eval、Chunk Index、Verifier。</span></div>
+      </div>
+      <h3>推荐学习路径</h3>
+      <ol>
+        <li>先看 Chatbox 总链路，建立全局地图。</li>
+        <li>再学 Intent Recognition，理解用户问题如何被分流。</li>
+        <li>接着学 RAG 五层结构，明确“证据供应链”比“向量数据库”更重要。</li>
+        <li>然后看 Agentic Design，理解 Router / Planner / Tools / Verifier 如何分工。</li>
+        <li>最后用 Workshop 产出自己的 Chatbox 框架草图。</li>
+      </ol>
+    </section>
+
+    <section id="chatbox">
+      <h2>1. Chatbox 背后发生了什么？</h2>
+      <p>用户看到的是“我问一个问题 → AI 回答”，但后端真实链路更像下面这条流水线：</p>
+      <div class="flow">
+        <span class="step">用户问题</span><span class="arrow">→</span><span class="step">会话状态</span><span class="arrow">→</span><span class="step">意图识别</span><span class="arrow">→</span><span class="step">检索策略</span><span class="arrow">→</span><span class="step">工具调用</span><span class="arrow">→</span><span class="step">证据整理</span><span class="arrow">→</span><span class="step">答案规划</span><span class="arrow">→</span><span class="step">生成与校验</span><span class="arrow">→</span><span class="step">前端展示</span>
+      </div>
+      <p class="accent card">例子：“PEP 文档的流程如何操作？” 系统不能直接丢给 LLM，而要先判断这是问流程、概念、原文、表格，还是跨文档对比。</p>
+    </section>
+
+    <section id="intent">
+      <h2>2. Intent Recognition：先分流，再执行</h2>
+      <div class="grid3">
+        <div class="card"><b>definition</b><span>问“是什么”：PEP 是什么？7.16 是什么？</span></div>
+        <div class="card"><b>process_operation</b><span>问“怎么做/流程/步骤”：PEP 文档的流程如何操作？</span></div>
+        <div class="card"><b>evidence_lookup</b><span>问原文依据：这个要求在哪个章节？</span></div>
+        <div class="card"><b>comparison</b><span>问差异：CT 和 MI 的流程有什么不同？</span></div>
+        <div class="card"><b>summary</b><span>问总结：总结这份文档核心内容。</span></div>
+        <div class="card"><b>table_lookup</b><span>问表格、字段、记录项：有哪些 deliverables？</span></div>
+      </div>
+      <pre>{
+  "route": "process_operation",
+  "confidence": 0.82,
+  "reason": "用户询问流程、操作步骤、阶段",
+  "required_tools": ["section_retriever", "direct_context_reader", "answer_planner"]
+}</pre>
+    </section>
+
+    <section id="rag">
+      <h2>3. RAG 不是向量数据库</h2>
+      <p>RAG 的核心不是 vector DB，而是：回答之前，先找到可信证据。</p>
+      <div class="grid2">
+        <div class="card"><b>Document Store</b><span>存原始文档和解析后的 canonical document。</span></div>
+        <div class="card"><b>Chunk Store</b><span>把长文档切成适合检索的小块。</span></div>
+        <div class="card"><b>Retriever</b><span>根据问题找相关内容：规则、全文、BM25、向量、表格。</span></div>
+        <div class="card"><b>Evidence Package</b><span>把检索结果变成可引用证据。</span></div>
+        <div class="card"><b>Answer Composer</b><span>只基于证据生成答案。</span></div>
+      </div>
+    </section>
+
+    <section id="project">
+      <h2>4. 当前项目的真实链路</h2>
+      <p>当前 Ask Workspace 已经是轻量 RAG，但还不是完整的持久化向量数据库 RAG。</p>
+      <pre>前端调用 /api/session/query
+→ 后端读取 Tool/output/parsed/{document_id}.json
+→ runtime 构建 section chunks
+→ 判断问题 route
+→ 改写检索 query
+→ HybridRetriever 检索
+→ route-aware rerank
+→ 构造 evidence package
+→ citation validation
+→ answer composer 生成回答
+→ 返回 evidence_preview / self_check / answer_run</pre>
+      <div class="grid2">
+        <div class="card"><b>已做</b><span>文件型 canonical store、runtime chunk、lexical hybrid retrieval、citation validation。</span></div>
+        <div class="card warn"><b>未做</b><span>persistent chunk index、embedding cache、真实 vector retriever、answer planner、claim verifier。</span></div>
+      </div>
+    </section>
+
+    <section id="agent">
+      <h2>5. Agentic Design：Agent 不是一个大 Prompt</h2>
+      <p>Agent 更像一个有分工的系统：</p>
+      <div class="flow">
+        <span class="step">Intent Router</span><span class="arrow">→</span><span class="step">Task Planner</span><span class="arrow">→</span><span class="step">Tool Executor</span><span class="arrow">→</span><span class="step">Evidence Builder</span><span class="arrow">→</span><span class="step">Answer Planner</span><span class="arrow">→</span><span class="step">Composer</span><span class="arrow">→</span><span class="step">Claim Verifier</span><span class="arrow">→</span><span class="step">UI Renderer</span>
+      </div>
+      <h3>工具调用本质是后端函数</h3>
+      <pre>intent_router(question)
+retrieve_sections(question, route="process_operation")
+read_context(section_id)
+extract_steps(context)
+compose_answer(evidence)
+verify_claims(answer, evidence)</pre>
+    </section>
+
+    <section id="reasoning">
+      <h2>6. 思考链路怎么展示？</h2>
+      <p>不要展示模型 raw chain-of-thought。应该展示“可解释执行轨迹”。</p>
+      <div class="card accent">
+        <b>Reasoning Summary 示例</b>
+        <p>我识别到这是一个流程操作类问题。检索范围是当前选中文档。命中章节包括 Purpose / Scope / Procedure / Deliverables。共找到 5 条有效引用，其中流程步骤证据充足，但角色责任证据不足。</p>
+      </div>
+      <p><span class="tag">问题类型</span><span class="tag">检索范围</span><span class="tag">命中章节</span><span class="tag">使用证据</span><span class="tag">自检结果</span><span class="tag">缺证提示</span></p>
+    </section>
+
+
+    <section id="framework">
+      <h2>7. 你自己的 Chatbox 框架模板</h2>
+      <p>学完后，可以直接用下面这个模板去设计自己的项目。</p>
+      <pre>Chatbox Framework
+
+1. Input Contract
+- user_message
+- session_id
+- selected_document_ids
+- mode: selected_docs / workspace / web / mixed
+
+2. Intent Router
+- route
+- confidence
+- required_tools
+- answer_shape
+
+3. Retrieval Plan
+- query_rewrite
+- retrievers: rule / fulltext / vector / table / direct_read
+- rerank_policy
+
+4. Evidence Package
+- citation_id
+- document_id
+- section_id
+- quote
+- anchor
+- source_ref
+- support_claims
+
+5. Answer Planner
+- answer_slots
+- evidence_per_slot
+- missing_evidence
+
+6. Composer
+- grounded answer only
+- citation markers only
+- no unsupported claims
+
+7. Verifier
+- citation validity
+- claim support
+- missing constraints
+- hallucination risk
+
+8. UI Renderer
+- final answer
+- references
+- reasoning summary
+- missing evidence notice</pre>
+      <div class="card accent"><b>判断自己是否学会：</b><p>如果你能拿一个问题“R2 阶段 PO 应该做什么？”，写出 route、tool plan、evidence package 和 answer skeleton，就说明这套课你已经吃透了。</p></div>
+    </section>
+
+    <section id="labs">
+      <h2>7. Workshop 练习</h2>
+      <div class="grid2">
+        <div class="card"><b>Lab 1：Intent Classification</b><span>判断“PEP 是什么？”“R2 阶段 PO 应该做什么？”分别属于哪种 route。</span></div>
+        <div class="card"><b>Lab 2：Tool Plan</b><span>为“R2 阶段 PO 应该做什么？”设计工具调用顺序。</span></div>
+        <div class="card"><b>Lab 3：Evidence Package</b><span>设计 citation_id、document_id、section_id、quote、anchor、source_ref。</span></div>
+        <div class="card"><b>Lab 4：Answer Planner</b><span>为 process_operation 设计答案骨架：范围、前置条件、步骤、角色、交付物、审批、缺证。</span></div>
+      </div>
+    </section>
+
+    <section id="upgrade">
+      <h2>8. 项目升级路线图</h2>
+      <ol>
+        <li><b>Direct Source Context Reader</b>：命中 citation 后，回读同 section 前后 fragments。</li>
+        <li><b>Retrieval Eval Golden Cases</b>：建立真实问题测试集，避免调参靠感觉。</li>
+        <li><b>Persistent Chunk Index</b>：把 runtime chunk 落地成 <code>Tool/output/index/chunks.jsonl</code>。</li>
+        <li><b>Embedding Cache / Vector Index</b>：先用本地 <code>embeddings.sqlite</code> 或 <code>embeddings.jsonl</code>。</li>
+        <li><b>Answer Planner</b>：先生成答案结构，每个 slot 绑定 evidence。</li>
+        <li><b>Claim Verifier</b>：检查每个事实句是否有 citation 支持。</li>
+        <li><b>Reasoning Summary UI</b>：展示可解释执行轨迹，而不是 raw CoT。</li>
+      </ol>
+      <p class="accent card"><b>最终目标：</b>从“能问文档”的轻量 RAG，升级成“可信、可审计、可解释”的 NotebookLM-like Agentic QA。</p>
+    </section>
+
+    <div class="footer">TeachAny Courseware · Generated for Jianan · Agentic RAG / NotebookLM-like QA</div>
+  </main>
+</body>
+</html>
