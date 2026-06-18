@@ -225,8 +225,8 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
         <div><strong>2. 读取会话状态</strong>：上一轮问题、用户选择的文档、是否追问。</div>
         <div><strong>3. Intent Router</strong>：判断是定义、流程、证据、对比、总结还是表格查询。</div>
         <div><strong>4. Query Rewrite</strong>：把自然语言问题改写成更适合检索的查询。</div>
-        <div><strong>5. Tool Plan</strong>：决定调用 section search、fulltext、vector、table lookup、direct read。</div>
-        <div><strong>6. Evidence Package</strong>：整理 quote、anchor、source_ref、supports。</div>
+        <div><strong>5. Tool Plan</strong>：这里的 tool 不是只有 RAG 检索工具，而是 Agent 后端可调用能力：检索类、上下文读取类、证据处理类、答案规划类、校验类、UI 展示类。</div>
+        <div><strong>6. Evidence Package</strong>：把检索/读取工具的结果整理成 quote、anchor、source_ref、supports，供 Planner 和 Verifier 使用。</div>
         <div><strong>7. Answer Planner</strong>：按 slot 填证据，没有证据就标缺证。</div>
         <div><strong>8. Claim Verifier + UI</strong>：检查事实支持，并展示答案、引用、过程摘要。</div>
       </div>
@@ -640,7 +640,7 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   });
 
   document.getElementById('tool-btn')?.addEventListener('click', () => {
-    const plan = ['intent_router → process_operation','query_rewrite → workflow / procedure / phase / deliverables','retrieve_sections → Rule + FullText + Vector(optional)','direct_context_reader → 回读命中章节前后文','build_evidence_package → citation_id / quote / anchor','answer_planner → 范围/前置/步骤/角色/交付物/审批','compose_answer → 只基于 evidence','claim_verifier → 检查事实和 citation'];
+    const plan = ['intent_router → process_operation','query_rewrite → workflow / procedure / phase / deliverables','retrieval tools → section search / fulltext / vector(optional) / table lookup','context tools → direct_context_reader 回读命中章节前后文','evidence tools → build_evidence_package / citation_validator','planning tools → answer_planner 生成 slot 和缺证提示','compose_answer → 只基于 evidence','verification tools → claim_verifier 检查事实和 citation'];
     document.getElementById('tool-result').innerHTML = '<strong>Tool Plan</strong><ol>'+plan.map(x=>`<li>${x}</li>`).join('')+'</ol>';
   });
 

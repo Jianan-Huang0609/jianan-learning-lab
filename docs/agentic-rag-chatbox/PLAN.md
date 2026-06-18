@@ -59,3 +59,13 @@
 - 构建 evidence package
 - 按角色、阶段、动作、交付物组织答案
 - 用 claim verifier 检查每个事实句是否有引用支持
+
+
+## Tool 分类说明
+本课中的 Tool 不是只指 RAG 检索工具，而是 Agentic QA 后端可调用能力：
+1. Retrieval tools：section search、fulltext、vector search、table lookup
+2. Context tools：direct source context reader、citation context reader
+3. Evidence tools：evidence package builder、citation validator
+4. Planning tools：answer planner、answer slot filler
+5. Verification tools：claim verifier、groundedness checker
+6. UI/trace tools：reasoning summary renderer、reference renderer
