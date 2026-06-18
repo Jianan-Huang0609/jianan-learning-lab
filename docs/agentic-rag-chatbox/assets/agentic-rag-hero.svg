@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#60a5fa"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
+    <filter id="s"><feDropShadow dx="0" dy="18" stdDeviation="18" flood-opacity=".22"/></filter>
+  </defs>
+  <rect width="1200" height="640" rx="36" fill="#0f172a"/>
+  <g opacity=".25" stroke="#334155"><path d="M0 80h1200M0 160h1200M0 240h1200M0 320h1200M0 400h1200M0 480h1200M0 560h1200M100 0v640M200 0v640M300 0v640M400 0v640M500 0v640M600 0v640M700 0v640M800 0v640M900 0v640M1000 0v640M1100 0v640"/></g>
+  <text x="80" y="92" fill="#eaf4ff" font-size="46" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif" font-weight="800">Chatbox → Agentic RAG</text>
+  <text x="82" y="132" fill="#9fb4cc" font-size="22" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">Intent Router · Tools · Evidence · Planner · Verifier · Reasoning Summary</text>
+  <g filter="url(#s)" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">
+    <g transform="translate(80 230)"><rect width="148" height="88" rx="22" fill="#1e3050" stroke="#60a5fa"/><text x="74" y="38" text-anchor="middle" fill="#fff" font-size="20" font-weight="700">Input</text><text x="74" y="64" text-anchor="middle" fill="#9fb4cc" font-size="14">用户问题</text></g>
+    <g transform="translate(265 230)"><rect width="148" height="88" rx="22" fill="#1e3050" stroke="#818cf8"/><text x="74" y="38" text-anchor="middle" fill="#fff" font-size="20" font-weight="700">Intent</text><text x="74" y="64" text-anchor="middle" fill="#9fb4cc" font-size="14">问题分流</text></g>
+    <g transform="translate(450 230)"><rect width="148" height="88" rx="22" fill="#1e3050" stroke="#a78bfa"/><text x="74" y="38" text-anchor="middle" fill="#fff" font-size="20" font-weight="700">Retrieve</text><text x="74" y="64" text-anchor="middle" fill="#9fb4cc" font-size="14">找证据</text></g>
+    <g transform="translate(635 230)"><rect width="148" height="88" rx="22" fill="#1e3050" stroke="#34d399"/><text x="74" y="38" text-anchor="middle" fill="#fff" font-size="20" font-weight="700">Evidence</text><text x="74" y="64" text-anchor="middle" fill="#9fb4cc" font-size="14">引用包</text></g>
+    <g transform="translate(820 230)"><rect width="148" height="88" rx="22" fill="#1e3050" stroke="#f59e0b"/><text x="74" y="38" text-anchor="middle" fill="#fff" font-size="20" font-weight="700">Plan</text><text x="74" y="64" text-anchor="middle" fill="#9fb4cc" font-size="14">答案骨架</text></g>
+    <g transform="translate(1005 230)"><rect width="148" height="88" rx="22" fill="#1e3050" stroke="#f472b6"/><text x="74" y="38" text-anchor="middle" fill="#fff" font-size="20" font-weight="700">Verify</text><text x="74" y="64" text-anchor="middle" fill="#9fb4cc" font-size="14">防幻觉</text></g>
+  </g>
+  <g stroke="url(#g)" stroke-width="4" marker-end="url(#m)"><path d="M228 274h37M413 274h37M598 274h37M783 274h37M968 274h37"/></g>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#7dd3fc"/></marker></defs>
+  <rect x="80" y="405" width="1040" height="120" rx="24" fill="#111c33" stroke="#334b6e"/>
+  <text x="110" y="452" fill="#eaf4ff" font-size="24" font-family="monospace">Reasoning Summary</text>
+  <text x="110" y="490" fill="#9fb4cc" font-size="20" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif">展示系统执行轨迹：问题类型、检索范围、命中章节、使用证据、自检结果；不展示 raw CoT。</text>
+</svg>

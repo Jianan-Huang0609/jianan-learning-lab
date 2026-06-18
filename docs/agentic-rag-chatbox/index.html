@@ -138,6 +138,14 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
 @media(max-width:768px){:root{--page-padding:16px;--card-radius:14px}.slide-page{padding:16px 14px;padding-bottom:calc(16px + var(--toolbar-height))}.grid,.grid-2,.grid-3,.objectives,.grid-2col{grid-template-columns:1fr!important}.flex-row{flex-direction:column}.flex-row .choice{min-width:100%}.card{padding:18px}.slide-sidenav{right:6px;gap:2px;padding:6px 3px}.sidenav-dot{width:22px;height:3px}.sidenav-dot.active{width:28px}.sidenav-counter{font-size:9px}.teachany-brand-bar{padding:8px 12px}.brand-name{display:none}.brand-right{gap:8px;font-size:12px}}
 @media(max-width:480px){.slide-page[data-page-type="cover"] h1{font-size:28px}.toolbar-progress{max-width:120px}}
 </style>
+
+<style id="agentic-rag-enhancements">
+.comment-box{margin-top:16px;border:1px solid var(--line-subtle);border-radius:14px;padding:14px;background:rgba(255,255,255,.035)}
+.comment-box label{display:block;color:var(--muted);font-size:13px;margin-bottom:8px}.comment-box textarea{min-height:72px;font-size:14px}.comment-status{font-size:12px;color:var(--accent);margin-top:6px}
+.answer-panel{display:none;margin-top:12px}.answer-panel.show{display:block}.reveal-answer{margin-top:10px}
+.chat-sim{display:grid;grid-template-columns:1fr 1fr;gap:14px}.chat-window{background:#0d1525;border:1px solid var(--line-subtle);border-radius:14px;padding:14px;min-height:260px}.bubble{padding:10px 12px;border-radius:14px;margin:8px 0;max-width:92%}.bubble.user{background:rgba(96,165,250,.16);margin-left:auto}.bubble.bot{background:rgba(52,211,153,.11);border:1px solid rgba(52,211,153,.16)}.trace-item{padding:8px 10px;border-left:3px solid var(--brand);background:rgba(96,165,250,.06);margin:8px 0;border-radius:8px}.tts-btn{position:absolute;right:22px;top:22px;z-index:5;border:1px solid var(--line-subtle);background:rgba(255,255,255,.08);color:var(--text);border-radius:999px;padding:8px 12px;cursor:pointer;font-weight:700}.micro-flow{display:grid;gap:8px}.micro-flow div{padding:10px 12px;border-radius:12px;background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.14)}
+@media(max-width:768px){.chat-sim{grid-template-columns:1fr}.tts-btn{right:12px;top:12px}}
+</style>
 </head>
 
 <body>
@@ -160,7 +168,8 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   <div class="slide-inner">
     <h1>从 Chatbox 到 Agentic RAG</h1>
     <p class="subtitle">一个 NotebookLM-like 问答库，背后如何做意图识别、检索、工具调用、证据组织、答案规划与可解释输出？</p>
-    <div class="card glass" style="margin-top:28px;text-align:left">
+    <figure class="ta-standard-figure" style="margin-top:28px"><img src="./assets/agentic-rag-hero.svg" alt="Chatbox 到 Agentic RAG 流程图"><figcaption>图：从 Chatbox 输入到 Agentic RAG 可信输出的主链路</figcaption></figure>
+    <div class="card glass" style="margin-top:18px;text-align:left">
       <div class="section-header"><span class="phase-tag">Course Goal</span><h2>这不是展示页，而是一套互动课件</h2></div>
       <ul class="objectives">
         <li>前测：先暴露你对 RAG / Agent 的直觉误区</li>
@@ -205,7 +214,27 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   </div>
 </section>
 
-<section class="slide-page" data-page-type="quiz" data-page-index="3" data-tts="pretest" data-tsh="前测 - 先暴露对 RAG 的常见误解">
+
+
+<section class="slide-page" data-page-type="concept" data-page-index="3" data-tts="granularity" data-tsh="颗粒度拆解 - 一个问题进入 Chatbox 后的 8 个微步骤">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag">Granularity</span><h2>一个问题进入 Chatbox 后的 8 个微步骤</h2></div>
+      <div class="micro-flow">
+        <div><strong>1. 接收输入</strong>：user_message、session_id、selected_document_ids、mode。</div>
+        <div><strong>2. 读取会话状态</strong>：上一轮问题、用户选择的文档、是否追问。</div>
+        <div><strong>3. Intent Router</strong>：判断是定义、流程、证据、对比、总结还是表格查询。</div>
+        <div><strong>4. Query Rewrite</strong>：把自然语言问题改写成更适合检索的查询。</div>
+        <div><strong>5. Tool Plan</strong>：决定调用 section search、fulltext、vector、table lookup、direct read。</div>
+        <div><strong>6. Evidence Package</strong>：整理 quote、anchor、source_ref、supports。</div>
+        <div><strong>7. Answer Planner</strong>：按 slot 填证据，没有证据就标缺证。</div>
+        <div><strong>8. Claim Verifier + UI</strong>：检查事实支持，并展示答案、引用、过程摘要。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="quiz" data-page-index="4" data-tts="pretest" data-tsh="前测 - 先暴露对 RAG 的常见误解">
   <div class="slide-inner">
     <div class="card card-accent">
       <div class="section-header"><span class="phase-tag" data-variant="warn">Pretest</span><h2>前测：RAG 到底是什么？</h2></div>
@@ -215,12 +244,12 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
         <button class="choice animate-in stagger-2" data-correct="true" data-diagnosis="✅ 正确。RAG 的核心是回答前先找到可信证据，再基于证据生成。">B. 回答前先检索可信证据，再基于证据生成</button>
         <button class="choice animate-in stagger-3" data-correct="false" data-diagnosis="❌ 长 Prompt 不能替代证据组织、引用校验和事实验证。">C. RAG 就是把 Prompt 写长一点</button>
       </div>
-      <div class="result warn" data-feedback-for="pretest" style="margin-top:16px">先独立判断，再看诊断反馈。</div>
+      <div class="result warn" data-feedback-for="pretest" style="margin-top:16px">先独立判断，再看诊断反馈。</div><button class="choice reveal-answer">显示正确答案</button><div class="result answer-panel">正确答案：B。RAG 的核心是证据供应链；向量库只是检索器的一种实现。</div>
     </div>
   </div>
 </section>
 
-<section class="slide-page" data-page-type="concept" data-page-index="4" data-tts="chatbox-chain" data-tsh="核心概念 - Chatbox 不是输入框而是任务入口">
+<section class="slide-page" data-page-type="concept" data-page-index="5" data-tts="chatbox-chain" data-tsh="核心概念 - Chatbox 不是输入框而是任务入口">
   <div class="slide-inner">
     <div class="card">
       <div class="section-header"><span class="phase-tag">Concept</span><h2>Chatbox 不是输入框，是任务调度入口</h2></div>
@@ -234,7 +263,7 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   </div>
 </section>
 
-<section class="slide-page" data-page-type="interactive" data-page-index="5" data-tts="architecture-map" data-tsh="主交互 - 点击 Chatbox 后端架构模块">
+<section class="slide-page" data-page-type="interactive" data-page-index="6" data-tts="architecture-map" data-tsh="主交互 - 点击 Chatbox 后端架构模块">
   <div class="slide-inner">
     <div class="card card-accent">
       <div class="section-header"><span class="phase-tag" data-variant="purple">Interactive</span><h2>点击模块，理解职责分工</h2></div>
@@ -244,7 +273,7 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   </div>
 </section>
 
-<section class="slide-page" data-page-type="concept" data-page-index="6" data-tts="intent-router" data-tsh="核心概念 - Intent Router 决定后端怎么走">
+<section class="slide-page" data-page-type="concept" data-page-index="7" data-tts="intent-router" data-tsh="核心概念 - Intent Router 决定后端怎么走">
   <div class="slide-inner">
     <div class="card">
       <div class="section-header"><span class="phase-tag">Router</span><h2>Intent Recognition：先分流，再执行</h2></div>
@@ -261,7 +290,7 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   </div>
 </section>
 
-<section class="slide-page" data-page-type="interactive" data-page-index="7" data-tts="route-practice" data-tsh="互动练习 - 判断用户问题应该走哪条 route">
+<section class="slide-page" data-page-type="interactive" data-page-index="8" data-tts="route-practice" data-tsh="互动练习 - 判断用户问题应该走哪条 route">
   <div class="slide-inner">
     <div class="card card-accent">
       <div class="section-header"><span class="phase-tag" data-variant="success">Practice</span><h2>Route 判断练习</h2></div>
@@ -273,7 +302,7 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   </div>
 </section>
 
-<section class="slide-page" data-page-type="concept" data-page-index="8" data-tts="rag-layers" data-tsh="核心概念 - RAG 是证据供应链而不是向量库">
+<section class="slide-page" data-page-type="concept" data-page-index="9" data-tts="rag-layers" data-tsh="核心概念 - RAG 是证据供应链而不是向量库">
   <div class="slide-inner">
     <div class="card">
       <div class="section-header"><span class="phase-tag">RAG</span><h2>RAG 五层：证据供应链</h2></div>
@@ -288,7 +317,7 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   </div>
 </section>
 
-<section class="slide-page" data-page-type="concept" data-page-index="9" data-tts="project-chain" data-tsh="案例拆解 - 当前 QT-wiki Ask Workspace 的真实链路">
+<section class="slide-page" data-page-type="concept" data-page-index="10" data-tts="project-chain" data-tsh="案例拆解 - 当前 QT-wiki Ask Workspace 的真实链路">
   <div class="slide-inner">
     <div class="card card-accent">
       <div class="section-header"><span class="phase-tag" data-variant="purple">Case</span><h2>当前项目真实链路</h2></div>
@@ -301,7 +330,7 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   </div>
 </section>
 
-<section class="slide-page" data-page-type="interactive" data-page-index="10" data-tts="tool-plan" data-tsh="互动练习 - 为问题生成 Tool Plan">
+<section class="slide-page" data-page-type="interactive" data-page-index="11" data-tts="tool-plan" data-tsh="互动练习 - 为问题生成 Tool Plan">
   <div class="slide-inner">
     <div class="card card-accent">
       <div class="section-header"><span class="phase-tag" data-variant="success">Practice</span><h2>Tool Plan Builder</h2></div>
@@ -313,7 +342,7 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   </div>
 </section>
 
-<section class="slide-page" data-page-type="concept" data-page-index="11" data-tts="planner-verifier" data-tsh="核心概念 - Answer Planner 与 Claim Verifier">
+<section class="slide-page" data-page-type="concept" data-page-index="12" data-tts="planner-verifier" data-tsh="核心概念 - Answer Planner 与 Claim Verifier">
   <div class="slide-inner">
     <div class="card">
       <div class="section-header"><span class="phase-tag">Planner + Verifier</span><h2>先规划答案，再验证事实</h2></div>
@@ -326,7 +355,7 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   </div>
 </section>
 
-<section class="slide-page" data-page-type="quiz" data-page-index="12" data-tts="concept-test" data-tsh="概念测试 - 区分 raw CoT 和 Reasoning Summary">
+<section class="slide-page" data-page-type="quiz" data-page-index="13" data-tts="concept-test" data-tsh="概念测试 - 区分 raw CoT 和 Reasoning Summary">
   <div class="slide-inner">
     <div class="card card-accent" data-conceptest>
       <div class="section-header"><span class="phase-tag" data-variant="warn">Concept Test</span><h2>思考链路应该怎么展示？</h2></div>
@@ -335,12 +364,12 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
         <button class="choice" data-correct="false" data-diagnosis="❌ 不应该展示 raw chain-of-thought。">B. 展示模型完整内心推理</button>
         <button class="choice" data-correct="false" data-diagnosis="❌ 完全不展示会降低可审计性和用户信任。">C. 什么过程都不展示</button>
       </div>
-      <div class="result warn" data-feedback-for="concept-test" style="margin-top:16px">选择后查看诊断。</div>
+      <div class="result warn" data-feedback-for="concept-test" style="margin-top:16px">选择后查看诊断。</div><button class="choice reveal-answer">显示正确答案</button><div class="result answer-panel">正确答案：A。展示可审计执行轨迹，不展示 raw chain-of-thought。</div>
     </div>
   </div>
 </section>
 
-<section class="slide-page" data-page-type="quiz" data-page-index="13" data-tts="posttest" data-tsh="后测 - 你是否能生成自己的 Chatbox 框架">
+<section class="slide-page" data-page-type="quiz" data-page-index="14" data-tts="posttest" data-tsh="后测 - 你是否能生成自己的 Chatbox 框架">
   <div class="slide-inner">
     <div class="card card-accent">
       <div class="section-header"><span class="phase-tag" data-variant="warn">Post-test</span><h2>后测：Agentic RAG 最关键多了什么？</h2></div>
@@ -349,12 +378,32 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
         <button class="choice" data-correct="false" data-diagnosis="❌ 长上下文不能替代工具和证据验证。">B. 更长的上下文窗口</button>
         <button class="choice" data-correct="true" data-diagnosis="✅ 正确。Agentic RAG 的关键是 Router + Planner + Tools + Evidence + Verifier 的任务编排。">C. Router / Planner / Tools / Evidence / Verifier</button>
       </div>
-      <div class="result warn" data-feedback-for="posttest" style="margin-top:16px">选择后查看诊断。</div>
+      <div class="result warn" data-feedback-for="posttest" style="margin-top:16px">选择后查看诊断。</div><button class="choice reveal-answer">显示正确答案</button><div class="result answer-panel">正确答案：C。Agentic RAG 的关键是 Router / Planner / Tools / Evidence / Verifier 的编排。</div>
     </div>
   </div>
 </section>
 
-<section class="slide-page" data-page-type="summary" data-page-index="14" data-tts="summary" data-tsh="小结 - 你的 Chatbox Framework 模板">
+
+
+<section class="slide-page" data-page-type="interactive" data-page-index="15" data-tts="chatbox-sim" data-tsh="Chatbox 模拟器 - 看一次问题如何变成 route、tools、evidence 和 answer plan">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag" data-variant="purple">Chatbox Simulator</span><h2>模拟一次 Agentic QA</h2></div>
+      <div class="chat-sim">
+        <div class="chat-window">
+          <div class="bubble user" id="sim-user">PEP 文档的流程如何操作？</div>
+          <div class="bubble bot" id="sim-bot">点击下面按钮，逐步查看后端如何处理这个问题。</div>
+          <button class="choice" id="sim-next">下一步</button>
+        </div>
+        <div class="chat-window" id="sim-trace">
+          <div class="trace-item">Trace 会显示在这里。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="summary" data-page-index="16" data-tts="summary" data-tsh="小结 - 你的 Chatbox Framework 模板">
   <div class="slide-inner">
     <div class="card card-accent">
       <div class="section-header"><span class="phase-tag" data-variant="success">Output</span><h2>你的 Chatbox Framework 模板</h2></div>
@@ -363,7 +412,7 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   </div>
 </section>
 
-<section class="slide-page" data-page-type="summary" data-page-index="15" data-tts="knowledge-graph" data-tsh="知识图谱 - 这节课与已有 RAG 课程的关系">
+<section class="slide-page" data-page-type="summary" data-page-index="17" data-tts="knowledge-graph" data-tsh="知识图谱 - 这节课与已有 RAG 课程的关系">
   <div class="slide-inner">
     <div class="card">
       <div class="section-header"><span class="phase-tag" data-variant="purple">Knowledge Graph</span><h2>知识图谱</h2></div>
@@ -373,7 +422,7 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   </div>
 </section>
 
-<section class="slide-page" data-page-type="interactive" data-page-index="16" data-tts="ai-tutor" data-tsh="AI 学伴 - 说出你卡在哪一步">
+<section class="slide-page" data-page-type="interactive" data-page-index="18" data-tts="ai-tutor" data-tsh="AI 学伴 - 说出你卡在哪一步">
   <div class="slide-inner">
     <div data-teachany-tutor-card></div>
   </div>
@@ -594,6 +643,44 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
     const plan = ['intent_router → process_operation','query_rewrite → workflow / procedure / phase / deliverables','retrieve_sections → Rule + FullText + Vector(optional)','direct_context_reader → 回读命中章节前后文','build_evidence_package → citation_id / quote / anchor','answer_planner → 范围/前置/步骤/角色/交付物/审批','compose_answer → 只基于 evidence','claim_verifier → 检查事实和 citation'];
     document.getElementById('tool-result').innerHTML = '<strong>Tool Plan</strong><ol>'+plan.map(x=>`<li>${x}</li>`).join('')+'</ol>';
   });
+
+
+
+  // Enhancements: comments, answer reveal, local TTS, chatbox simulator
+  document.querySelectorAll('.slide-page').forEach((page, i) => {
+    if (!page.querySelector('.tts-btn')) {
+      const btn = document.createElement('button');
+      btn.className = 'tts-btn'; btn.textContent = '🔊 朗读';
+      btn.addEventListener('click', () => {
+        const text = page.innerText.replace(/朗读/g,'').slice(0, 900);
+        if ('speechSynthesis' in window) { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang='zh-CN'; speechSynthesis.speak(u); }
+      });
+      page.appendChild(btn);
+    }
+    if (!page.querySelector('.comment-box')) {
+      const box = document.createElement('div'); box.className='comment-box';
+      box.innerHTML = `<label>我的 comments / 疑问（自动保存在本机）</label><textarea placeholder="这一页哪里没懂？下一次可以继续追问。"></textarea><div class="comment-status">未填写</div>`;
+      const inner = page.querySelector('.slide-inner'); if (inner) inner.appendChild(box);
+      const ta = box.querySelector('textarea'), st = box.querySelector('.comment-status'), key = 'agentic-rag-comment-' + i;
+      ta.value = localStorage.getItem(key) || ''; st.textContent = ta.value ? '已保存' : '未填写';
+      ta.addEventListener('input', () => { localStorage.setItem(key, ta.value); st.textContent = '已保存'; });
+    }
+  });
+  document.querySelectorAll('.reveal-answer').forEach(btn => btn.addEventListener('click', () => btn.nextElementSibling?.classList.toggle('show')));
+  (function sim(){
+    const steps = [
+      ['Intent Router', 'route = process_operation，因为用户问“流程如何操作”。'],
+      ['Query Rewrite', '补充 procedure / workflow / phase / deliverables / review 等检索词。'],
+      ['Tool Plan', '调用 RuleSectionRetriever + FullTextRetriever，再 direct_context_reader 回读前后文。'],
+      ['Evidence Package', '生成 c1/c2/c3：quote + anchor + source_ref + supports。'],
+      ['Answer Planner', '答案 slot：适用范围、前置条件、步骤、角色、交付物、审批、缺证。'],
+      ['Claim Verifier', '逐句检查 citation 是否支持，角色责任缺证就标注。'],
+      ['UI Renderer', '展示正文、引用、Reasoning Summary 和 missing evidence。']
+    ];
+    let k = 0; const btn = document.getElementById('sim-next'), trace = document.getElementById('sim-trace'), bot = document.getElementById('sim-bot');
+    if (!btn) return;
+    btn.addEventListener('click', () => { const s = steps[k % steps.length]; trace.insertAdjacentHTML('beforeend', `<div class="trace-item"><strong>${s[0]}</strong><br>${s[1]}</div>`); bot.textContent = `${s[0]} 已完成。`; k++; });
+  })();
 
   buildSidenav();
   updateUI();
