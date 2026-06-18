@@ -412,7 +412,31 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   </div>
 </section>
 
-<section class="slide-page" data-page-type="summary" data-page-index="17" data-tts="knowledge-graph" data-tsh="知识图谱 - 这节课与已有 RAG 课程的关系">
+
+
+<section class="slide-page" data-page-type="summary" data-page-index="17" data-tts="tech-map" data-tsh="技术版图 - 从 Chatbox 到 Agentic RAG 每一步的技术">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag" data-variant="purple">Tech Map</span><h2>技术版图：每一步在做什么、用什么技术</h2></div>
+      <div class="grid grid-2">
+        <div class="summary-item"><span class="num">1</span><div><strong>Chatbox Input Layer</strong><br><span style="color:var(--muted)">前端输入、session_id、selected_docs、streaming。技术：React/Vue、REST API、SSE/WebSocket。</span></div></div>
+        <div class="summary-item"><span class="num">2</span><div><strong>Session & Context Layer</strong><br><span style="color:var(--muted)">历史消息、追问上下文、文档范围。技术：Redis/SQLite/Postgres、conversation memory、source scope。</span></div></div>
+        <div class="summary-item"><span class="num">3</span><div><strong>Intent Router</strong><br><span style="color:var(--muted)">判断问题类型。技术：规则分类、LLM classifier、JSON schema、confidence threshold。</span></div></div>
+        <div class="summary-item"><span class="num">4</span><div><strong>Query Rewrite</strong><br><span style="color:var(--muted)">改写成检索友好查询。技术：keyword expansion、route-aware query template、LLM rewrite。</span></div></div>
+        <div class="summary-item"><span class="num">5</span><div><strong>Retrieval Tools</strong><br><span style="color:var(--muted)">找相关证据。技术：BM25/fulltext、vector search、section search、table lookup、hybrid RRF rerank。</span></div></div>
+        <div class="summary-item"><span class="num">6</span><div><strong>Direct Context Reader</strong><br><span style="color:var(--muted)">命中 chunk 后回读前后文。技术：canonical JSON、fragment_id、anchor、page/bbox、section tree。</span></div></div>
+        <div class="summary-item"><span class="num">7</span><div><strong>Evidence Package</strong><br><span style="color:var(--muted)">生成可验证证据。技术：citation_id、quote selector、source_ref、citation validator。</span></div></div>
+        <div class="summary-item"><span class="num">8</span><div><strong>Answer Planner</strong><br><span style="color:var(--muted)">先生成答案骨架。技术：slot filling、route-specific schema、missing evidence detection。</span></div></div>
+        <div class="summary-item"><span class="num">9</span><div><strong>Answer Composer</strong><br><span style="color:var(--muted)">基于证据写答案。技术：LLM prompt、structured context、citation markers、streaming generation。</span></div></div>
+        <div class="summary-item"><span class="num">10</span><div><strong>Claim Verifier</strong><br><span style="color:var(--muted)">防幻觉和错引。技术：claim extraction、LLM judge/NLI、citation support check、groundedness score。</span></div></div>
+        <div class="summary-item"><span class="num">11</span><div><strong>Reasoning Summary UI</strong><br><span style="color:var(--muted)">展示执行轨迹。技术：trace log、answer_run、evidence_preview、self_check、reference renderer。</span></div></div>
+        <div class="summary-item"><span class="num">12</span><div><strong>Eval & Observability</strong><br><span style="color:var(--muted)">持续评估质量。技术：golden cases、retrieval recall、citation validity、unsupported claim rate、OpenTelemetry/logging。</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide-page" data-page-type="summary" data-page-index="18" data-tts="knowledge-graph" data-tsh="知识图谱 - 这节课与已有 RAG 课程的关系">
   <div class="slide-inner">
     <div class="card">
       <div class="section-header"><span class="phase-tag" data-variant="purple">Knowledge Graph</span><h2>知识图谱</h2></div>
@@ -422,7 +446,7 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   </div>
 </section>
 
-<section class="slide-page" data-page-type="interactive" data-page-index="18" data-tts="ai-tutor" data-tsh="AI 学伴 - 说出你卡在哪一步">
+<section class="slide-page" data-page-type="interactive" data-page-index="19" data-tts="ai-tutor" data-tsh="AI 学伴 - 说出你卡在哪一步">
   <div class="slide-inner">
     <div data-teachany-tutor-card></div>
   </div>
