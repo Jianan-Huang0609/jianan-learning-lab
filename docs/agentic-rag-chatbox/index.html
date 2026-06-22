@@ -413,8 +413,75 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
 </section>
 
 
+<section class="slide-page" data-page-type="insight" data-page-index="17" data-tts="design-insight" data-tsh="设计洞察 - 8步内部骨架 ≠ 8块固定UI">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag" data-variant="warning">Design Insight</span><h2>8 步是过度设计吗？</h2></div>
+      <p style="margin-bottom:16px;line-height:1.8">
+        上一页的 8 步模板看起来很多。一个自然会问的问题：<strong>每一步都必要吗？UI 需要展示全部 8 步吗？</strong>
+      </p>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:20px;font-size:0.92em">
+        <thead><tr style="background:var(--bg3)"><th style="padding:8px;text-align:left;border:1px solid var(--border)">步骤</th><th style="padding:8px;text-align:center;border:1px solid var(--border)">是否需要</th><th style="padding:8px;text-align:left;border:1px solid var(--border)">判断</th></tr></thead>
+        <tbody>
+          <tr><td style="padding:6px 8px;border:1px solid var(--border)">1. 接收输入</td><td style="padding:6px 8px;border:1px solid var(--border);text-align:center;color:var(--green)">需要</td><td style="padding:6px 8px;border:1px solid var(--border)">必须明确 user_message、selected docs、mode，否则 source scope 会乱</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid var(--border)">2. 读取会话状态</td><td style="padding:6px 8px;border:1px solid var(--border);text-align:center;color:var(--green)">需要</td><td style="padding:6px 8px;border:1px solid var(--border)">追问、多轮上下文、上一轮 source scope 都靠它；但当前缺口最大</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid var(--border)">3. Intent Router</td><td style="padding:6px 8px;border:1px solid var(--border);text-align:center;color:var(--green)">需要</td><td style="padding:6px 8px;border:1px solid var(--border)">不然"流程如何操作""定义是什么""对比差异"都会混成章节摘要</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid var(--border)">4. Query Rewrite</td><td style="padding:6px 8px;border:1px solid var(--border);text-align:center;color:var(--green)">需要</td><td style="padding:6px 8px;border:1px solid var(--border)">用户自然语言通常不适合直接检索，尤其流程/表格/对比问题</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid var(--border)">5. Tool Plan</td><td style="padding:6px 8px;border:1px solid var(--border);text-align:center;color:var(--yellow)">需要，但应动态</td><td style="padding:6px 8px;border:1px solid var(--border)">不是每次都调用所有工具，而是决定要不要 section/fulltext/vector/table/direct read</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid var(--border)">6. Evidence Package</td><td style="padding:6px 8px;border:1px solid var(--border);text-align:center;color:var(--green)">很需要</td><td style="padding:6px 8px;border:1px solid var(--border)">可信引用的核心，quote、anchor、source_ref、supports 都应在这里固化</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid var(--border)">7. Answer Planner</td><td style="padding:6px 8px;border:1px solid var(--border);text-align:center;color:var(--green)">很需要</td><td style="padding:6px 8px;border:1px solid var(--border)">解决"回答像章节堆叠"的关键——先规划 answer slot，再让 LLM 填</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid var(--border)">8. Claim Verifier + UI</td><td style="padding:6px 8px;border:1px solid var(--border);text-align:center;color:var(--green)">需要</td><td style="padding:6px 8px;border:1px solid var(--border)">UI 只展示审计摘要；claim verifier 是质量门，不是给用户看长链路</td></tr>
+        </tbody>
+      </table>
+      <p style="font-weight:700;color:var(--accent);margin-bottom:8px">结论：8 步不是过度设计，过度的是把 8 步直接暴露成固定 UI 模板。</p>
+    </div>
+  </div>
+</section>
 
-<section class="slide-page" data-page-type="summary" data-page-index="17" data-tts="tech-map" data-tsh="技术版图 - 从 Chatbox 到 Agentic RAG 每一步的技术">
+<section class="slide-page" data-page-type="insight" data-page-index="18" data-tts="dynamic-ui" data-tsh="动态 UI 设计 — 内部 Runtime Contract + 外部动态摘要">
+  <div class="slide-inner">
+    <div class="card card-accent">
+      <div class="section-header"><span class="phase-tag" data-variant="warning">Design Insight</span><h2>更好的设计：Runtime Contract + 动态 UI</h2></div>
+      <div class="grid grid-2" style="margin-bottom:20px;gap:16px">
+        <div style="padding:16px;background:var(--bg2);border-radius:8px;border-left:3px solid var(--accent)">
+          <h3 style="margin:0 0 8px;font-size:1em">内部：保留 8 步 Runtime Contract</h3>
+          <p style="margin:0;color:var(--muted);font-size:0.9em;line-height:1.7">
+            它是工程骨架，方便测试、定位问题、做 eval、做 citation/claim verifier。<br>
+            每一步都有明确的输入/输出契约<br>
+            每一步都可以独立测试和迭代<br>
+            出问题时能快速定位是哪一步失准
+          </p>
+        </div>
+        <div style="padding:16px;background:var(--bg2);border-radius:8px;border-left:3px solid var(--green)">
+          <h3 style="margin:0 0 8px;font-size:1em">外部 UI：展示 3-4 个动态摘要</h3>
+          <p style="margin:0;color:var(--muted);font-size:0.9em;line-height:1.7">
+            不展示"固定步骤"，而是展示<strong>这次真正发生了什么</strong>。<br>
+            流程问题 显示检索+流程解析<br>
+            表格查询 显示 table lookup<br>
+            追问 显示"读取上一轮问题"<br>
+            没用的步骤不硬塞
+          </p>
+        </div>
+      </div>
+      <p style="font-weight:700;margin-bottom:12px">示例：一次"PEP 流程操作问题"的动态 UI 展示 →</p>
+      <div style="padding:16px;background:var(--bg1);border-radius:8px;border:1px solid var(--border);font-size:0.9em;line-height:1.8">
+        <div style="margin-bottom:10px"><strong>问题理解</strong><br><span style="color:var(--muted)">识别到这是"流程操作类问题"，需要回答操作顺序和交付/评审依据。</span></div>
+        <div style="margin-bottom:10px"><strong>资料与检索</strong><br><span style="color:var(--muted)">选中 1 份 PEP 文档，检索 84 个 chunks，实际调用 hybrid retrieval（section + fulltext），召回 7 条证据。</span></div>
+        <div style="margin-bottom:10px"><strong>证据质量</strong><br><span style="color:var(--muted)">7 条引用通过 source scope/anchor/quote 校验；如缺某类证据，显示缺口。</span></div>
+        <div><strong>回答生成</strong><br><span style="color:var(--muted)">基于 evidence package 生成，claim 检查通过。使用 Plan-then-Compose 策略，不自由发挥。</span></div>
+      </div>
+      <p style="margin-top:16px;font-size:0.9em;color:var(--muted)">
+        关键原则：<strong>UI 不展示"固定步骤"，而展示"这次真正发生了什么"</strong>。<br>
+        如果某次是表格查询，就显示 table lookup；如果没用 vector，就不显示 vector（或在高级详情里写"未启用：无持久向量索引"）。<br>
+        如果是追问，就显示"读取上一轮问题"；如果不是追问，就不硬塞这一项。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="slide-page" data-page-type="summary" data-page-index="19" data-tts="tech-map" data-tsh="技术版图 - 从 Chatbox 到 Agentic RAG 每一步的技术">
   <div class="slide-inner">
     <div class="card card-accent">
       <div class="section-header"><span class="phase-tag" data-variant="purple">Tech Map</span><h2>技术版图：每一步在做什么、用什么技术</h2></div>
@@ -436,7 +503,7 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   </div>
 </section>
 
-<section class="slide-page" data-page-type="summary" data-page-index="18" data-tts="knowledge-graph" data-tsh="知识图谱 - 这节课与已有 RAG 课程的关系">
+<section class="slide-page" data-page-type="summary" data-page-index="20" data-tts="knowledge-graph" data-tsh="知识图谱 - 这节课与已有 RAG 课程的关系">
   <div class="slide-inner">
     <div class="card">
       <div class="section-header"><span class="phase-tag" data-variant="purple">Knowledge Graph</span><h2>知识图谱</h2></div>
@@ -446,7 +513,7 @@ body.play-mode .play-mode-fab{bottom:calc(var(--toolbar-height) + 16px + var(--s
   </div>
 </section>
 
-<section class="slide-page" data-page-type="interactive" data-page-index="19" data-tts="ai-tutor" data-tsh="AI 学伴 - 说出你卡在哪一步">
+<section class="slide-page" data-page-type="interactive" data-page-index="21" data-tts="ai-tutor" data-tsh="AI 学伴 - 说出你卡在哪一步">
   <div class="slide-inner">
     <div data-teachany-tutor-card></div>
   </div>

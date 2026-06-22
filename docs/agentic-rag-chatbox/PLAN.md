@@ -69,3 +69,9 @@
 4. Planning tools：answer planner、answer slot filler
 5. Verification tools：claim verifier、groundedness checker
 6. UI/trace tools：reasoning summary renderer、reference renderer
+
+## 2026-06-22 更新：Runtime Contract vs Dynamic UI 设计洞察（Jianan 贡献）
+- 新增页面 17-18：8步必要性判断 + Runtime Contract vs 动态UI 设计
+- 核心洞察：8步不是过度设计（工程骨架），过度的是把8步直接暴露成固定UI模板
+- 设计原则：内部保留 Runtime Contract（测试/定位/eval），外部UI展示3-4个动态摘要（反映"这次真正发生了什么"）
+- 来源：Jianan 在 OpenClaw 群的设计思考
